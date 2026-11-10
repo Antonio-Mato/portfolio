@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="/eye-loader.js"></script>
 <title>Website design in Athens from €449 · Antonio Mato</title>
 <!-- The canonical origin lives here and in build.py, and nowhere else.
      Swap both the day the real domain is connected. -->
@@ -413,6 +414,8 @@ section{position:relative;z-index:2}
 @keyframes lineRise{to{transform:none}}
 @keyframes ringDrift{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+/* eye-loader: the hero intro waits until the loader starts revealing the page */
+html.eye-loading:not(.eye-loaded) .hero *{animation-play-state:paused!important}
 
 /* ============================================================
    WORK
@@ -458,7 +461,6 @@ section{position:relative;z-index:2}
 .link-btn svg{width:15px;height:15px}
 .link-btn:hover{color:var(--chalk);border-color:var(--marker);background:rgba(59,130,246,.14)}
 button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);font-weight:var(--w-ui)}
-.link-btn.watch svg{width:14px;height:14px}
 
 /* ---- laptop mockup: one transparent PNG laid over the live screen ----
    assets/ui/laptop_screen.png is 1448x1086 with a rectangular hole cut out of
@@ -486,10 +488,10 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
   width:calc(var(--screen-w) + .5%);
   height:calc(var(--screen-h) + .7%);
 }
-.laptop-screen .slideshow,.laptop-screen video{
+.laptop-screen .slideshow{
   position:absolute;inset:0;width:100%;height:100%;display:block;background:#05070c;cursor:pointer;
 }
-.laptop-screen video{cursor:default;object-fit:contain;background:#000}
+.laptop-screen .slideshow:not([role="button"]){cursor:default}
 .laptop-screen .slideshow img{object-fit:cover}
 
 .slideshow{position:absolute;inset:0;overflow:hidden}
@@ -510,28 +512,6 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
 .ss-hint svg{width:13px;height:13px}
 .slideshow:hover .ss-hint{border-color:var(--marker-fill);background:var(--marker-fill);color:var(--on-marker)}
 
-/* ---- modal video player ---- */
-.modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:clamp(0.875rem,3vw,2rem)}
-.modal.open{display:flex}
-.modal-backdrop{position:absolute;inset:0;background:rgba(4,4,7,.92);backdrop-filter:blur(8px);animation:fadeInModal .3s ease}
-.modal-inner{
-  position:relative;z-index:2;width:min(940px,94vw,108vh);
-  animation:modalIn .4s var(--ease);
-  display:flex;flex-direction:column;align-items:center;gap:16px;
-}
-.modal-title{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-faint);text-align:center}
-.modal-close{
-  position:fixed;top:16px;right:16px;z-index:5;
-  width:40px;height:40px;flex:none;
-  border:1px solid var(--rule-2);border-radius:3px;
-  background:rgba(9,9,11,.7);backdrop-filter:blur(6px);
-  color:var(--chalk);cursor:pointer;font-size:1.05rem;line-height:1;
-  transition:border-color .3s var(--ease),background .3s var(--ease);
-}
-.modal-close:hover{border-color:var(--marker-fill);background:var(--marker-fill);color:var(--on-marker)}
-.modal-laptop{width:100%;position:relative;aspect-ratio:var(--laptop-ar)}
-@keyframes fadeInModal{from{opacity:0}to{opacity:1}}
-@keyframes modalIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
 
 /* ============================================================
    HIRING
@@ -936,7 +916,6 @@ form{display:flex;flex-direction:column;gap:19px}
   .ss-hint{bottom:8px;right:8px;padding:6px 9px;font-size:.55rem;gap:6px}
   .ss-hint svg{width:11px;height:11px}
   .laptop-frame{filter:drop-shadow(0 18px 24px rgba(2,3,7,.58))}
-  .modal-inner{width:min(96vw,120vh)}
   .footer{flex-direction:column;align-items:flex-start;gap:12px;font-size:.66rem}
   .form-submit{width:100%;justify-content:center}
 }
@@ -1127,12 +1106,10 @@ form{display:flex;flex-direction:column;gap:19px}
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0C17 5 18 5.3 18 5.3c.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.3.8 1 .8 2.1v3.1c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
               <span data-i18n="btn.ghsoon">GitHub coming soon</span>
             </a>
-            <button type="button" class="link-btn watch" data-project="asclepius"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span data-i18n="btn.testrun">See test run</span></button>
           </div>
         </div>
         <div class="card-media">
-          <div class="slideshow" data-project="asclepius" role="button" tabindex="0" aria-label="Watch the Asclepius AI walkthrough">
-            <div class="ss-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span data-i18n="ss.watchwalk">Watch walkthrough</span></div>
+          <div class="slideshow" data-project="asclepius">
           </div>
         </div>
       </article>
@@ -1149,12 +1126,10 @@ form{display:flex;flex-direction:column;gap:19px}
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0C17 5 18 5.3 18 5.3c.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.3.8 1 .8 2.1v3.1c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
               <span data-i18n="btn.github">View on GitHub</span>
             </a>
-            <button type="button" class="link-btn watch" data-project="matos"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span data-i18n="btn.testrun">See test run</span></button>
           </div>
         </div>
         <div class="card-media">
-          <div class="slideshow" data-project="matos" role="button" tabindex="0" aria-label="Watch the Mato's Adventures test run">
-            <div class="ss-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span data-i18n="ss.watchrun">Watch test run</span></div>
+          <div class="slideshow" data-project="matos">
           </div>
         </div>
       </article>
@@ -1369,21 +1344,6 @@ form{display:flex;flex-direction:column;gap:19px}
 
 </main>
 
-<!-- ============ VIDEO MODAL ============ -->
-<div class="modal" id="video-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Project test run">
-  <div class="modal-backdrop" data-close></div>
-  <div class="modal-inner">
-    <button type="button" class="modal-close" data-close aria-label="Close video">✕</button>
-    <div class="modal-laptop">
-      <div class="laptop-screen">
-        <video class="modal-video" id="modal-video" controls playsinline preload="metadata"></video>
-      </div>
-      <img class="laptop-frame" src="/assets/ui/laptop_screen.png" alt="" aria-hidden="true" decoding="async">
-    </div>
-    <span class="modal-title" id="modal-title"></span>
-  </div>
-</div>
-
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
   <span data-i18n="footer.built">Written by hand · Athens, 2026</span>
@@ -1572,7 +1532,7 @@ form{display:flex;flex-direction:column;gap:19px}
       "p3.desc":"A real business website, designed and shipped end to end. A single Greek-language page carrying the full service menu, price list, gallery and opening hours, written by hand in HTML, CSS and JavaScript with no framework or page builder. Scroll reveals fall back gracefully for reduced motion, the layout holds from phone to desktop, and it runs live on Firebase Hosting.",
       "tag.noframework":"No Framework","tag.responsive":"Responsive","tag.noengine":"No Engine","tag.collision":"Collision Maps","tag.vector":"Vector Search","tag.vision":"Vision","tag.geo":"Geolocation",
       "btn.visit":"Visit live site","ss.visit":"Visit live site",
-      "btn.github":"View on GitHub","btn.ghsoon":"GitHub coming soon","btn.testrun":"See test run","ss.watchrun":"Watch test run","ss.watchwalk":"Watch walkthrough",
+      "btn.github":"View on GitHub","btn.ghsoon":"GitHub coming soon",
       "contact.label":"Contact","contact.note":"Athens · open to work",
       "contact.title":"Let's build <br>something.",
       "contact.lede":"Have a project, a role, or a rough idea that needs a builder? Write it here and it opens as a ready message in your mail app.",
@@ -1585,8 +1545,7 @@ form{display:flex;flex-direction:column;gap:19px}
       "form.sent":"// Thanks {name} — that reached me. I usually reply within a day.",
       "form.fallback":"// Opening your mail app instead — the message is ready to send.",
       "form.ok":"// Opening your mail app, {name}.",
-      "footer.built":"Written by hand · Athens, 2026","footer.top":"BACK TO TOP ↑",
-      "modal.matos":"Mato's Adventures · full test run","modal.asclepius":"Asclepius AI · full walkthrough"
+      "footer.built":"Written by hand · Athens, 2026","footer.top":"BACK TO TOP ↑"
     },
     el: {
       "meta.title":"Κατασκευή ιστοσελίδων στην Αθήνα από 449€ · Αντόνιο Μάτο",
@@ -1682,7 +1641,7 @@ form{display:flex;flex-direction:column;gap:19px}
       "p3.desc":"Ένας πραγματικός επαγγελματικός ιστότοπος, σχεδιασμένος και δημοσιευμένος από την αρχή ως το τέλος. Μία ελληνική σελίδα με πλήρη κατάλογο υπηρεσιών, τιμοκατάλογο, gallery και ωράριο λειτουργίας, γραμμένη στο χέρι σε HTML, CSS και JavaScript, χωρίς framework ή page builder. Οι εμφανίσεις κατά την κύλιση σέβονται τη μειωμένη κίνηση, η διάταξη προσαρμόζεται από κινητό ως desktop, και φιλοξενείται ζωντανά στο Firebase Hosting.",
       "tag.noframework":"Χωρίς Framework","tag.responsive":"Responsive","tag.noengine":"Χωρίς Μηχανή","tag.collision":"Χάρτες Σύγκρουσης","tag.vector":"Διανυσματική Αναζήτηση","tag.vision":"Όραση Υπολογιστή","tag.geo":"Γεωεντοπισμός",
       "btn.visit":"Επισκεφθείτε τον ιστότοπο","ss.visit":"Επισκεφθείτε τον ιστότοπο",
-      "btn.github":"Δείτε στο GitHub","btn.ghsoon":"GitHub σύντομα","btn.testrun":"Δείτε δοκιμαστική εκτέλεση","ss.watchrun":"Δείτε την εκτέλεση","ss.watchwalk":"Δείτε την παρουσίαση",
+      "btn.github":"Δείτε στο GitHub","btn.ghsoon":"GitHub σύντομα",
       "contact.label":"Επικοινωνία","contact.note":"Αθήνα · διαθέσιμος για εργασία",
       "contact.title":"Ας φτιάξουμε <br>κάτι μαζί.",
       "contact.lede":"Έχετε ένα έργο, μια θέση εργασίας ή μια ιδέα που χρειάζεται υλοποίηση; Γράψτε το εδώ και ανοίγει ως έτοιμο μήνυμα στην εφαρμογή email σας.",
@@ -1695,8 +1654,7 @@ form{display:flex;flex-direction:column;gap:19px}
       "form.sent":"// Ευχαριστώ {name} — το έλαβα. Συνήθως απαντώ μέσα σε μία μέρα.",
       "form.fallback":"// Ανοίγει η εφαρμογή email — το μήνυμα είναι έτοιμο.",
       "form.ok":"// Ανοίγει η εφαρμογή email σας, {name}.",
-      "footer.built":"Γραμμένο στο χέρι · Αθήνα, 2026","footer.top":"ΕΠΙΣΤΡΟΦΗ ΠΑΝΩ ↑",
-      "modal.matos":"Mato's Adventures · πλήρης δοκιμαστική εκτέλεση","modal.asclepius":"Asclepius AI · πλήρης παρουσίαση"
+      "footer.built":"Γραμμένο στο χέρι · Αθήνα, 2026","footer.top":"ΕΠΙΣΤΡΟΦΗ ΠΑΝΩ ↑"
     }
   };
 
@@ -1730,7 +1688,6 @@ form{display:flex;flex-direction:column;gap:19px}
       var v = t(el.getAttribute("data-i18n-label"));
       if(v) el.setAttribute("data-label", v);
     });
-    if(window.__retitleModal) window.__retitleModal();
     if(window.__relabelPlay) window.__relabelPlay();
   }
 
@@ -1741,13 +1698,9 @@ form{display:flex;flex-direction:column;gap:19px}
   var ASSET_V = "3";
   var PROJECTS = {
     matos: {
-      titleKey: "modal.matos",
-      video: { webm: ASSET + "matos-fullrun.webm", mp4: ASSET + "matos-fullrun.mp4" },
       images: ["loading-screen.webp","dialogue1.webp","boat.webp","house_inside.webp","walking_image.webp","walking_image2.webp","riddle.webp","wizard_house_inside.webp","wizard_dialogue.webp","knights_room.webp","knight_dialogue.webp","treasure_room.webp"]
     },
     asclepius: {
-      titleKey: "modal.asclepius",
-      video: { webm: ASSET + "asclepius-fullrun.webm", mp4: ASSET + "asclepius-fullrun.mp4" },
       images: ["asc-diagnosis.webp","asc-specialists.webp","asc-clinics.webp","asc-triage.webp","asc-result.webp"]
     },
     bling: {
@@ -1834,73 +1787,20 @@ form{display:flex;flex-direction:column;gap:19px}
     }
   });
 
-  /* ---- modal video player ---- */
-  var modal = document.getElementById("video-modal");
-  var mVideo = document.getElementById("modal-video");
-  var mTitle = document.getElementById("modal-title");
-  var lastFocus = null, openKey = null;
-  window.__retitleModal = function(){
-    if(openKey && PROJECTS[openKey] && mTitle) mTitle.textContent = t(PROJECTS[openKey].titleKey);
-  };
 
-  function openModal(key){
-    var cfg = PROJECTS[key];
-    if(!cfg || !cfg.video || !modal) return;
-    lastFocus = document.activeElement;
-    openKey = key;
-    mTitle.textContent = t(cfg.titleKey);
-    mVideo.innerHTML = "";
-    if(cfg.video.webm){ var s1 = document.createElement("source"); s1.src = cfg.video.webm; s1.type = "video/webm"; mVideo.appendChild(s1); }
-    if(cfg.video.mp4){ var s2 = document.createElement("source"); s2.src = cfg.video.mp4; s2.type = "video/mp4"; mVideo.appendChild(s2); }
-    mVideo.load();
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    var p = mVideo.play(); if(p && p.catch) p.catch(function(){});
-    var c = modal.querySelector(".modal-close"); if(c) c.focus();
-  }
-  function closeModal(){
-    if(!modal) return;
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
-    openKey = null;
-    document.body.style.overflow = "";
-    mVideo.pause(); mVideo.removeAttribute("src"); mVideo.innerHTML = ""; mVideo.load();
-    if(lastFocus && lastFocus.focus) lastFocus.focus();
-  }
-
-  document.querySelectorAll(".watch").forEach(function(btn){
-    btn.addEventListener("click", function(){ openModal(btn.getAttribute("data-project")); });
-  });
   function activate(key){
     var cfg = PROJECTS[key];
     if(!cfg) return;
-    if(cfg.video) openModal(key);
-    else if(cfg.url) window.open(cfg.url, "_blank", "noopener");
+    if(cfg.url) window.open(cfg.url, "_blank", "noopener");
   }
   document.querySelectorAll(".slideshow").forEach(function(box){
     var key = box.getAttribute("data-project");
-    if(!PROJECTS[key]) return;
+    if(!PROJECTS[key] || !PROJECTS[key].url) return;
     box.addEventListener("click", function(){ activate(key); });
     box.addEventListener("keydown", function(e){
       if(e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(key); }
     });
   });
-  if(modal){
-    modal.querySelectorAll("[data-close]").forEach(function(el){ el.addEventListener("click", closeModal); });
-    document.addEventListener("keydown", function(e){
-      if(!modal.classList.contains("open")) return;
-      if(e.key === "Escape"){ closeModal(); return; }
-      /* Keep Tab inside the dialog. Without this the focus ring walks off
-         behind the backdrop and the page underneath stays reachable. */
-      if(e.key !== "Tab") return;
-      var f = modal.querySelectorAll("button, video, [href]");
-      if(!f.length) return;
-      var first = f[0], last = f[f.length - 1];
-      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-    });
-  }
 
   /* ---- contact form: compose an email via the visitor's mail app ----
      The panel beside the form previews the very message the button will hand
