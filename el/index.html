@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Κατασκευή ιστοσελίδων στην Αθήνα από 449€ · Αντόνιο Μάτο</title>
+<!-- The canonical origin lives here and in build.py, and nowhere else.
+     Swap both the day the real domain is connected. -->
+<meta name="description" content="Επαγγελματικοί ιστότοποι για επιχειρήσεις στην Αθήνα, σχεδιασμένοι και φτιαγμένοι στο χέρι. Τρία πακέτα από 449€, με τον πρώτο χρόνο φιλοξενίας δωρεάν." />
+<meta name="theme-color" content="#09090B" />
+<link rel="canonical" href="https://personalportfolio-aa146.web.app/el/" />
+<!-- Each language is a real URL. Without these Google treats the Greek
+     copy as non-existent, because runtime translation never reaches it. -->
+<link rel="alternate" hreflang="en" href="https://personalportfolio-aa146.web.app/" />
+<link rel="alternate" hreflang="el" href="https://personalportfolio-aa146.web.app/el/" />
+<link rel="alternate" hreflang="x-default" href="https://personalportfolio-aa146.web.app/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://personalportfolio-aa146.web.app/el/" />
+<meta property="og:title" content="Κατασκευή ιστοσελίδων στην Αθήνα από 449€ · Αντόνιο Μάτο" />
+<meta property="og:description" content="Επαγγελματικοί ιστότοποι για επιχειρήσεις στην Αθήνα, σχεδιασμένοι και φτιαγμένοι στο χέρι. Τρία πακέτα από 449€, με τον πρώτο χρόνο φιλοξενίας δωρεάν." />
+<meta property="og:image" content="https://personalportfolio-aa146.web.app/og-card.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="el" />
+<meta property="og:locale:alternate" content="en" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Κατασκευή ιστοσελίδων στην Αθήνα από 449€ · Αντόνιο Μάτο" />
+<meta name="twitter:description" content="Επαγγελματικοί ιστότοποι για επιχειρήσεις στην Αθήνα, σχεδιασμένοι και φτιαγμένοι στο χέρι. Τρία πακέτα από 449€, με τον πρώτο χρόνο φιλοξενίας δωρεάν." />
+<meta name="twitter:image" content="https://personalportfolio-aa146.web.app/og-card.png" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2309090B'/%3E%3Cpath d='M12 7h8v6h-8zM10 13h12v8H10zM10 21h4v4h-4zM18 21h4v4h-4z' fill='%233B82F6'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&amp;display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="/assets/ui/laptop_screen.png" />
+<style>
+/* ============================================================
+   ANTONIO MATO · PORTFOLIO
+
+   Palette: near-black and blue, taken from the Vetra template
+   — ground #09090B, accent #3B82F6, a pale blue-white for the
+   last line of the headline, and a royal-blue bloom under the
+   fold. The accent is ink, not decoration: lines, marks, live
+   status and one filled chip. The primary button is white,
+   which is both Vetra's own move and the only way to get a
+   19:1 label on it.
+
+   The hero is a single centred axis — availability, name,
+   claim, action — over a low chartreuse bloom with dashed
+   survey rings expanding out of the foot of the fold. The
+   depth lives in the atmosphere so the fold does not need a
+   second block of content in it.
+
+   Typography is one family, Manrope, at every size and in both
+   languages. It is load-bearing rather than decorative: the
+   site is bilingual, so the face has to actually ship Greek
+   glyphs. An earlier pairing did not, and every headline and
+   every label silently fell back to a system font whenever
+   Greek was selected.
+   ============================================================ */
+
+:root{
+  /* ---- the ground ---- */
+  --ink-950:#060608;
+  --ink-900:#09090B;
+  --ink-800:#0F1219;
+  --ink-700:#161A24;
+
+  /* ---- the linework ---- */
+  --rule:rgba(148,170,205,.13);
+  --rule-2:rgba(148,170,205,.26);
+  --measure:rgba(190,212,240,.50);
+
+  /* ---- the type (each measured against --ink-900) ---- */
+  --chalk:#FBFCFE;        /* 19.4:1 */
+  --chalk-dim:#88A0BA;    /*  7.3:1 */
+  --chalk-faint:#6C7F96;  /*  4.8:1 */
+  --chalk-tint:#C6D5F1;   /* 13.4:1 — the second line of the greeting, cooled */
+
+  /* ---- the accent. Two values, because one cannot do both jobs: blue-500
+          is 5.4:1 as ink on the ground but only 3.7:1 under white text, so
+          anything that becomes a filled surface steps down to blue-600 and
+          gets 5.2:1 for its label. ---- */
+  --marker:#3B82F6;       /* 5.4:1 — lines, marks, links, icons  */
+  --marker-fill:#2563EB;  /* 5.2:1 under white — filled surfaces */
+  --marker-deep:#1D4ED8;  /* the hover step under a fill          */
+  --on-marker:#FFFFFF;
+
+  /* rem, not px, so the whole frame grows with the root ramp at the bottom
+     of this sheet instead of stranding the design mid-screen. The vw term
+     only ever wins past about 1920 — below that the 80rem floor holds, so
+     1280 and 1440 are untouched — and the ceiling stops an ultrawide from
+     pulling the sheet into one endless line. */
+  --maxw:clamp(80rem,74vw,100rem);
+  --gutter:clamp(1.25rem,5vw,3.75rem);
+  --bar:4rem;
+
+  /* One family for the page, in both languages. The three roles stay as
+     separate tokens because they still mean different things and a display
+     face could come back through one line here — but they resolve to
+     Manrope today, which is why the site reads as a single voice.
+     --f-ui replaces the old --f-mono: nothing on the page ever depended on
+     character alignment, so the label role is proportional now, carrying
+     --w-ui for weight because
+     Manrope goes thin where JetBrains Mono held up at 10px uppercase. */
+  --f-display:"Manrope",system-ui,sans-serif;
+  --f-body:var(--f-display);
+  --f-ui:var(--f-display);
+  --w-ui:500;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+/* form controls do not inherit type from the page, which is how the modal's
+   close glyph was rendering in Arial while everything around it was not */
+button,input,textarea,select{font-family:inherit}
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--ink-900);
+  color:var(--chalk);
+  font-family:var(--f-body);
+  /* 400, not 300: Manrope's Light goes fragile as pale text on a near-black
+     ground, where Commissioner Light held together */
+  font-weight:400;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* The grid is the paper's own ruling, so unlike a decorative overlay it runs
+   the full length of the sheet rather than fading out once the hero is past. */
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(var(--rule) 1px,transparent 1px),
+    linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:52px 52px;
+  opacity:.5;
+  pointer-events:none;
+  z-index:0;
+}
+/* Print grain. The difference between blue paper and a blue rectangle. */
+body::after{
+  content:"";
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+  opacity:.38;
+  pointer-events:none;
+  z-index:1;
+}
+
+a{color:inherit;text-decoration:none}
+img,video{max-width:100%;display:block}
+::selection{background:var(--marker-fill);color:var(--on-marker)}
+
+/* one focus treatment for the whole sheet */
+:focus-visible{outline:2px solid var(--marker);outline-offset:3px;border-radius:1px}
+
+.skip{
+  position:absolute;left:var(--gutter);top:-100px;z-index:200;
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.78rem;
+  padding:12px 18px;background:var(--marker-fill);color:var(--on-marker);border-radius:2px;
+  transition:top .2s var(--ease);
+}
+.skip:focus{top:12px}
+
+/* ---------- shared layout ---------- */
+/* width:100% is load-bearing, not belt-and-braces. .hero is a column flex
+   container, and a flex item with auto inline margins does not stretch — so
+   without this the hero's width comes from its own contents, the grid inside
+   sizes its tracks off max-content, and the columns stop responding to the
+   viewport entirely. */
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);position:relative;z-index:2}
+section{position:relative;z-index:2}
+
+/* ---- The sheet header: a drawn rule with the sheet's name at one end and a
+        real fact at the other. Deliberately not numbered — these sections are
+        not a sequence, and indexing them would state something untrue. ---- */
+.sheet{padding:clamp(5.25rem,12vw,8.625rem) 0;scroll-margin-top:calc(var(--bar) + 0.5rem)}
+.sheet-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:18px;
+  padding-bottom:13px;
+  border-bottom:1px solid var(--rule-2);
+  font-family:var(--f-ui);font-weight:var(--w-ui);
+}
+.sheet-label{
+  font-size:.66rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--chalk);
+  display:inline-flex;align-items:center;gap:.9em;
+}
+.sheet-label::before{content:"";width:20px;height:1px;background:var(--marker);flex:none}
+.sheet-note{
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--chalk-faint);text-align:right;
+}
+.sheet-title{
+  font-family:var(--f-display);
+  font-weight:800;
+  font-size:clamp(2.4rem,6.8vw,4.5rem);
+  line-height:1.03;
+  letter-spacing:-.03em;
+  margin-top:clamp(1.75rem,4.5vw,2.875rem);
+}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.topbar{
+  position:fixed;top:0;left:0;right:0;
+  z-index:60;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  height:var(--bar);
+  padding:0 var(--gutter);
+  font-family:var(--f-ui);font-weight:var(--w-ui);
+  font-size:.74rem;
+  letter-spacing:.06em;
+  border-bottom:1px solid transparent;
+  transition:background .35s var(--ease),backdrop-filter .35s var(--ease),border-color .35s var(--ease);
+}
+.topbar.scrolled{
+  background:rgba(9,9,11,.82);
+  backdrop-filter:blur(14px) saturate(1.3);
+  border-bottom-color:var(--rule-2);
+}
+.brand{display:flex;align-items:center;gap:11px;font-weight:500;white-space:nowrap}
+/* a four-cell monogram: the A and the M stacked into one glyph */
+.brand svg{width:12px;height:14px;flex:none;shape-rendering:crispEdges}
+.brand svg path{fill:var(--marker)}
+.topbar-right{display:flex;align-items:center;gap:clamp(0.875rem,3vw,1.625rem)}
+.navlinks{display:flex;gap:clamp(0.875rem,2.4vw,1.5rem)}
+.navlinks a{color:var(--chalk-dim);position:relative;padding:4px 0;transition:color .25s}
+.navlinks a::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--marker);transform:scaleX(0);transform-origin:right;
+  transition:transform .3s var(--ease);
+}
+.navlinks a:hover,.navlinks a.active{color:var(--chalk)}
+.navlinks a:hover::after,.navlinks a.active::after{transform:scaleX(1);transform-origin:left}
+
+.lang{display:inline-flex;align-items:center;gap:10px;flex:none}
+.lang a{
+  padding:0;background:transparent;border:0;cursor:pointer;line-height:0;
+  border-radius:2px;
+  opacity:.4;filter:grayscale(70%);
+  transition:opacity .25s var(--ease),filter .25s var(--ease),transform .2s var(--ease);
+}
+.lang a svg{width:28px;height:20px;display:block;border-radius:1px;box-shadow:0 0 0 1px rgba(232,241,248,.2)}
+.lang a:hover{opacity:.85;filter:grayscale(0);transform:translateY(-1px)}
+.lang a.active{opacity:1;filter:none}
+.lang a.active svg{box-shadow:0 0 0 1.5px var(--marker)}
+
+@media(max-width:600px){
+  .navlinks{display:none}
+  .brand{font-size:.7rem}
+}
+
+/* ============================================================
+   HERO
+   One centred axis, read top to bottom: whether he is available,
+   who he is, what he does, what to press. Behind it the sheet
+   opens up — a low chartreuse bloom rising off the foot of the
+   fold with dashed survey rings expanding out of it.
+
+   The foot strip is the spec plate off a CV: what he is open to, the
+   degree, and what he works in. Location is not repeated there because
+   the pill above already carries it.
+   ============================================================ */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:calc(var(--bar) + 2.5rem) 0 0;
+}
+/* align-items:center makes every child shrink to its own content, which is
+   what centres them — so anything that needs the full column has to ask for
+   it back with align-self:stretch. */
+.hero-inner{display:flex;flex-direction:column;align-items:center;text-align:center}
+
+/* ---- the atmosphere: everything here is decoration and nothing else
+        on the page depends on it, so it is inert to the pointer and
+        hidden from assistive tech at the markup level ---- */
+.hero-bg{
+  position:absolute;
+  /* The glow belongs to the horizon, not to the section. Clipped at the
+     hero's own edge it terminates in a hard line precisely where Work
+     begins — so the backdrop overhangs by 300px and fades to nothing
+     across that overhang, and the light dies out instead of stopping.
+     Work is a later sibling at the same z-index, so its content still
+     paints over the top of this. */
+  inset:0 0 -300px 0;
+  z-index:0;pointer-events:none;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 300px),transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 calc(100% - 300px),transparent 100%);
+}
+.hero-rings{
+  position:absolute;left:50%;bottom:300px;
+  width:min(1700px,200vw);height:min(1700px,200vw);
+  transform:translate(-50%,50%);
+  /* the rings are strongest where they leave the bloom and gone by the
+     time they reach the headline, so they never compete with the type */
+  -webkit-mask-image:linear-gradient(to top,#000 18%,rgba(0,0,0,.62) 52%,transparent 88%);
+  mask-image:linear-gradient(to top,#000 18%,rgba(0,0,0,.62) 52%,transparent 88%);
+  opacity:0;animation:hazeIn 2s var(--ease) .3s forwards;
+}
+.hero-rings g{transform-box:fill-box;transform-origin:center;animation:ringDrift 18s ease-in-out infinite}
+.hero-rings circle{
+  fill:none;stroke:var(--marker);stroke-width:1;stroke-dasharray:2 11;
+  /* keeps the hairline a hairline at every viewport, instead of scaling
+     with the 1700px box and turning into a stripe */
+  vector-effect:non-scaling-stroke;
+}
+.hero-bloom{
+  position:absolute;left:50%;bottom:0;
+  width:min(1320px,170vw);height:min(680px,82vw);
+  /* bottom:0 is the hero's edge and this puts the glow's centre exactly on
+     it, which is what makes it read as light coming over a horizon rather
+     than a sphere someone parked at the bottom of the page */
+  bottom:300px;transform:translate(-50%,50%);
+  /* two layers, because one stop cannot be both the hot core and the wide
+     halo: the template's centre samples at #144784 and its edge falls away
+     far wider and cooler than a single gradient reaches */
+  background:
+    radial-gradient(closest-side,rgba(59,130,246,.20),transparent 70%),
+    radial-gradient(closest-side,rgba(29,78,216,.30),transparent 58%);
+  filter:blur(18px);
+  opacity:0;animation:hazeIn 2.4s var(--ease) .15s forwards;
+}
+
+/* ---- the claim ---- */
+.hero-title{
+  margin-top:clamp(1.75rem,4vw,2.75rem);
+  font-family:var(--f-display);font-weight:800;
+  /* Sized from measurement, not taste. In Manrope at this weight the longest
+     line, "Antonio Mato.", costs a steady 6.45px of width per px of font
+     size — constant across every breakpoint — so the ceiling is whatever
+     keeps that under about 85% of the column — and the constant to use is
+     GREEK's, not English's. "Αντόνιο Μάτο." costs 7.1px per font px against
+     English's 6.45, so sizing to the English line put the Greek headline at
+     94% of its column, one rendering hiccup from wrapping. 9.6vw / 8.6rem
+     lands Greek at ~85% and English at ~77%.
+
+     The vh term is the safety net for short panels: a 1600x720 screen buys
+     a headline off width alone that will not fit its own fold. It is 19vh
+     now rather than 10.5, because the pill, the kicker and the three-cell
+     spec plate that used to share this space are all gone. On phones the
+     floor wins before vh binds, so a moving URL bar cannot reflow it. */
+  font-size:clamp(2.5rem,min(9.6vw,19vh),8.6rem);
+  line-height:1.02;letter-spacing:-.035em;
+  color:var(--chalk);
+}
+.hero-title .tl{
+  display:block;overflow:hidden;
+  padding:.06em 0 .15em;margin:-.06em 0 -.15em;
+}
+.hero-title .tl i{
+  display:block;font-style:normal;
+  transform:translateY(115%);
+  animation:lineRise 1s var(--ease) forwards;
+}
+.hero-title .tl:nth-of-type(1) i{animation-delay:.24s}
+.hero-title .tl:nth-of-type(2) i{animation-delay:.36s}
+/* The template cools its headline off into blue as it falls away from the
+   eye. That is one gradient over there and three steps here, because the
+   real gradient has to be background-clip:text — and a clip cannot reach
+   text inside a descendant stacking context, which is precisely what
+   animation-fill-mode:forwards leaves behind on each line (an identity
+   transform still counts). The clipped version renders a headline of
+   entirely invisible glyphs. Three stops across three lines is the same
+   ramp, and it survives the entrance animation. */
+.hero-title .tl:nth-of-type(2){color:var(--chalk-tint)}
+
+.hero-desc{
+  margin-top:clamp(1.4rem,3vw,2.1rem);
+  /* ch, so the measure holds its character count as the type grows */
+  max-width:52ch;
+  font-size:clamp(1.05rem,1.9vw,1.35rem);
+  color:var(--chalk-dim);
+  line-height:1.62;
+  opacity:0;animation:fadeUp .8s var(--ease) .62s forwards;
+}
+.hero-desc em{font-style:normal;color:var(--chalk)}
+
+/* the shared .btn is sized for the buttons further down the page; under a
+   headline this large it read as an afterthought */
+.hero-cta .btn{
+  padding:clamp(1rem,1.5vw,1.35rem) clamp(1.6rem,2.4vw,2.35rem);
+  font-size:clamp(.82rem,1vw,.95rem);
+  border-radius:4px;
+}
+.hero-cta{
+  margin-top:clamp(1.9rem,3.4vw,2.75rem);
+  display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;
+  opacity:0;animation:fadeUp .8s var(--ease) .8s forwards;
+}
+
+.btn{
+  font-family:var(--f-ui);font-weight:var(--w-ui);
+  font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:15px 26px;border:1px solid var(--rule-2);border-radius:2px;
+  display:inline-flex;align-items:center;gap:10px;
+  transition:background .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease);
+}
+.btn .arrow{transition:transform .3s var(--ease)}
+.btn:hover .arrow{transform:translateX(4px)}
+/* white, like Vetra's own primary — and the only fill that gets a 19:1
+   label, where white on blue-500 would have been 3.7:1 */
+.btn-primary{background:var(--chalk);border-color:var(--chalk);color:var(--ink-950);box-shadow:0 10px 34px -14px rgba(251,252,254,.45)}
+.btn-primary:hover{background:#fff;border-color:#fff;box-shadow:0 12px 40px -12px rgba(251,252,254,.6)}
+@keyframes hazeIn{to{opacity:1}}
+@keyframes lineRise{to{transform:none}}
+@keyframes ringDrift{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* ============================================================
+   WORK
+   ============================================================ */
+.projects-list{display:flex;flex-direction:column;gap:clamp(3.5rem,9vw,6.875rem);margin-top:clamp(2.875rem,7vw,4.75rem)}
+
+.card{
+  display:grid;
+  grid-template-columns:0.95fr 1.5fr;
+  align-items:center;
+  gap:clamp(1.625rem,4.5vw,4rem);
+}
+.card:nth-child(even){grid-template-columns:1.5fr 0.95fr}
+.card:nth-child(even) .card-media{order:-1}
+
+.card-body{display:flex;flex-direction:column}
+.card h3{
+  font-family:var(--f-display);font-weight:700;
+  font-size:clamp(1.65rem,3.4vw,2.45rem);letter-spacing:-.025em;line-height:1.05;
+}
+.card .tagline{
+  color:var(--marker);font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.76rem;
+  margin-top:11px;letter-spacing:.04em;
+}
+.card p.desc{
+  color:var(--chalk-dim);margin-top:20px;font-size:1rem;line-height:1.7;
+  max-width:min(48ch,100%);
+}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:24px}
+.tag{
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.68rem;letter-spacing:.05em;
+  padding:6px 11px;border-radius:2px;
+  color:var(--chalk-dim);background:rgba(148,170,205,.10);
+}
+.card-links{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
+.link-btn{
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;
+  padding:11px 17px;border:1px solid var(--rule-2);border-radius:2px;
+  display:inline-flex;align-items:center;gap:9px;
+  color:var(--chalk-dim);
+  transition:color .3s var(--ease),border-color .3s var(--ease),background .3s var(--ease);
+}
+.link-btn svg{width:15px;height:15px}
+.link-btn:hover{color:var(--chalk);border-color:var(--marker);background:rgba(59,130,246,.14)}
+button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);font-weight:var(--w-ui)}
+.link-btn.watch svg{width:14px;height:14px}
+
+/* ---- laptop mockup: one transparent PNG laid over the live screen ----
+   assets/ui/laptop_screen.png is 1448x1086 with a rectangular hole cut out of
+   the lid. The numbers below are that hole measured as percentages of the
+   artwork, so frame and screen stay locked together at every viewport size. */
+:root{
+  --laptop-ar:1448/1086;   /* artwork aspect ratio           */
+  --screen-x:9.876%;       /* hole left edge   (143 / 1448)  */
+  --screen-y:5.709%;       /* hole top edge    (62  / 1086)  */
+  --screen-w:80.318%;      /* hole width       (1163 / 1448) */
+  --screen-h:70.994%;      /* hole height      (771  / 1086) */
+}
+.card-media{position:relative;display:block;width:100%;aspect-ratio:var(--laptop-ar);align-self:center;transition:transform .5s var(--ease)}
+.laptop-frame{
+  position:absolute;inset:0;width:100%;height:100%;z-index:3;
+  pointer-events:none;user-select:none;
+  filter:drop-shadow(0 34px 44px rgba(2,3,7,.62));
+}
+/* The live screen, parked in the cut-out. It bleeds a hair past the hole on
+   every side so sub-pixel rounding can never open a seam along the bezel. */
+.laptop-screen{
+  position:absolute;z-index:1;overflow:hidden;background:#05070c;
+  left:calc(var(--screen-x) - .25%);
+  top:calc(var(--screen-y) - .35%);
+  width:calc(var(--screen-w) + .5%);
+  height:calc(var(--screen-h) + .7%);
+}
+.laptop-screen .slideshow,.laptop-screen video{
+  position:absolute;inset:0;width:100%;height:100%;display:block;background:#05070c;cursor:pointer;
+}
+.laptop-screen video{cursor:default;object-fit:contain;background:#000}
+.laptop-screen .slideshow img{object-fit:cover}
+
+.slideshow{position:absolute;inset:0;overflow:hidden}
+.slideshow img{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .9s ease}
+.slideshow img.active{opacity:1}
+.slideshow::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,6,9,.12),transparent 32%,transparent 62%,rgba(6,6,9,.55));
+}
+.ss-hint{
+  position:absolute;bottom:14px;right:14px;z-index:3;
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.64rem;letter-spacing:.06em;color:#fff;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 13px;border:1px solid rgba(255,255,255,.3);border-radius:2px;
+  background:rgba(6,6,9,.5);backdrop-filter:blur(6px);
+  transition:border-color .3s var(--ease),background .3s var(--ease);
+}
+.ss-hint svg{width:13px;height:13px}
+.slideshow:hover .ss-hint{border-color:var(--marker-fill);background:var(--marker-fill);color:var(--on-marker)}
+
+/* ---- modal video player ---- */
+.modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:clamp(0.875rem,3vw,2rem)}
+.modal.open{display:flex}
+.modal-backdrop{position:absolute;inset:0;background:rgba(4,4,7,.92);backdrop-filter:blur(8px);animation:fadeInModal .3s ease}
+.modal-inner{
+  position:relative;z-index:2;width:min(940px,94vw,108vh);
+  animation:modalIn .4s var(--ease);
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+}
+.modal-title{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-faint);text-align:center}
+.modal-close{
+  position:fixed;top:16px;right:16px;z-index:5;
+  width:40px;height:40px;flex:none;
+  border:1px solid var(--rule-2);border-radius:3px;
+  background:rgba(9,9,11,.7);backdrop-filter:blur(6px);
+  color:var(--chalk);cursor:pointer;font-size:1.05rem;line-height:1;
+  transition:border-color .3s var(--ease),background .3s var(--ease);
+}
+.modal-close:hover{border-color:var(--marker-fill);background:var(--marker-fill);color:var(--on-marker)}
+.modal-laptop{width:100%;position:relative;aspect-ratio:var(--laptop-ar)}
+@keyframes fadeInModal{from{opacity:0}to{opacity:1}}
+@keyframes modalIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+
+/* ============================================================
+   HIRING
+   The one line that survived About, given a section of its own.
+   It sits after the price list on purpose: a business owner has
+   already got what they came for by this point, and anyone here
+   to hire rather than to commission gets a clear, unmissable
+   place to land instead of a footnote.
+   ============================================================ */
+.hiring{
+  padding:clamp(4rem,7vw,6rem) 0;
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  background:rgba(20,24,33,.28);
+}
+.hiring-inner{
+  display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);
+  gap:clamp(1.75rem,4vw,3.5rem);align-items:center;
+}
+.hiring h2{
+  font-family:var(--f-display);font-weight:700;
+  font-size:clamp(1.7rem,3.6vw,2.6rem);line-height:1.15;letter-spacing:-.025em;
+  color:var(--chalk);max-width:20ch;
+}
+.hiring h2 .hl{color:var(--marker)}
+.hiring .lede{margin-top:1.15rem;color:var(--chalk-dim);font-size:1.03rem;line-height:1.7;max-width:56ch}
+.hiring-facts{
+  list-style:none;margin-top:clamp(1.35rem,2.4vw,1.75rem);
+  display:flex;flex-wrap:wrap;gap:.5rem;
+}
+.hiring-facts li{
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.72rem;letter-spacing:.03em;
+  color:var(--chalk-dim);border:1px solid var(--rule-2);border-radius:100px;padding:7px 14px;
+}
+.hiring-go{display:flex;flex-direction:column;gap:.75rem;align-items:flex-start}
+.hiring-go .quiet{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.7rem;color:var(--chalk-faint)}
+
+@media(max-width:860px){
+  .hiring-inner{grid-template-columns:1fr;gap:1.75rem;align-items:start}
+  .hiring-go{align-self:stretch}
+  .hiring-go .btn{width:100%;justify-content:center}
+}
+
+/* ============================================================
+   PRICING
+   A boutique studio's price list, not a SaaS plan chooser: real
+   numbers set large, one card raised rather than lit up, and no
+   scarcity theatre anywhere. The fine print under the cards is
+   deliberately prominent — for a small business the fear is not
+   the price, it is what happens in year two, so the answer is
+   given before it has to be asked.
+   ============================================================ */
+.price-head{max-width:52ch}
+.price-head .lede{color:var(--chalk-dim);margin-top:1.25rem;font-size:1.03rem;line-height:1.7}
+
+.pricing{
+  margin-top:clamp(2.5rem,5vw,3.75rem);
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(1rem,1.8vw,1.5rem);
+  align-items:stretch;
+}
+.tier{
+  position:relative;display:flex;flex-direction:column;
+  padding:clamp(1.6rem,2.6vw,2.15rem);
+  border:2px solid var(--rule);border-radius:10px;
+  background:rgba(20,24,33,.34);
+  transition:border-color .35s var(--ease),transform .35s var(--ease);
+}
+.tier:hover{border-color:var(--rule-2);transform:translateY(-2px)}
+/* raised, not glowing: a hairline in the accent, a real shadow, and the
+   card standing slightly proud of its neighbours on both edges */
+.tier.lead{
+  margin-block:clamp(-1.5rem,-2vw,-1rem);
+  border-color:rgba(59,130,246,.5);
+  background:rgba(24,31,46,.6);
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.9),0 0 0 2px rgba(59,130,246,.12);
+}
+.tier.lead:hover{border-color:rgba(59,130,246,.75)}
+.tier-badge{
+  position:absolute;top:0;left:50%;transform:translate(-50%,-50%);
+  font-family:var(--f-ui);font-weight:600;
+  font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;
+  background:var(--marker-fill);color:var(--on-marker);
+  padding:6px 14px;border-radius:100px;
+}
+/* a real heading, not a styled span: without it the three packages are
+   invisible to anyone navigating this section by headings */
+.tier-name{
+  font-family:var(--f-ui);font-weight:600;
+  /* the name is what people scan for first; at .62rem it was under 10px and
+     losing to the price beside it */
+  font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--chalk-faint);
+}
+.tier.lead .tier-name{color:var(--marker)}
+.tier .blurb{margin-top:.7rem;color:var(--chalk-dim);font-size:.92rem;line-height:1.6;min-height:3.2em}
+
+.tier-price{margin-top:clamp(1.25rem,2.2vw,1.6rem);display:flex;align-items:baseline;gap:.35rem}
+.tier-price b{
+  font-family:var(--f-display);font-weight:800;
+  font-size:clamp(2.4rem,4.4vw,3.15rem);line-height:1;letter-spacing:-.04em;color:var(--chalk);
+}
+/* "how long?" is the second question every time, and it had no answer
+   anywhere on the page */
+.tier-when{
+  margin-top:.6rem;display:flex;align-items:center;gap:.5em;
+  font-family:var(--f-ui);font-weight:var(--w-ui);
+  font-size:.72rem;letter-spacing:.02em;color:var(--chalk-dim);
+}
+.tier-when::before{
+  content:"";flex:none;width:.95em;height:.95em;background:var(--chalk-faint);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.tier-once{
+  margin-top:.5rem;font-family:var(--f-ui);font-weight:var(--w-ui);
+  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-faint);
+}
+
+.tier-cta{
+  margin-top:clamp(1.35rem,2.4vw,1.75rem);
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
+  padding:1rem 1.25rem;border-radius:7px;
+  border:1px solid var(--rule-2);background:transparent;color:var(--chalk);
+  font-family:var(--f-ui);font-weight:600;
+  font-size:.78rem;letter-spacing:.06em;
+  transition:background .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease);
+}
+.tier-cta:hover{background:rgba(59,130,246,.12);border-color:var(--marker)}
+.tier.lead .tier-cta{background:var(--marker-fill);border-color:var(--marker-fill);color:var(--on-marker)}
+.tier.lead .tier-cta:hover{background:var(--marker-deep);border-color:var(--marker-deep)}
+
+.tier-sell{
+  margin-top:clamp(1.35rem,2.4vw,1.7rem);padding-top:clamp(1.15rem,2vw,1.45rem);
+  border-top:1px solid var(--rule);
+  color:var(--chalk);font-size:.92rem;line-height:1.55;font-weight:500;
+}
+.tier ul{list-style:none;margin-top:1.1rem;display:flex;flex-direction:column;gap:.8rem}
+.tier li{display:flex;align-items:flex-start;gap:.7em;font-size:.89rem;line-height:1.5;color:var(--chalk-dim)}
+/* Each point gets the icon for the thing it actually is, not a thirteenth
+   identical tick. A row of the same mark teaches the eye to skip the list;
+   distinct marks let someone scan for the one they care about. */
+.tier li .ic{
+  flex:none;width:1.35rem;height:1.35rem;margin-top:-.1em;
+  display:grid;place-items:center;color:var(--marker);
+}
+.tier li .ic svg{width:100%;height:100%;display:block}
+.tier li b{color:var(--chalk);font-weight:500}
+/* the hosting line is the offer people remember, so it is the one row that
+   goes full chalk and gets a boxed mark around its icon */
+.tier li.gift{color:var(--chalk);font-weight:500;margin-top:.2rem}
+.tier li.gift .ic{
+  border:1px solid rgba(59,130,246,.4);border-radius:5px;
+  background:rgba(59,130,246,.1);padding:.2rem;
+}
+/* "Everything in X, plus:" is a hinge, not a feature — no icon, and set as
+   the small heading it actually is */
+.tier li.carry{color:var(--chalk-faint);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;font-family:var(--f-ui);font-weight:600;margin-bottom:.1rem}
+.tier li.carry b{color:var(--chalk-faint);font-weight:600}
+
+/* ---- what every package includes, said once ---- */
+.price-trust{
+  position:relative;
+  margin-top:clamp(2.25rem,4vw,3rem);
+  padding:clamp(1.15rem,2.2vw,1.5rem) clamp(1.25rem,2.4vw,1.75rem);
+  border:2px solid var(--rule);border-radius:8px;background:rgba(20,24,33,.28);
+  display:flex;flex-direction:column;gap:.55rem;
+}
+.price-trust p{color:var(--chalk-dim);font-size:.94rem;line-height:1.65}
+.price-trust p b{color:var(--chalk);font-weight:500}
+.price-trust .fine{color:var(--chalk-faint);font-size:.86rem}
+
+/* ---- year two, add-ons, and how paying works ---- */
+.price-extras{
+  margin-top:clamp(1rem,1.8vw,1.5rem);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(1rem,1.8vw,1.5rem);align-items:start;
+}
+.px-card{
+  position:relative;
+  padding:clamp(1.35rem,2.4vw,1.85rem);
+  border:2px solid var(--rule);border-radius:8px;background:rgba(20,24,33,.28);
+}
+.px-card + .px-card{margin-top:clamp(1rem,1.8vw,1.5rem)}
+.px-card h3{
+  font-family:var(--f-ui);font-weight:600;
+  font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--chalk-faint);
+}
+.px-card > p{margin-top:.85rem;color:var(--chalk-dim);font-size:.94rem;line-height:1.65}
+.px-card > p b{color:var(--chalk);font-weight:500}
+.px-card .own{margin-top:.85rem;color:var(--chalk);font-size:.94rem;line-height:1.65}
+.px-mini{list-style:none;margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.45rem}
+.px-mini li{
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.68rem;letter-spacing:.03em;
+  color:var(--chalk-dim);border:1px solid var(--rule);border-radius:100px;padding:5px 12px;
+}
+.addons{list-style:none;margin-top:1.1rem;display:flex;flex-direction:column}
+.addons li{
+  display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+  padding:.7rem 0;border-top:1px solid var(--rule);
+  font-size:.91rem;color:var(--chalk-dim);
+}
+.addons li:first-child{border-top:0;padding-top:0}
+.addons li b{
+  flex:none;font-family:var(--f-ui);font-weight:600;font-size:.78rem;
+  letter-spacing:.02em;color:var(--chalk);
+}
+.addons li b.quote{color:var(--chalk-faint);font-weight:var(--w-ui)}
+
+/* ---- the way out for anyone still unsure ---- */
+.price-cta{
+  position:relative;
+  margin-top:clamp(1rem,1.8vw,1.5rem);
+  padding:clamp(1.75rem,3.2vw,2.5rem);
+  border:2px solid var(--rule-2);border-radius:10px;
+  background:rgba(24,31,46,.5);
+  display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;
+}
+.price-cta h3{
+  font-family:var(--f-display);font-weight:700;
+  font-size:clamp(1.2rem,2.2vw,1.55rem);line-height:1.25;letter-spacing:-.02em;color:var(--chalk);
+}
+.price-cta p{margin-top:.6rem;color:var(--chalk-dim);font-size:.97rem;line-height:1.6;max-width:46ch}
+.price-cta .pc-go{display:flex;flex-direction:column;align-items:flex-start;gap:.6rem;flex:none}
+.price-cta .nocommit{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.68rem;letter-spacing:.04em;color:var(--chalk-faint)}
+
+/* ---- the detail blocks light up where the pointer is ----
+   Two layers, both driven by --gx/--gy from a pointermove listener.
+
+   ::before is the border. inset:0 with a 2px padding puts the masked ring
+   exactly over the element's own 2px border rather than just outside it,
+   so the border turns blue instead of gaining a second blue line beside
+   it — which at this weight would have read as a doubled edge.
+
+   ::after is the wash, and it has to sit under the text: an absolutely
+   positioned pseudo-element paints above in-flow content, so the children
+   are lifted back over it rather than reading through a blue veil. */
+.price-trust::before,.px-card::before,.price-cta::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;
+  background:radial-gradient(210px circle at var(--gx,50%) var(--gy,50%),
+             rgba(59,130,246,.85),rgba(59,130,246,.18) 42%,transparent 72%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask-composite:exclude;
+  opacity:0;transition:opacity .4s var(--ease);pointer-events:none;
+}
+.price-trust::after,.px-card::after,.price-cta::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(260px circle at var(--gx,50%) var(--gy,50%),
+             rgba(59,130,246,.10),transparent 68%);
+  opacity:0;transition:opacity .4s var(--ease);pointer-events:none;
+}
+.price-trust:hover::before,.px-card:hover::before,.price-cta:hover::before,
+.price-trust:hover::after,.px-card:hover::after,.price-cta:hover::after{opacity:1}
+.price-trust > *,.px-card > *,.price-cta > *{position:relative;z-index:1}
+
+@media(max-width:1000px){
+  /* stacked, in the order the packages are meant to be read, and the
+     raised card stops being raised because there is nothing to rise above */
+  .pricing{grid-template-columns:1fr;gap:1.15rem}
+  .tier.lead{margin-block:0}
+  .tier .blurb{min-height:0}
+  .price-extras{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .price-cta{flex-direction:column;align-items:flex-start}
+  .price-cta .pc-go{align-self:stretch}
+  .price-cta .btn{width:100%;justify-content:center}
+  .addons li{flex-direction:column;gap:.2rem}
+}
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact .lede{color:var(--chalk-dim);margin-top:20px;max-width:46ch;font-size:1.03rem}
+
+/* the form on the left, the ways to reach him directly on the right */
+.contact-work{
+  margin-top:clamp(2.75rem,6.5vw,4.25rem);
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:clamp(1.75rem,4.5vw,3.625rem);
+  align-items:start;
+}
+form{display:flex;flex-direction:column;gap:19px}
+.field{position:relative;display:flex;flex-direction:column;gap:9px}
+.field label{
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--chalk-faint);transition:color .3s var(--ease);
+}
+.field:focus-within label{color:var(--marker)}
+.field input,.field textarea{
+  background:rgba(6,6,9,.5);
+  border:1px solid var(--rule);
+  border-radius:2px;
+  padding:14px 15px;
+  color:var(--chalk);
+  font-family:var(--f-body);font-size:1rem;
+  transition:border-color .3s var(--ease),box-shadow .3s var(--ease),background .3s var(--ease);
+  resize:vertical;
+}
+.field input::placeholder,.field textarea::placeholder{color:var(--chalk-faint)}
+.field input:focus,.field textarea:focus{
+  outline:none;
+  border-color:var(--rule-2);
+  background:rgba(6,6,9,.8);
+  /* the accent lands on the bottom edge only, so nothing shifts on focus */
+  box-shadow:inset 0 -2px 0 var(--marker);
+}
+/* that inset accent is deliberately quiet for pointer users; the shared
+   :focus-visible rule above still gives keyboard users a full ring */
+.field textarea{min-height:130px;line-height:1.6}
+
+.form-submit{
+  align-self:flex-start;
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:15px 27px;background:var(--marker-fill);border:1px solid var(--marker-fill);border-radius:2px;color:var(--on-marker);
+  cursor:pointer;display:inline-flex;align-items:center;gap:10px;
+  transition:background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease);
+  box-shadow:0 8px 30px -10px var(--marker);
+}
+.form-submit:hover{background:var(--marker-deep);border-color:var(--marker-deep);box-shadow:0 12px 38px -10px var(--marker)}
+.form-submit .arrow{transition:transform .3s var(--ease)}
+.form-submit:hover .arrow{transform:translateX(4px)}
+.form-note{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.74rem;color:var(--chalk-faint);min-height:1.2em;transition:color .3s}
+.form-note.ok{color:var(--marker)}
+
+/* ---- the channels that do not go through the form ---- */
+.channels{
+  display:flex;flex-direction:column;
+  border:1px solid var(--rule);border-radius:3px;
+  background:linear-gradient(180deg,rgba(28,34,48,.45),rgba(20,24,33,.20));
+  overflow:hidden;
+}
+.channels a{
+  display:flex;align-items:center;gap:clamp(.75rem,1.6vw,1rem);
+  padding:clamp(.9rem,1.8vw,1.15rem) clamp(1rem,2vw,1.35rem);
+  border-top:1px solid var(--rule);
+  transition:background .3s var(--ease);
+}
+.channels a:first-child{border-top:0}
+.channels a:hover{background:rgba(37,99,235,.12)}
+/* the icon says which channel this is at a glance, so the label above the
+   value can stay small without the row becoming a guessing game */
+.ch-ic{
+  width:34px;height:34px;flex:none;
+  display:grid;place-items:center;
+  border:1px solid var(--rule-2);border-radius:3px;
+  color:var(--marker);
+  transition:border-color .3s var(--ease),background .3s var(--ease);
+}
+.ch-ic svg{width:16px;height:16px}
+.channels a:hover .ch-ic{border-color:var(--marker);background:rgba(59,130,246,.12)}
+.ch-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.channels span{
+  font-family:var(--f-ui);font-weight:var(--w-ui);
+  font-size:.57rem;letter-spacing:.24em;text-transform:uppercase;color:var(--chalk-faint);
+}
+.channels b{
+  font-weight:500;font-size:.88rem;color:var(--chalk-dim);
+  overflow-wrap:anywhere;transition:color .3s var(--ease);
+}
+.channels a:hover b{color:var(--marker)}
+.channels .go{margin-left:auto;color:var(--chalk-faint);flex:none;transition:transform .3s var(--ease),color .3s var(--ease)}
+.channels a:hover .go{transform:translateX(3px);color:var(--marker)}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{
+  border-top:1px solid var(--rule-2);
+  padding:30px var(--gutter);
+  display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.7rem;color:var(--chalk-faint);letter-spacing:.06em;
+  position:relative;z-index:2;
+}
+.footer a{transition:color .3s var(--ease)}
+.footer a:hover{color:var(--marker)}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}
+.reveal.d2{transition-delay:.16s}
+.reveal.d3{transition-delay:.24s}
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:860px){
+  .card,.card:nth-child(even){grid-template-columns:1fr}
+  .card:nth-child(even) .card-media{order:0}
+  .card-media{max-width:620px;margin-inline:auto}
+  .contact-work{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .hero{min-height:auto;padding:calc(var(--bar) + 3rem) 0 44px}
+  .btn{padding:14px 20px;font-size:.75rem}
+  .svc-lead{max-width:none}
+  .card h3{font-size:1.45rem}
+  .card .desc{font-size:.95rem}
+  .ss-hint{bottom:8px;right:8px;padding:6px 9px;font-size:.55rem;gap:6px}
+  .ss-hint svg{width:11px;height:11px}
+  .laptop-frame{filter:drop-shadow(0 18px 24px rgba(2,3,7,.58))}
+  .modal-inner{width:min(96vw,120vh)}
+  .footer{flex-direction:column;align-items:flex-start;gap:12px;font-size:.66rem}
+  .form-submit{width:100%;justify-content:center}
+}
+@media(max-width:560px){
+  .svc-cta,.job-note{flex-direction:column;align-items:flex-start}
+  .svc-cta .btn{width:100%;justify-content:center}
+}
+@media(max-width:400px){
+  .card-links{flex-direction:column;align-items:stretch}
+  .link-btn{justify-content:center}
+}
+/* touch devices: no hover-dependent affordances */
+@media(hover:none){
+  .ss-hint{border-color:var(--marker-fill);background:var(--marker-fill);color:var(--on-marker)}
+}
+
+/* Short laptop panels (1280x720, 1366x768, 1024x768). Shrinking the
+   headline alone cannot recover the overflow, because the pill, kicker,
+   description, buttons and spec plate are all rem-sized too and none of
+   them cares how tall the screen is. So the vertical rhythm compresses
+   here as well, which is what keeps the spec plate on the fold. Spacing
+   only -- the type size is left to the vh term above, so there is no
+   jump in the headline as the breakpoint passes. */
+@media(min-width:700px) and (max-height:830px){
+  .hero{padding-top:calc(var(--bar) + 1rem)}
+  .hero-title{margin-top:clamp(.8rem,2vw,1.4rem)}
+  .hero-desc{margin-top:clamp(.7rem,1.6vw,1rem)}
+}
+
+/* ============================================================
+   LARGE SCREENS
+   Every clamp above tops out somewhere between 1280 and 1500px
+   of viewport. Past that the design used to stop growing while
+   the screen kept going, which is what makes a 4K monitor look
+   like it is displaying a smaller screen in the middle of
+   itself. Scaling the root scales every rem in the sheet with
+   it — type, gutters, section rhythm and --maxw together — so
+   the page enlarges as one piece instead of just centring
+   harder.
+   ============================================================ */
+@media(min-width:1600px){ :root{font-size:17px} }
+@media(min-width:1920px){ :root{font-size:18.5px} }
+@media(min-width:2300px){ :root{font-size:20px} }
+@media(min-width:2800px){ :root{font-size:21.5px} }
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  /* the load sequence starts from opacity:0 / scale:0, so every participant
+     has to be pinned to its finished state once the animation is dropped */
+  .hero-desc,.hero-cta,.hero-rings,.hero-bloom{opacity:1!important}
+  /* the headline lines start pushed fully below their own clip box, so
+     dropping the animation without this leaves three invisible lines */
+  .hero-title .tl i{transform:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+<!-- LocalBusiness, so Athens searches and Google's local surfaces have
+     something structured to read. Prices mirror the pricing section; keep
+     them in step. -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ProfessionalService",
+  "name":"Antonio Mato — Website Design",
+  "url":"https://personalportfolio-aa146.web.app/",
+  "image":"https://personalportfolio-aa146.web.app/og-card.png",
+  "email":"matoantonio795@gmail.com",
+  "telephone":"+306907682456",
+  "priceRange":"€449–€999",
+  "areaServed":{"@type":"City","name":"Athens"},
+  "address":{"@type":"PostalAddress","addressLocality":"Athens","addressCountry":"GR"},
+  "availableLanguage":["en","el"],
+  "founder":{"@type":"Person","name":"Antonio Mato","jobTitle":"Website designer and developer"},
+  "sameAs":["https://github.com/Antonio-Mato","https://www.linkedin.com/in/antonio-mato-9b2098281"],
+  "hasOfferCatalog":{
+    "@type":"OfferCatalog","name":"Website packages",
+    "itemListElement":[
+      {"@type":"Offer","name":"Starter","price":"449","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Business","price":"699","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Pro","price":"999","priceCurrency":"EUR"}
+    ]
+  }
+}
+</script>
+</head>
+<body id="top">
+
+<a class="skip" href="#main" data-i18n="skip">Μετάβαση στο περιεχόμενο</a>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar" id="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 12 14" aria-hidden="true"><path d="M3 0h6v5H3zM2 5h8v6H2zM2 11h3v3H2zM7 11h3v3H7z"/></svg>
+    ANTONIO&nbsp;MATO
+  </div>
+  <div class="topbar-right">
+    <nav class="navlinks">
+      <a href="#work" data-i18n="nav.work">Έργα</a>
+      <a href="#pricing" data-i18n="nav.pricing">Τιμές</a>
+      <a href="#contact" data-i18n="nav.contact">Επικοινωνία</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language / Γλώσσα">
+      <a href="/" hreflang="en" aria-label="English"><svg viewBox="0 0 30 21" xmlns="http://www.w3.org/2000/svg"><rect width="30" height="21" fill="#fff"/><g fill="#B22234"><rect width="30" height="1.615" y="0"/><rect width="30" height="1.615" y="3.23"/><rect width="30" height="1.615" y="6.46"/><rect width="30" height="1.615" y="9.69"/><rect width="30" height="1.615" y="12.92"/><rect width="30" height="1.615" y="16.15"/><rect width="30" height="1.615" y="19.38"/></g><rect width="12" height="11.3" fill="#3C3B6E"/><g fill="#fff"><circle cx="2" cy="1.9" r="0.5"/><circle cx="4.4" cy="1.9" r="0.5"/><circle cx="6.8" cy="1.9" r="0.5"/><circle cx="9.2" cy="1.9" r="0.5"/><circle cx="3.2" cy="3.8" r="0.5"/><circle cx="5.6" cy="3.8" r="0.5"/><circle cx="8" cy="3.8" r="0.5"/><circle cx="2" cy="5.7" r="0.5"/><circle cx="4.4" cy="5.7" r="0.5"/><circle cx="6.8" cy="5.7" r="0.5"/><circle cx="9.2" cy="5.7" r="0.5"/><circle cx="3.2" cy="7.6" r="0.5"/><circle cx="5.6" cy="7.6" r="0.5"/><circle cx="8" cy="7.6" r="0.5"/><circle cx="2" cy="9.5" r="0.5"/><circle cx="4.4" cy="9.5" r="0.5"/><circle cx="6.8" cy="9.5" r="0.5"/><circle cx="9.2" cy="9.5" r="0.5"/></g></svg></a>
+      <a href="/el/" class="active" aria-current="page" hreflang="el" aria-label="Ελληνικά"><svg viewBox="0 0 30 21" xmlns="http://www.w3.org/2000/svg"><rect width="30" height="21" fill="#0D5EAF"/><g fill="#fff"><rect width="30" height="2.333" y="2.333"/><rect width="30" height="2.333" y="7.0"/><rect width="30" height="2.333" y="11.667"/><rect width="30" height="2.333" y="16.333"/></g><rect width="11.667" height="11.667" fill="#0D5EAF"/><g fill="#fff"><rect x="4.667" width="2.333" height="11.667"/><rect y="4.667" width="11.667" height="2.333"/></g></svg></a>
+    </div>
+  </div>
+</header>
+
+<!-- tabindex allows the skip link to actually move focus here, not just scroll -->
+<main id="main" tabindex="-1">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+
+  <!-- pure atmosphere: nothing here carries meaning, so it is inert to the
+       pointer and never reaches the accessibility tree -->
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-bloom"></div>
+    <svg class="hero-rings" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" focusable="false">
+      <g>
+        <circle cx="50" cy="50" r="15" stroke-opacity=".34"/>
+        <circle cx="50" cy="50" r="24" stroke-opacity=".26"/>
+        <circle cx="50" cy="50" r="33" stroke-opacity=".19"/>
+        <circle cx="50" cy="50" r="42" stroke-opacity=".13"/>
+        <circle cx="50" cy="50" r="49.5" stroke-opacity=".08"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="wrap hero-inner">
+
+    <h1 class="hero-title">
+      <span class="tl"><i data-i18n="hero.t1">Γεια, είμαι ο</i></span>
+      <span class="tl"><i data-i18n="hero.t2">Αντόνιο Μάτο.</i></span>
+    </h1>
+
+    <p class="hero-desc" data-i18n-html="hero.desc"><em>Σχεδιαστής ιστοσελίδων</em> και προγραμματιστής στην Αθήνα, με πτυχίο Πληροφορικής. Σχεδιάζω και φτιάχνω ιστότοπους και διαδικτυακές εφαρμογές — την εμφάνιση, τον κώδικα από πίσω, και ό,τι χρειάζεται για να βγουν ζωντανά.</p>
+
+    <div class="hero-cta">
+      <a href="#work" class="btn btn-primary"><span data-i18n="hero.cta1">Δείτε τα έργα</span> <span class="arrow">→</span></a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ WORK ============ -->
+<section class="sheet projects" id="work">
+  <div class="wrap">
+    <div class="sheet-head reveal">
+      <span class="sheet-label" data-i18n="work.label">Έργα</span>
+      <span class="sheet-note" data-i18n="work.note">Έργα πελατών και λογισμικό · 2024—2026</span>
+    </div>
+    <h2 class="sheet-title reveal" data-i18n="work.title">Έργα & κατασκευές.</h2>
+
+    <div class="projects-list">
+
+      <!-- Bling Nails -->
+      <article class="card reveal">
+        <div class="card-body">
+          <h3>Bling Nails</h3>
+          <div class="tagline" data-i18n="p3.tagline">Ζωντανός ιστότοπος για nail boutique στον Πειραιά</div>
+          <p class="desc" data-i18n="p3.desc">Ένας πραγματικός επαγγελματικός ιστότοπος, σχεδιασμένος και δημοσιευμένος από την αρχή ως το τέλος. Μία ελληνική σελίδα με πλήρη κατάλογο υπηρεσιών, τιμοκατάλογο, gallery και ωράριο λειτουργίας, γραμμένη στο χέρι σε HTML, CSS και JavaScript, χωρίς framework ή page builder. Οι εμφανίσεις κατά την κύλιση σέβονται τη μειωμένη κίνηση, η διάταξη προσαρμόζεται από κινητό ως desktop, και φιλοξενείται ζωντανά στο Firebase Hosting.</p>
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag" data-i18n="tag.noframework">Χωρίς Framework</span><span class="tag" data-i18n="tag.responsive">Responsive</span><span class="tag">Firebase</span></div>
+          <div class="card-links">
+            <a href="https://blingnailssalon-f9c49.web.app" class="link-btn" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+              <span data-i18n="btn.visit">Επισκεφθείτε τον ιστότοπο</span>
+            </a>
+          </div>
+        </div>
+        <div class="card-media">
+          <div class="slideshow" data-project="bling" role="button" tabindex="0" aria-label="Visit the Bling Nails live site">
+            <div class="ss-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg><span data-i18n="ss.visit">Επισκεφθείτε τον ιστότοπο</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Asclepius AI -->
+      <article class="card reveal">
+        <div class="card-body">
+          <h3>Asclepius AI</h3>
+          <div class="tagline" data-i18n="p2.tagline">Ένας ιατρικός βοηθός που βλέπει, αξιολογεί και καθοδηγεί</div>
+          <p class="desc" data-i18n="p2.desc">Ένας ιατρικός βοηθός θεμελιωμένος σε πραγματική κλινική βιβλιογραφία και όχι στη μνήμη του μοντέλου. Ιατρικά εγχειρίδια και οδηγοί πρώτων βοηθειών τεμαχίζονται και αποθηκεύονται σε διανυσματική βάση, ώστε κάθε απάντηση να ανακτάται από επαληθευμένες πηγές πριν διατυπωθεί. Διαβάζει εικόνες για οπτική διαλογή, ελέγχει κάθε μήνυμα για ενδείξεις έκτακτης ανάγκης και δηλώνει σκόπιμα επίπεδο επείγοντος αντί για διάγνωση, και έπειτα αντιστοιχίζει τη συνιστώμενη ειδικότητα με πραγματικά ιατρεία κοντά στον χρήστη.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">Gemini</span><span class="tag">RAG</span><span class="tag" data-i18n="tag.vector">Διανυσματική Αναζήτηση</span><span class="tag" data-i18n="tag.vision">Όραση Υπολογιστή</span><span class="tag" data-i18n="tag.geo">Γεωεντοπισμός</span></div>
+          <div class="card-links">
+            <a href="https://github.com/Antonio-Mato" class="link-btn" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0C17 5 18 5.3 18 5.3c.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.3.8 1 .8 2.1v3.1c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+              <span data-i18n="btn.ghsoon">GitHub σύντομα</span>
+            </a>
+            <button type="button" class="link-btn watch" data-project="asclepius"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span data-i18n="btn.testrun">Δείτε δοκιμαστική εκτέλεση</span></button>
+          </div>
+        </div>
+        <div class="card-media">
+          <div class="slideshow" data-project="asclepius" role="button" tabindex="0" aria-label="Watch the Asclepius AI walkthrough">
+            <div class="ss-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span data-i18n="ss.watchwalk">Δείτε την παρουσίαση</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Mato's Adventures -->
+      <article class="card reveal">
+        <div class="card-body">
+          <h3>Mato's Adventures</h3>
+          <div class="tagline" data-i18n="p1.tagline">Ένα 2D RPG, μαζί με τη μηχανή του, φτιαγμένο στο χέρι</div>
+          <p class="desc" data-i18n="p1.desc">Ένα ολοκληρωμένο 2D παιχνίδι ρόλων φτιαγμένο εξ ολοκλήρου σε JavaFX, χωρίς μηχανή παιχνιδιού, χωρίς βιβλιοθήκες, μόνο με το βασικό εργαλείο. Κάθε σύστημα γράφτηκε από το μηδέν: βρόχος καρέ με AnimationTimer που τροφοδοτεί renderer σε Canvas, χάρτης πλακιδίων με δικό του πλέγμα συγκρούσεων, κίνηση που επιλύεται ανά άξονα ώστε ο παίκτης να γλιστρά κατά μήκος των τοίχων, κίνηση sprite σε τέσσερις κατευθύνσεις, κάμερα που μετακινεί τον κόσμο γύρω από τον παίκτη, διακλαδούμενοι διάλογοι NPC και σύστημα γρίφων λογικής που ελέγχει την πρόοδο.</p>
+          <div class="tags"><span class="tag">Java</span><span class="tag">JavaFX</span><span class="tag" data-i18n="tag.noengine">Χωρίς Μηχανή</span><span class="tag">Canvas</span><span class="tag">AnimationTimer</span><span class="tag" data-i18n="tag.collision">Χάρτες Σύγκρουσης</span></div>
+          <div class="card-links">
+            <a href="https://github.com/Antonio-Mato/MATOS-ADVENTURE" class="link-btn" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0C17 5 18 5.3 18 5.3c.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.3.8 1 .8 2.1v3.1c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+              <span data-i18n="btn.github">Δείτε στο GitHub</span>
+            </a>
+            <button type="button" class="link-btn watch" data-project="matos"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span data-i18n="btn.testrun">Δείτε δοκιμαστική εκτέλεση</span></button>
+          </div>
+        </div>
+        <div class="card-media">
+          <div class="slideshow" data-project="matos" role="button" tabindex="0" aria-label="Watch the Mato's Adventures test run">
+            <div class="ss-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span data-i18n="ss.watchrun">Δείτε την εκτέλεση</span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="sheet" id="pricing">
+  <div class="wrap">
+    <div class="sheet-head reveal">
+      <span class="sheet-label" data-i18n="price.label">Τιμές</span>
+      <span class="sheet-note" data-i18n="price.note">Έργα εφάπαξ · Αθήνα</span>
+    </div>
+
+    <div class="price-head reveal">
+      <h2 class="sheet-title" data-i18n="price.title">Απλές τιμές. Επαγγελματικοί ιστότοποι.</h2>
+      <p class="lede" data-i18n="price.lede">Χωρίς κρυφά κόστη. Διαλέξτε το πακέτο που ταιριάζει στην επιχείρησή σας και πληρώστε μία φορά.</p>
+    </div>
+
+    <div class="pricing">
+
+      <article class="tier reveal">
+        <h3 class="tier-name" data-i18n="pk.1name">Starter</h3>
+        <p class="blurb" data-i18n="pk.1blurb">Για επιχειρήσεις που θέλουν σωστό ιστότοπο, χωρίς κόστος γραφείου.</p>
+        <div class="tier-price"><b>€449</b></div>
+        <div class="tier-once" data-i18n="pk.once">Εφάπαξ πληρωμή</div>
+        <div class="tier-when" data-i18n="pk.1when">Έτοιμο σε 1–2 εβδομάδες</div>
+        <a href="#contact" class="tier-cta" data-i18n="pk.cta1">Ξεκινήστε</a>
+        <p class="tier-sell" data-i18n="pk.1sell">Ό,τι χρειάζεστε για να δείχνετε καταξιωμένοι στο διαδίκτυο.</p>
+        <ul>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span data-i18n-html="pk.1f1">Ιστότοπος σχεδιασμένος για εσάς, έως <b>4 σελίδες</b></span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="13" height="10" rx="1.5"/><rect x="16.5" y="9" width="5" height="11" rx="1.5"/><path d="M6 18h6"/></svg></span><span data-i18n-html="pk.1f2">Δείχνει σωστός σε κινητό, tablet και υπολογιστή</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 7 9-7"/></svg></span><span data-i18n-html="pk.1f3">Φόρμα επικοινωνίας, Google Maps και social</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/></svg></span><span data-i18n-html="pk.1f4">Βασικό SEO για να σας βρίσκει η Google</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><span data-i18n-html="pk.1f5">Ασφάλεια SSL και γρήγορη φόρτωση</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 16v.01M12 8v5"/></svg></span><span data-i18n-html="pk.1f6">7 ημέρες υποστήριξης μετά την παράδοση</span></li>
+          <li class="gift"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M12 9v12M3 14h18M12 9C10 9 7.5 8.5 7.5 6.2A2.2 2.2 0 0 1 12 5.6a2.2 2.2 0 0 1 4.5.6C16.5 8.5 14 9 12 9z"/></svg></span><span data-i18n-html="pk.1f7"><b>ΔΩΡΕΑΝ φιλοξενία για 1 χρόνο</b></span></li>
+        </ul>
+      </article>
+
+      <article class="tier lead reveal d1">
+        <span class="tier-badge" data-i18n="pk.badge">Πιο δημοφιλές</span>
+        <h3 class="tier-name" data-i18n="pk.2name">Business</h3>
+        <p class="blurb" data-i18n="pk.2blurb">Για επιχειρήσεις που θέλουν ο ιστότοπος να τους φέρνει πελάτες.</p>
+        <div class="tier-price"><b>€699</b></div>
+        <div class="tier-once" data-i18n="pk.once">Εφάπαξ πληρωμή</div>
+        <div class="tier-when" data-i18n="pk.2when">Έτοιμο σε 2–3 εβδομάδες</div>
+        <a href="#contact" class="tier-cta" data-i18n="pk.cta2">Φτιάξτε τον ιστότοπό μου</a>
+        <p class="tier-sell" data-i18n="pk.2sell">Φτιαγμένος ώστε οι επισκέπτες να γίνονται πελάτες.</p>
+        <ul>
+          <li class="carry" data-i18n-html="pk.2f0"><b>Όλα του Starter, και επιπλέον:</b></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></svg></span><span data-i18n-html="pk.2f1">Έως <b>8 σελίδες</b>, με δικές τους διατάξεις</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14.5h3"/></svg></span><span data-i18n-html="pk.2f2">Κρατήσεις ή ραντεβού μέσα στον ιστότοπο</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span data-i18n-html="pk.2f3">Google Analytics και Search Console στημένα</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span><span data-i18n-html="pk.2f4">Ισχυρότερο τοπικό SEO, για πελάτες κοντά σας</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 16v.01M12 8v5"/></svg></span><span data-i18n-html="pk.2f5">30 ημέρες υποστήριξης μετά την παράδοση</span></li>
+          <li class="gift"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M12 9v12M3 14h18M12 9C10 9 7.5 8.5 7.5 6.2A2.2 2.2 0 0 1 12 5.6a2.2 2.2 0 0 1 4.5.6C16.5 8.5 14 9 12 9z"/></svg></span><span data-i18n-html="pk.2f6"><b>ΔΩΡΕΑΝ φιλοξενία για 1 χρόνο</b></span></li>
+        </ul>
+      </article>
+
+      <article class="tier reveal d2">
+        <h3 class="tier-name" data-i18n="pk.3name">Pro</h3>
+        <p class="blurb" data-i18n="pk.3blurb">Για καθιερωμένες επιχειρήσεις που θέλουν ολοκληρωμένη premium παρουσία.</p>
+        <div class="tier-price"><b>€999</b></div>
+        <div class="tier-once" data-i18n="pk.once">Εφάπαξ πληρωμή</div>
+        <div class="tier-when" data-i18n="pk.3when">Έτοιμο σε 3–4 εβδομάδες</div>
+        <a href="#contact" class="tier-cta" data-i18n="pk.cta1">Ξεκινήστε</a>
+        <p class="tier-sell" data-i18n="pk.3sell">Ένας ολοκληρωμένος ιστότοπος για σοβαρές επιχειρήσεις.</p>
+        <ul>
+          <li class="carry" data-i18n-html="pk.3f0"><b>Όλα του Business, και επιπλέον:</b></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span data-i18n-html="pk.3f1">Έως <b>12 σελίδες</b></span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.2 2.4 3.4 5.4 3.4 8.5S14.2 18.1 12 20.5c-2.2-2.4-3.4-5.4-3.4-8.5S9.8 5.9 12 3.5z"/></svg></span><span data-i18n-html="pk.3f2"><b>Όσες γλώσσες</b> χρειάζεστε, όχι μόνο δύο</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/></svg></span><span data-i18n-html="pk.3f3">Προχωρημένη δομή SEO σε όλο τον ιστότοπο</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2l1.7 4.6 4.6 1.7-4.6 1.7L12 16.8l-1.7-4.6L5.7 10.5l4.6-1.7z"/><path d="M18.4 16.3l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/></svg></span><span data-i18n-html="pk.3f4">Πιο επεξεργασμένες κινήσεις και αλληλεπιδράσεις</span></li>
+          <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 5 13.5h6L11 22l8-11.5h-6z"/></svg></span><span data-i18n-html="pk.3f5">Προτεραιότητα και 60 ημέρες υποστήριξης</span></li>
+          <li class="gift"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M12 9v12M3 14h18M12 9C10 9 7.5 8.5 7.5 6.2A2.2 2.2 0 0 1 12 5.6a2.2 2.2 0 0 1 4.5.6C16.5 8.5 14 9 12 9z"/></svg></span><span data-i18n-html="pk.3f6"><b>ΔΩΡΕΑΝ φιλοξενία για 1 χρόνο</b></span></li>
+        </ul>
+      </article>
+
+    </div>
+
+    <div class="price-trust reveal">
+      <p data-i18n-html="price.trust">Κάθε πακέτο περιλαμβάνει <b>ασφάλεια SSL, βελτιστοποίηση ταχύτητας, δεύτερη γλώσσα και τον πρώτο χρόνο φιλοξενίας</b>.</p>
+      <p class="fine" data-i18n="price.domain">Η ρύθμιση του domain περιλαμβάνεται. Την κατοχύρωση και την ανανέωση την πληρώνετε εσείς, ώστε η διεύθυνση να σας ανήκει πάντα.</p>
+    </div>
+
+    <div class="price-extras">
+      <div class="reveal">
+        <div class="px-card">
+          <h3 data-i18n="price.y2h">Μετά τον πρώτο χρόνο</h3>
+          <p data-i18n-html="price.y2p">Η φιλοξενία και η συντήρηση μετά τον πρώτο χρόνο είναι εντελώς προαιρετικές, και κοστολογούνται τότε. <b>Δεν δεσμεύεστε σε τίποτα τώρα.</b></p>
+          <ul class="px-mini">
+            <li data-i18n="price.y2a">Φιλοξενία</li>
+            <li data-i18n="price.y2b">Ενημερωμένο SSL</li>
+            <li data-i18n="price.y2c">Τακτικά αντίγραφα</li>
+            <li data-i18n="price.y2d">Βασική συντήρηση</li>
+          </ul>
+          <p class="own" data-i18n="price.own">Ο ιστότοπος είναι δικός σας. Μετά τον πρώτο χρόνο μπορείτε να μείνετε μαζί μου ή να τον μεταφέρετε όπου θέλετε.</p>
+        </div>
+        <div class="px-card">
+          <h3 data-i18n="price.payh">Πώς γίνεται η πληρωμή</h3>
+          <p data-i18n="price.payp">50% για να ξεκινήσει το έργο. Το υπόλοιπο 50% μόλις ο ιστότοπος είναι έτοιμος για δημοσίευση.</p>
+        </div>
+      </div>
+
+      <div class="px-card reveal d1">
+        <h3 data-i18n="price.addh">Χρειάζεστε κάτι ακόμα;</h3>
+        <ul class="addons">
+          <li><span data-i18n="ad.page">Επιπλέον σελίδα</span><b data-i18n="ad.pagep">από €70</b></li>
+          <li><span data-i18n="ad.book">Σύστημα κρατήσεων</span><b data-i18n="ad.bookp">από €120</b></li>
+          <li><span data-i18n="ad.copy">Επαγγελματικά κείμενα</span><b class="quote" data-i18n="ad.copyp">Κατόπιν προσφοράς</b></li>
+          <li><span data-i18n="ad.shop">Ηλεκτρονικό κατάστημα</span><b class="quote" data-i18n="ad.shopp">Κατόπιν προσφοράς</b></li>
+          <li><span data-i18n="ad.custom">Ειδικές λειτουργίες</span><b class="quote" data-i18n="ad.customp">Κατόπιν προσφοράς</b></li>
+          <li><span data-i18n="ad.seo">Συνεχές SEO</span><b class="quote" data-i18n="ad.seop">Μηνιαία πλάνα</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="price-cta reveal">
+      <div>
+        <h3 data-i18n="price.ctah">Δεν είστε σίγουροι ποιο πακέτο χρειάζεστε;</h3>
+        <p data-i18n="price.ctap">Πείτε μου για την επιχείρησή σας και θα σας προτείνω το σωστό.</p>
+      </div>
+      <div class="pc-go">
+        <a href="#contact" class="btn btn-primary"><span data-i18n="price.ctab">Δωρεάν συμβουλευτική</span> <span class="arrow">→</span></a>
+        <span class="nocommit" data-i18n="price.nocommit">Χωρίς καμία δέσμευση.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HIRING ============ -->
+<section class="hiring" id="hiring">
+  <div class="wrap hiring-inner">
+    <div class="reveal">
+      <span class="sheet-label" data-i18n="hire.label">Για εργοδότες</span>
+      <h2 data-i18n-html="hire.title">Ανοιχτός και σε <span class="hl">κατάλληλη θέση</span>.</h2>
+      <p class="lede" data-i18n="hire.lede">Τα έργα πελατών προηγούνται και παραδίδονται πάντα — αν όμως προσλαμβάνετε αντί να αναθέτετε ιστότοπο, θα ήθελα να το μάθω. Όλα όσα βλέπετε εδώ τα σχεδίασα και τα έφτιαξα μόνος μου.</p>
+      <ul class="hiring-facts">
+        <li data-i18n="hire.f1">Πτυχίο Πληροφορικής</li>
+        <li data-i18n="hire.f2">Αθήνα · στο γραφείο, υβριδικά ή εξ αποστάσεως</li>
+        <li data-i18n="hire.f3">Πλήρης απασχόληση, συνεργασία ή πρακτική</li>
+      </ul>
+    </div>
+    <div class="hiring-go reveal d1">
+      <a href="#contact" class="btn btn-primary"><span data-i18n="hire.cta">Επικοινωνήστε</span> <span class="arrow">→</span></a>
+      <span class="quiet" data-i18n="hire.quiet">Συνήθως απαντώ μέσα σε μία μέρα.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="sheet contact" id="contact">
+  <div class="wrap">
+    <div class="sheet-head reveal">
+      <span class="sheet-label" data-i18n="contact.label">Επικοινωνία</span>
+      <span class="sheet-note" data-i18n="contact.note">Αθήνα · διαθέσιμος για εργασία</span>
+    </div>
+
+    <div class="reveal">
+      <h2 class="sheet-title" data-i18n-html="contact.title">Ας φτιάξουμε <br>κάτι μαζί.</h2>
+      <p class="lede" data-i18n="contact.lede">Έχετε ένα έργο, μια θέση εργασίας ή μια ιδέα που χρειάζεται υλοποίηση; Γράψτε το εδώ και ανοίγει ως έτοιμο μήνυμα στην εφαρμογή email σας.</p>
+    </div>
+
+    <div class="contact-work">
+      <form id="contact-form" class="reveal" novalidate>
+        <div class="field">
+          <label for="name" data-i18n="form.name">Το όνομά σας</label>
+          <input type="text" id="name" name="name" placeholder="Το όνομά σας" data-i18n-ph="form.namePh" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="email" data-i18n="form.email">Το email σας</label>
+          <input type="email" id="email" name="email" placeholder="esas@email.com" data-i18n-ph="form.emailPh" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="message" data-i18n="form.message">Μήνυμα</label>
+          <textarea id="message" name="message" placeholder="Πείτε μου για το έργο σας…" data-i18n-ph="form.messagePh" required></textarea>
+        </div>
+        <button type="submit" class="form-submit"><span data-i18n="form.send">Άνοιγμα στο email</span> <span class="arrow">→</span></button>
+        <p class="form-note" id="form-note" role="status"></p>
+      </form>
+
+      <!-- the direct routes, for anyone who would rather not use a form -->
+      <div class="channels reveal d1">
+        <a href="mailto:matoantonio795@gmail.com">
+          <span class="ch-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 7 9-7"/></svg></span>
+          <span class="ch-txt"><span data-i18n="contact.email">Email</span><b>matoantonio795@gmail.com</b></span>
+          <span class="go" aria-hidden="true">→</span>
+        </a>
+        <a href="tel:+306907682456">
+          <span class="ch-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3h3l1.5 4-2 1.5a13 13 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A17.5 17.5 0 0 1 3 5.2 2 2 0 0 1 5 3z"/></svg></span>
+          <span class="ch-txt"><span data-i18n="contact.phone">Τηλέφωνο</span><b>+30 690 768 2456</b></span>
+          <span class="go" aria-hidden="true">→</span>
+        </a>
+        <a href="https://github.com/Antonio-Mato" target="_blank" rel="noopener noreferrer">
+          <span class="ch-ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0C17 5 18 5.3 18 5.3c.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.3.8 1 .8 2.1v3.1c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg></span>
+          <span class="ch-txt"><span>GitHub</span><b>@Antonio-Mato</b></span>
+          <span class="go" aria-hidden="true">↗</span>
+        </a>
+        <a href="https://www.linkedin.com/in/antonio-mato-9b2098281" target="_blank" rel="noopener noreferrer">
+          <span class="ch-ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.6 4.78 5.98V21h-4v-5.4c0-1.29-.02-2.95-1.83-2.95-1.83 0-2.11 1.4-2.11 2.85V21h-4z"/></svg></span>
+          <span class="ch-txt"><span>LinkedIn</span><b>/in/antonio-mato</b></span>
+          <span class="go" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ============ VIDEO MODAL ============ -->
+<div class="modal" id="video-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Project test run">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-inner">
+    <button type="button" class="modal-close" data-close aria-label="Close video">✕</button>
+    <div class="modal-laptop">
+      <div class="laptop-screen">
+        <video class="modal-video" id="modal-video" controls playsinline preload="metadata"></video>
+      </div>
+      <img class="laptop-frame" src="/assets/ui/laptop_screen.png" alt="" aria-hidden="true" decoding="async">
+    </div>
+    <span class="modal-title" id="modal-title"></span>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <span data-i18n="footer.built">Γραμμένο στο χέρι · Αθήνα, 2026</span>
+  <a href="#top" data-i18n="footer.top">ΕΠΙΣΤΡΟΦΗ ΠΑΝΩ ↑</a>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- top bar ---- */
+  var topbar = document.getElementById("topbar");
+  var onScroll = function(){
+    topbar.classList.toggle("scrolled", window.scrollY > 30);
+  };
+  window.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+
+  /* ---- scroll reveal ---- */
+  var reveals = document.querySelectorAll(".reveal");
+  if("IntersectionObserver" in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, {threshold:.12, rootMargin:"0px 0px -8% 0px"});
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add("in"); });
+  }
+
+  /* ---- laptop tilts toward the pointer for a subtle 3D screen feel ---- */
+  if(!reduce && window.matchMedia("(pointer:fine)").matches){
+    document.querySelectorAll(".card").forEach(function(card){
+      var lap = card.querySelector(".card-media");
+      if(!lap) return;
+      card.addEventListener("mousemove", function(e){
+        var r = lap.getBoundingClientRect();
+        var x = (e.clientX - r.left)/r.width - .5;
+        var y = (e.clientY - r.top)/r.height - .5;
+        lap.style.transform = "perspective(1500px) rotateX("+(-y*5)+"deg) rotateY("+(x*6)+"deg) translateY(-8px)";
+      });
+      card.addEventListener("mouseleave", function(){ lap.style.transform = ""; });
+    });
+
+    /* ---- the price detail blocks follow the pointer ---- */
+    document.querySelectorAll(".price-trust,.px-card,.price-cta").forEach(function(box){
+      box.addEventListener("pointermove", function(e){
+        var r = box.getBoundingClientRect();
+        box.style.setProperty("--gx", (e.clientX - r.left) + "px");
+        box.style.setProperty("--gy", (e.clientY - r.top) + "px");
+      });
+    });
+  }
+
+  /* ---- the nav marks the section you are in ----
+     Not decoration: the bar is fixed and the page is long, so without this
+     there is nothing anywhere on screen saying where you are. The margins
+     leave a thin band across the middle of the viewport and the section
+     crossing it wins, which keeps exactly one link lit at a time. */
+  (function(){
+    var links = {};
+    document.querySelectorAll(".navlinks a").forEach(function(a){
+      var id = (a.getAttribute("href") || "").slice(1);
+      if(id) links[id] = a;
+    });
+    var ids = Object.keys(links);
+    if(!ids.length || !("IntersectionObserver" in window)) return;
+
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        ids.forEach(function(k){ links[k].classList.remove("active"); });
+        links[e.target.id].classList.add("active");
+      });
+    }, {rootMargin:"-45% 0px -50% 0px"});
+
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) spy.observe(el);
+    });
+
+    /* back at the top nothing is "current", so nothing should be lit */
+    window.addEventListener("scroll", function(){
+      if(window.scrollY < 80)
+        ids.forEach(function(k){ links[k].classList.remove("active"); });
+    }, {passive:true});
+  })();
+
+  /* ============================================================
+     I18N: English (default) / Greek
+     ============================================================ */
+  var I18N = {
+    en: {
+      "meta.title":"Website design in Athens from €449 · Antonio Mato",
+      "skip":"Skip to content",
+      "nav.pricing":"Pricing",
+      "price.label":"Pricing","price.note":"One-time projects · Athens",
+      "price.title":"Simple pricing. Professional websites.",
+      "price.lede":"No hidden costs. Choose the package that fits your business, and pay once.",
+      "pk.once":"One-time payment","pk.badge":"Most popular",
+      "pk.1when":"Live in about 1–2 weeks","pk.2when":"Live in about 2–3 weeks","pk.3when":"Live in about 3–4 weeks",
+      "pk.cta1":"Get started","pk.cta2":"Build my website",
+      "pk.1name":"Starter",
+      "pk.1blurb":"For businesses that need a proper website, done well, without an agency budget.",
+      "pk.1sell":"Everything you need to look established online.",
+      "pk.1f1":"A website designed around your business, up to <b>4 pages</b>",
+      "pk.1f2":"Looks sharp on phone, tablet and desktop",
+      "pk.1f3":"Contact form, Google Maps and your social links",
+      "pk.1f4":"Set up so Google can find and list you",
+      "pk.1f5":"Fast loading, with SSL security included",
+      "pk.1f6":"7 days of support after launch",
+      "pk.1f7":"<b>FREE hosting for 1 year</b>",
+      "pk.2name":"Business",
+      "pk.2blurb":"For businesses that want their website to actively bring in customers.",
+      "pk.2sell":"Designed to turn visitors into customers.",
+      "pk.2f0":"<b>Everything in Starter, plus:</b>",
+      "pk.2f1":"Up to <b>8 pages</b>, with custom layouts",
+      "pk.2f2":"Booking, appointments or reservations built in",
+      "pk.2f3":"Google Analytics and Search Console set up",
+      "pk.2f4":"Stronger local SEO, so nearby customers find you",
+      "pk.2f5":"30 days of support after launch",
+      "pk.2f6":"<b>FREE hosting for 1 year</b>",
+      "pk.3name":"Pro",
+      "pk.3blurb":"For established businesses that want a complete premium presence.",
+      "pk.3sell":"A complete website built for serious businesses.",
+      "pk.3f0":"<b>Everything in Business, plus:</b>",
+      "pk.3f1":"Up to <b>12 pages</b>",
+      "pk.3f2":"<b>Any further languages</b> you need, not just two",
+      "pk.3f3":"Advanced SEO structure across the whole site",
+      "pk.3f4":"Refined animations and interactions",
+      "pk.3f5":"Priority build and 60 days of support",
+      "pk.3f6":"<b>FREE hosting for 1 year</b>",
+      "price.trust":"Every package includes <b>SSL security, performance tuning, a second language and the first year of hosting</b>.",
+      "price.domain":"Domain setup is included. You pay for the domain registration and renewal yourself, so the address always belongs to you.",
+      "price.y2h":"After your first year",
+      "price.y2p":"Staying on for hosting and maintenance is entirely optional, and priced when the time comes. <b>Nothing to commit to now.</b>",
+      "price.y2a":"Hosting","price.y2b":"SSL kept current","price.y2c":"Regular backups","price.y2d":"Basic maintenance",
+      "price.own":"Your website is yours. After the first year you can stay with me or move it anywhere you like.",
+      "price.payh":"How payment works",
+      "price.payp":"50% to begin the project. The remaining 50% is paid once the website is ready for launch.",
+      "price.addh":"Need something extra?",
+      "ad.page":"Extra page","ad.pagep":"from €70",
+      
+      "ad.book":"Advanced booking system","ad.bookp":"from €120",
+      "ad.copy":"Professional copywriting","ad.copyp":"Custom quote",
+      "ad.shop":"Online store","ad.shopp":"Custom quote",
+      "ad.custom":"Custom functionality","ad.customp":"Custom quote",
+      "ad.seo":"Ongoing SEO","ad.seop":"Monthly plans",
+      "price.ctah":"Not sure which package you need?",
+      "price.ctap":"Tell me about your business and I’ll recommend the right option.",
+      "price.ctab":"Get a free consultation","price.nocommit":"No commitment required.",
+      "hire.label":"For employers",
+      "hire.title":"Open to the right <span class=\"hl\">developer role</span>, too.",
+      "hire.lede":"Client work comes first and always ships — but if you're hiring rather than commissioning a website, I'd like to hear about it. Everything on this page I designed and built myself, front to back.",
+      "hire.f1":"BSc in Computer Science","hire.f2":"Athens · on-site, hybrid or remote",
+      "hire.f3":"Full-time, contract or internship",
+      "hire.cta":"Get in touch","hire.quiet":"Usually a reply within a day.",
+      "nav.work":"Work","nav.contact":"Contact",
+      "hero.t1":"Hi, I'm","hero.t2":"Antonio Mato.",
+      "hero.cta1":"See the work",
+      "hero.desc":"A <em>website designer</em> and developer in Athens, with a BSc in Computer Science. I design and build websites and web applications — the look, the code behind them, and everything it takes to get them live.",
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      "work.label":"Work","work.note":"Client work and software · 2024—2026","work.title":"Projects & builds.",
+      "p1.tagline":"A 2D RPG, engine and all, built by hand",
+      "p1.desc":"A full 2D role-playing game built entirely in JavaFX with no game engine, no libraries, nothing but the standard toolkit. Every system was written from scratch: an AnimationTimer frame loop driving a raw Canvas renderer, a tile map parsed into its own collision grid, movement resolved axis by axis so the player slides along walls instead of catching on them, four-direction sprite animation, a camera that scrolls the world around the player, branching NPC dialogue, and a logic-riddle puzzle system that gates progression.",
+      "p2.tagline":"A medical assistant that can see, triage, and guide",
+      "p2.desc":"A medical assistant grounded in real clinical literature rather than model memory. Field manuals and first-aid references are chunked, embedded and stored in a vector database, so each answer is retrieved from verified sources before it is written. It reads uploaded images for visual triage, screens every message for emergency red flags, and deliberately reports an urgency level instead of a diagnosis, then maps the recommended specialty to real clinics near the user.",
+      "p3.tagline":"A live client site for a nail boutique in Piraeus",
+      "p3.desc":"A real business website, designed and shipped end to end. A single Greek-language page carrying the full service menu, price list, gallery and opening hours, written by hand in HTML, CSS and JavaScript with no framework or page builder. Scroll reveals fall back gracefully for reduced motion, the layout holds from phone to desktop, and it runs live on Firebase Hosting.",
+      "tag.noframework":"No Framework","tag.responsive":"Responsive","tag.noengine":"No Engine","tag.collision":"Collision Maps","tag.vector":"Vector Search","tag.vision":"Vision","tag.geo":"Geolocation",
+      "btn.visit":"Visit live site","ss.visit":"Visit live site",
+      "btn.github":"View on GitHub","btn.ghsoon":"GitHub coming soon","btn.testrun":"See test run","ss.watchrun":"Watch test run","ss.watchwalk":"Watch walkthrough",
+      "contact.label":"Contact","contact.note":"Athens · open to work",
+      "contact.title":"Let's build <br>something.",
+      "contact.lede":"Have a project, a role, or a rough idea that needs a builder? Write it here and it opens as a ready message in your mail app.",
+      "contact.email":"Email","contact.phone":"Phone",
+      "form.name":"Your name","form.namePh":"Your name","form.email":"Your email","form.emailPh":"you@email.com",
+      "form.message":"Message","form.messagePh":"Tell me about the project…","form.send":"Open in mail app",
+      "form.subject":"Portfolio message from {name}",
+      "form.err":"// Fill in every field first.",
+      "form.sending":"// Sending…",
+      "form.sent":"// Thanks {name} — that reached me. I usually reply within a day.",
+      "form.fallback":"// Opening your mail app instead — the message is ready to send.",
+      "form.ok":"// Opening your mail app, {name}.",
+      "footer.built":"Written by hand · Athens, 2026","footer.top":"BACK TO TOP ↑",
+      "modal.matos":"Mato's Adventures · full test run","modal.asclepius":"Asclepius AI · full walkthrough"
+    },
+    el: {
+      "meta.title":"Κατασκευή ιστοσελίδων στην Αθήνα από 449€ · Αντόνιο Μάτο",
+      "skip":"Μετάβαση στο περιεχόμενο",
+      "nav.pricing":"Τιμές",
+      "price.label":"Τιμές","price.note":"Έργα εφάπαξ · Αθήνα",
+      "price.title":"Απλές τιμές. Επαγγελματικοί ιστότοποι.",
+      "price.lede":"Χωρίς κρυφά κόστη. Διαλέξτε το πακέτο που ταιριάζει στην επιχείρησή σας και πληρώστε μία φορά.",
+      "pk.once":"Εφάπαξ πληρωμή","pk.badge":"Πιο δημοφιλές",
+      "pk.1when":"Έτοιμο σε 1–2 εβδομάδες","pk.2when":"Έτοιμο σε 2–3 εβδομάδες","pk.3when":"Έτοιμο σε 3–4 εβδομάδες",
+      "pk.cta1":"Ξεκινήστε","pk.cta2":"Φτιάξτε τον ιστότοπό μου",
+      "pk.1name":"Starter",
+      "pk.1blurb":"Για επιχειρήσεις που θέλουν σωστό ιστότοπο, χωρίς κόστος γραφείου.",
+      "pk.1sell":"Ό,τι χρειάζεστε για να δείχνετε καταξιωμένοι στο διαδίκτυο.",
+      "pk.1f1":"Ιστότοπος σχεδιασμένος για εσάς, έως <b>4 σελίδες</b>",
+      "pk.1f2":"Δείχνει σωστός σε κινητό, tablet και υπολογιστή",
+      "pk.1f3":"Φόρμα επικοινωνίας, Google Maps και social",
+      "pk.1f4":"Βασικό SEO για να σας βρίσκει η Google",
+      "pk.1f5":"Ασφάλεια SSL και γρήγορη φόρτωση",
+      "pk.1f6":"7 ημέρες υποστήριξης μετά την παράδοση",
+      "pk.1f7":"<b>ΔΩΡΕΑΝ φιλοξενία για 1 χρόνο</b>",
+      "pk.2name":"Business",
+      "pk.2blurb":"Για επιχειρήσεις που θέλουν ο ιστότοπος να τους φέρνει πελάτες.",
+      "pk.2sell":"Φτιαγμένος ώστε οι επισκέπτες να γίνονται πελάτες.",
+      "pk.2f0":"<b>Όλα του Starter, και επιπλέον:</b>",
+      "pk.2f1":"Έως <b>8 σελίδες</b>, με δικές τους διατάξεις",
+      "pk.2f2":"Κρατήσεις ή ραντεβού μέσα στον ιστότοπο",
+      "pk.2f3":"Google Analytics και Search Console στημένα",
+      "pk.2f4":"Ισχυρότερο τοπικό SEO, για πελάτες κοντά σας",
+      "pk.2f5":"30 ημέρες υποστήριξης μετά την παράδοση",
+      "pk.2f6":"<b>ΔΩΡΕΑΝ φιλοξενία για 1 χρόνο</b>",
+      "pk.3name":"Pro",
+      "pk.3blurb":"Για καθιερωμένες επιχειρήσεις που θέλουν ολοκληρωμένη premium παρουσία.",
+      "pk.3sell":"Ένας ολοκληρωμένος ιστότοπος για σοβαρές επιχειρήσεις.",
+      "pk.3f0":"<b>Όλα του Business, και επιπλέον:</b>",
+      "pk.3f1":"Έως <b>12 σελίδες</b>",
+      "pk.3f2":"<b>Όσες γλώσσες</b> χρειάζεστε, όχι μόνο δύο",
+      "pk.3f3":"Προχωρημένη δομή SEO σε όλο τον ιστότοπο",
+      "pk.3f4":"Πιο επεξεργασμένες κινήσεις και αλληλεπιδράσεις",
+      "pk.3f5":"Προτεραιότητα και 60 ημέρες υποστήριξης",
+      "pk.3f6":"<b>ΔΩΡΕΑΝ φιλοξενία για 1 χρόνο</b>",
+      "price.trust":"Κάθε πακέτο περιλαμβάνει <b>ασφάλεια SSL, βελτιστοποίηση ταχύτητας, δεύτερη γλώσσα και τον πρώτο χρόνο φιλοξενίας</b>.",
+      "price.domain":"Η ρύθμιση του domain περιλαμβάνεται. Την κατοχύρωση και την ανανέωση την πληρώνετε εσείς, ώστε η διεύθυνση να σας ανήκει πάντα.",
+      "price.y2h":"Μετά τον πρώτο χρόνο",
+      "price.y2p":"Η φιλοξενία και η συντήρηση μετά τον πρώτο χρόνο είναι εντελώς προαιρετικές, και κοστολογούνται τότε. <b>Δεν δεσμεύεστε σε τίποτα τώρα.</b>",
+      "price.y2a":"Φιλοξενία","price.y2b":"Ενημερωμένο SSL","price.y2c":"Τακτικά αντίγραφα","price.y2d":"Βασική συντήρηση",
+      "price.own":"Ο ιστότοπος είναι δικός σας. Μετά τον πρώτο χρόνο μπορείτε να μείνετε μαζί μου ή να τον μεταφέρετε όπου θέλετε.",
+      "price.payh":"Πώς γίνεται η πληρωμή",
+      "price.payp":"50% για να ξεκινήσει το έργο. Το υπόλοιπο 50% μόλις ο ιστότοπος είναι έτοιμος για δημοσίευση.",
+      "price.addh":"Χρειάζεστε κάτι ακόμα;",
+      "ad.page":"Επιπλέον σελίδα","ad.pagep":"από €70",
+      
+      "ad.book":"Σύστημα κρατήσεων","ad.bookp":"από €120",
+      "ad.copy":"Επαγγελματικά κείμενα","ad.copyp":"Κατόπιν προσφοράς",
+      "ad.shop":"Ηλεκτρονικό κατάστημα","ad.shopp":"Κατόπιν προσφοράς",
+      "ad.custom":"Ειδικές λειτουργίες","ad.customp":"Κατόπιν προσφοράς",
+      "ad.seo":"Συνεχές SEO","ad.seop":"Μηνιαία πλάνα",
+      "price.ctah":"Δεν είστε σίγουροι ποιο πακέτο χρειάζεστε;",
+      "price.ctap":"Πείτε μου για την επιχείρησή σας και θα σας προτείνω το σωστό.",
+      "price.ctab":"Δωρεάν συμβουλευτική","price.nocommit":"Χωρίς καμία δέσμευση.",
+      "hire.label":"Για εργοδότες",
+      "hire.title":"Ανοιχτός και σε <span class=\"hl\">κατάλληλη θέση</span>.",
+      "hire.lede":"Τα έργα πελατών προηγούνται και παραδίδονται πάντα — αν όμως προσλαμβάνετε αντί να αναθέτετε ιστότοπο, θα ήθελα να το μάθω. Όλα όσα βλέπετε εδώ τα σχεδίασα και τα έφτιαξα μόνος μου.",
+      "hire.f1":"Πτυχίο Πληροφορικής","hire.f2":"Αθήνα · στο γραφείο, υβριδικά ή εξ αποστάσεως",
+      "hire.f3":"Πλήρης απασχόληση, συνεργασία ή πρακτική",
+      "hire.cta":"Επικοινωνήστε","hire.quiet":"Συνήθως απαντώ μέσα σε μία μέρα.",
+      "nav.work":"Έργα","nav.contact":"Επικοινωνία",
+      "hero.t1":"Γεια, είμαι ο","hero.t2":"Αντόνιο Μάτο.",
+      "hero.cta1":"Δείτε τα έργα",
+      "hero.desc":"<em>Σχεδιαστής ιστοσελίδων</em> και προγραμματιστής στην Αθήνα, με πτυχίο Πληροφορικής. Σχεδιάζω και φτιάχνω ιστότοπους και διαδικτυακές εφαρμογές — την εμφάνιση, τον κώδικα από πίσω, και ό,τι χρειάζεται για να βγουν ζωντανά.",
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      "work.label":"Έργα","work.note":"Έργα πελατών και λογισμικό · 2024—2026","work.title":"Έργα & κατασκευές.",
+      "p1.tagline":"Ένα 2D RPG, μαζί με τη μηχανή του, φτιαγμένο στο χέρι",
+      "p1.desc":"Ένα ολοκληρωμένο 2D παιχνίδι ρόλων φτιαγμένο εξ ολοκλήρου σε JavaFX, χωρίς μηχανή παιχνιδιού, χωρίς βιβλιοθήκες, μόνο με το βασικό εργαλείο. Κάθε σύστημα γράφτηκε από το μηδέν: βρόχος καρέ με AnimationTimer που τροφοδοτεί renderer σε Canvas, χάρτης πλακιδίων με δικό του πλέγμα συγκρούσεων, κίνηση που επιλύεται ανά άξονα ώστε ο παίκτης να γλιστρά κατά μήκος των τοίχων, κίνηση sprite σε τέσσερις κατευθύνσεις, κάμερα που μετακινεί τον κόσμο γύρω από τον παίκτη, διακλαδούμενοι διάλογοι NPC και σύστημα γρίφων λογικής που ελέγχει την πρόοδο.",
+      "p2.tagline":"Ένας ιατρικός βοηθός που βλέπει, αξιολογεί και καθοδηγεί",
+      "p2.desc":"Ένας ιατρικός βοηθός θεμελιωμένος σε πραγματική κλινική βιβλιογραφία και όχι στη μνήμη του μοντέλου. Ιατρικά εγχειρίδια και οδηγοί πρώτων βοηθειών τεμαχίζονται και αποθηκεύονται σε διανυσματική βάση, ώστε κάθε απάντηση να ανακτάται από επαληθευμένες πηγές πριν διατυπωθεί. Διαβάζει εικόνες για οπτική διαλογή, ελέγχει κάθε μήνυμα για ενδείξεις έκτακτης ανάγκης και δηλώνει σκόπιμα επίπεδο επείγοντος αντί για διάγνωση, και έπειτα αντιστοιχίζει τη συνιστώμενη ειδικότητα με πραγματικά ιατρεία κοντά στον χρήστη.",
+      "p3.tagline":"Ζωντανός ιστότοπος για nail boutique στον Πειραιά",
+      "p3.desc":"Ένας πραγματικός επαγγελματικός ιστότοπος, σχεδιασμένος και δημοσιευμένος από την αρχή ως το τέλος. Μία ελληνική σελίδα με πλήρη κατάλογο υπηρεσιών, τιμοκατάλογο, gallery και ωράριο λειτουργίας, γραμμένη στο χέρι σε HTML, CSS και JavaScript, χωρίς framework ή page builder. Οι εμφανίσεις κατά την κύλιση σέβονται τη μειωμένη κίνηση, η διάταξη προσαρμόζεται από κινητό ως desktop, και φιλοξενείται ζωντανά στο Firebase Hosting.",
+      "tag.noframework":"Χωρίς Framework","tag.responsive":"Responsive","tag.noengine":"Χωρίς Μηχανή","tag.collision":"Χάρτες Σύγκρουσης","tag.vector":"Διανυσματική Αναζήτηση","tag.vision":"Όραση Υπολογιστή","tag.geo":"Γεωεντοπισμός",
+      "btn.visit":"Επισκεφθείτε τον ιστότοπο","ss.visit":"Επισκεφθείτε τον ιστότοπο",
+      "btn.github":"Δείτε στο GitHub","btn.ghsoon":"GitHub σύντομα","btn.testrun":"Δείτε δοκιμαστική εκτέλεση","ss.watchrun":"Δείτε την εκτέλεση","ss.watchwalk":"Δείτε την παρουσίαση",
+      "contact.label":"Επικοινωνία","contact.note":"Αθήνα · διαθέσιμος για εργασία",
+      "contact.title":"Ας φτιάξουμε <br>κάτι μαζί.",
+      "contact.lede":"Έχετε ένα έργο, μια θέση εργασίας ή μια ιδέα που χρειάζεται υλοποίηση; Γράψτε το εδώ και ανοίγει ως έτοιμο μήνυμα στην εφαρμογή email σας.",
+      "contact.email":"Email","contact.phone":"Τηλέφωνο",
+      "form.name":"Το όνομά σας","form.namePh":"Το όνομά σας","form.email":"Το email σας","form.emailPh":"esas@email.com",
+      "form.message":"Μήνυμα","form.messagePh":"Πείτε μου για το έργο σας…","form.send":"Άνοιγμα στο email",
+      "form.subject":"Μήνυμα από το portfolio · {name}",
+      "form.err":"// Συμπληρώστε πρώτα όλα τα πεδία.",
+      "form.sending":"// Αποστολή…",
+      "form.sent":"// Ευχαριστώ {name} — το έλαβα. Συνήθως απαντώ μέσα σε μία μέρα.",
+      "form.fallback":"// Ανοίγει η εφαρμογή email — το μήνυμα είναι έτοιμο.",
+      "form.ok":"// Ανοίγει η εφαρμογή email σας, {name}.",
+      "footer.built":"Γραμμένο στο χέρι · Αθήνα, 2026","footer.top":"ΕΠΙΣΤΡΟΦΗ ΠΑΝΩ ↑",
+      "modal.matos":"Mato's Adventures · πλήρης δοκιμαστική εκτέλεση","modal.asclepius":"Asclepius AI · πλήρης παρουσίαση"
+    }
+  };
+
+  /* The URL decides the language, not localStorage: /el/ is a real page
+     Google can index, and a stored preference overriding it would put Greek
+     text on the English URL and undo the whole point. */
+  var lang = document.documentElement.getAttribute("lang") === "el" ? "el" : "en";
+
+  function t(key){ return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || ""; }
+
+  function applyLang(next){
+    lang = I18N[next] ? next : "en";
+    document.title = t("meta.title");
+    /* textContent, not innerHTML: these strings are plain text, and the ones
+       that genuinely carry markup declare it with data-i18n-html instead */
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      var v = t(el.getAttribute("data-i18n"));
+      if(v) el.textContent = v;
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(function(el){
+      var v = t(el.getAttribute("data-i18n-html"));
+      if(v) el.innerHTML = v;
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function(el){
+      var v = t(el.getAttribute("data-i18n-ph"));
+      if(v) el.setAttribute("placeholder", v);
+    });
+    /* the stacked bill-of-materials rows draw their column labels from
+       data-label via CSS content, so those travel with the language too */
+    document.querySelectorAll("[data-i18n-label]").forEach(function(el){
+      var v = t(el.getAttribute("data-i18n-label"));
+      if(v) el.setAttribute("data-label", v);
+    });
+    if(window.__retitleModal) window.__retitleModal();
+    if(window.__relabelPlay) window.__relabelPlay();
+  }
+
+  /* ---- project media config ---- */
+  var ASSET = "/assets/";
+  /* Images are served with a one-year immutable cache, so a frame replaced
+     under the same filename would keep serving stale. Bump on re-export. */
+  var ASSET_V = "3";
+  var PROJECTS = {
+    matos: {
+      titleKey: "modal.matos",
+      video: { webm: ASSET + "matos-fullrun.webm", mp4: ASSET + "matos-fullrun.mp4" },
+      images: ["loading-screen.webp","dialogue1.webp","boat.webp","house_inside.webp","walking_image.webp","walking_image2.webp","riddle.webp","wizard_house_inside.webp","wizard_dialogue.webp","knights_room.webp","knight_dialogue.webp","treasure_room.webp"]
+    },
+    asclepius: {
+      titleKey: "modal.asclepius",
+      video: { webm: ASSET + "asclepius-fullrun.webm", mp4: ASSET + "asclepius-fullrun.mp4" },
+      images: ["asc-diagnosis.webp","asc-specialists.webp","asc-clinics.webp","asc-triage.webp","asc-result.webp"]
+    },
+    bling: {
+      url: "https://blingnailssalon-f9c49.web.app",
+      images: ["bling-hero.webp","bling-services.webp","bling-detail.webp","bling-gallery.webp","bling-prices.webp","bling-hours.webp"]
+    }
+  };
+
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+
+  /* ---- drop each project's slideshow into the laptop artwork's cut-out ---- */
+  document.querySelectorAll(".card-media").forEach(function(m){
+    if(m.querySelector(".laptop-screen")) return;
+    var ss = m.querySelector(".slideshow"); if(!ss) return;
+    var screen = document.createElement("div"); screen.className = "laptop-screen";
+    m.insertBefore(screen, ss);
+    screen.appendChild(ss);
+    var frame = document.createElement("img");
+    frame.className = "laptop-frame";
+    frame.src = "/assets/ui/laptop_screen.png";
+    frame.alt = ""; frame.setAttribute("aria-hidden","true");
+    frame.decoding = "async";
+    m.appendChild(frame);
+  });
+
+  /* ---- shuffled-cycle crossfade slideshows: every image shown once per pass ----
+     The show can jump to any frame at any time, so nothing is lazy-loaded and only
+     frames that have finished decoding ever enter the rotation. Rotation pauses
+     while the card is off-screen. */
+  document.querySelectorAll(".slideshow").forEach(function(box){
+    var cfg = PROJECTS[box.getAttribute("data-project")];
+    if(!cfg || !cfg.images.length) return;
+
+    var ready = [];
+    var imgs = shuffle(cfg.images.slice()).map(function(name, i){
+      var im = document.createElement("img");
+      im.alt = "";
+      im.decoding = "async";
+      im.loading = "eager";
+      var mark = function(){ if(ready.indexOf(i) === -1) ready.push(i); };
+      im.addEventListener("load", mark);
+      im.src = ASSET + encodeURIComponent(name) + "?v=" + ASSET_V;
+      if(im.complete && im.naturalWidth > 0) mark();
+      if(i === 0) im.className = "active";
+      box.insertBefore(im, box.firstChild);
+      return im;
+    });
+    if(imgs.length < 2 || reduce) return;
+
+    var cur = 0, queue = [], timer = null;
+
+    /* Prefer frames that have decoded, but never refuse to advance: on a slow
+       connection "wait for two loaded frames" is indistinguishable from frozen. */
+    function pool(){
+      if(ready.length >= 2) return ready;
+      return imgs.map(function(_, i){ return i; });
+    }
+    function refill(){
+      queue = shuffle(pool().slice());
+      if(queue.length > 1 && queue[0] === cur) queue.push(queue.shift());
+    }
+    function step(){
+      if(imgs.length < 2) return;
+      if(!queue.length) refill();
+      var next = queue.shift();
+      if(next === undefined || next === cur) return;
+      imgs[cur].classList.remove("active");
+      imgs[next].classList.add("active");
+      cur = next;
+    }
+    function start(){ if(!timer) timer = setInterval(step, 3200); }
+    function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+    /* Run by default and use the observer only to PAUSE while off-screen. Starting
+       only on an observer callback means the card stays stuck on frame one wherever
+       that callback never arrives (hidden tab, non-compositing embed, bfcache
+       restore). Failing to fire now costs an idle timer instead of a dead card. */
+    start();
+    if("IntersectionObserver" in window){
+      var io2 = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting) start(); else stop(); });
+      }, {threshold:0});
+      io2.observe(box);
+    }
+  });
+
+  /* ---- modal video player ---- */
+  var modal = document.getElementById("video-modal");
+  var mVideo = document.getElementById("modal-video");
+  var mTitle = document.getElementById("modal-title");
+  var lastFocus = null, openKey = null;
+  window.__retitleModal = function(){
+    if(openKey && PROJECTS[openKey] && mTitle) mTitle.textContent = t(PROJECTS[openKey].titleKey);
+  };
+
+  function openModal(key){
+    var cfg = PROJECTS[key];
+    if(!cfg || !cfg.video || !modal) return;
+    lastFocus = document.activeElement;
+    openKey = key;
+    mTitle.textContent = t(cfg.titleKey);
+    mVideo.innerHTML = "";
+    if(cfg.video.webm){ var s1 = document.createElement("source"); s1.src = cfg.video.webm; s1.type = "video/webm"; mVideo.appendChild(s1); }
+    if(cfg.video.mp4){ var s2 = document.createElement("source"); s2.src = cfg.video.mp4; s2.type = "video/mp4"; mVideo.appendChild(s2); }
+    mVideo.load();
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    var p = mVideo.play(); if(p && p.catch) p.catch(function(){});
+    var c = modal.querySelector(".modal-close"); if(c) c.focus();
+  }
+  function closeModal(){
+    if(!modal) return;
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    openKey = null;
+    document.body.style.overflow = "";
+    mVideo.pause(); mVideo.removeAttribute("src"); mVideo.innerHTML = ""; mVideo.load();
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  document.querySelectorAll(".watch").forEach(function(btn){
+    btn.addEventListener("click", function(){ openModal(btn.getAttribute("data-project")); });
+  });
+  function activate(key){
+    var cfg = PROJECTS[key];
+    if(!cfg) return;
+    if(cfg.video) openModal(key);
+    else if(cfg.url) window.open(cfg.url, "_blank", "noopener");
+  }
+  document.querySelectorAll(".slideshow").forEach(function(box){
+    var key = box.getAttribute("data-project");
+    if(!PROJECTS[key]) return;
+    box.addEventListener("click", function(){ activate(key); });
+    box.addEventListener("keydown", function(e){
+      if(e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(key); }
+    });
+  });
+  if(modal){
+    modal.querySelectorAll("[data-close]").forEach(function(el){ el.addEventListener("click", closeModal); });
+    document.addEventListener("keydown", function(e){
+      if(!modal.classList.contains("open")) return;
+      if(e.key === "Escape"){ closeModal(); return; }
+      /* Keep Tab inside the dialog. Without this the focus ring walks off
+         behind the backdrop and the page underneath stays reachable. */
+      if(e.key !== "Tab") return;
+      var f = modal.querySelectorAll("button, video, [href]");
+      if(!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    });
+  }
+
+  /* ---- contact form: compose an email via the visitor's mail app ----
+     The panel beside the form previews the very message the button will hand
+     over, so both read from compose() and cannot drift apart. */
+  var CONTACT_EMAIL = "matoantonio795@gmail.com";
+  var form = document.getElementById("contact-form");
+  var note = document.getElementById("form-note");
+
+  function compose(){
+    var name = form.name.value.trim();
+    var email = form.email.value.trim();
+    var msg = form.message.value.trim();
+    return {
+      name: name, email: email, msg: msg,
+      complete: !!(name && email && msg),
+      subject: t("form.subject").replace("{name}", name),
+      sign: "— " + name + " (" + email + ")"
+    };
+  }
+
+  if(form){
+    /* ---- sending ----
+       A mailto: hands the message to whatever mail client the visitor has
+       configured. On a machine with none, the enquiry vanishes with no
+       error anyone ever sees, which on a page selling €449 projects is the
+       worst possible failure mode. Fill both constants below in and the
+       form POSTs properly instead; until then the handoff still runs, so
+       nothing regresses in the meantime.
+
+       Web3Forms is the quickest: put your address in at web3forms.com,
+       they email you an access key, paste it into FORM_KEY. No account,
+       no server, free tier is far beyond what this page will use. */
+    var FORM_ENDPOINT = "";          /* e.g. "https://api.web3forms.com/submit" */
+    var FORM_KEY      = "";          /* the access key that endpoint gives you  */
+
+    var mailtoHandoff = function(d){
+      window.location.href = "mailto:" + CONTACT_EMAIL +
+        "?subject=" + encodeURIComponent(d.subject) +
+        "&body=" + encodeURIComponent(d.msg + "\n\n" + d.sign);
+    };
+
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      var d = compose();
+      if(!d.complete){
+        note.classList.remove("ok");
+        note.textContent = t("form.err");
+        return;
+      }
+
+      if(!FORM_ENDPOINT || !FORM_KEY){
+        note.classList.add("ok");
+        note.textContent = t("form.ok").replace("{name}", d.name.split(" ")[0]);
+        mailtoHandoff(d);
+        return;
+      }
+
+      var btn = form.querySelector(".form-submit");
+      btn.disabled = true;
+      note.classList.remove("ok");
+      note.textContent = t("form.sending");
+
+      fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: {"Content-Type": "application/json", "Accept": "application/json"},
+        body: JSON.stringify({
+          access_key: FORM_KEY,
+          name: d.name, email: d.email, message: d.msg,
+          subject: d.subject, from_page: location.href
+        })
+      }).then(function(r){ return r.json(); }).then(function(j){
+        if(j && (j.success === true || j.ok === true)){
+          note.classList.add("ok");
+          note.textContent = t("form.sent").replace("{name}", d.name.split(" ")[0]);
+          form.reset();
+        } else { throw new Error("rejected"); }
+      }).catch(function(){
+        /* the message is not lost: it falls back to the mail client */
+        note.classList.remove("ok");
+        note.textContent = t("form.fallback");
+        mailtoHandoff(d);
+      }).then(function(){ btn.disabled = false; });
+    });
+  }
+
+  /* ---- apply saved/default language last, so every module is registered ---- */
+  applyLang(lang);
+    })();
+</script>
+</body>
+</html>

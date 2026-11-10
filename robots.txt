@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://personalportfolio-aa146.web.app/sitemap.xml
