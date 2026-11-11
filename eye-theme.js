@@ -57,6 +57,7 @@
   var COOL = 2.8;             // seconds the star takes to cool from white into its afterimage
   var SKIN_X = 0.5, SKIN_Y = 0.72;   // where the skin around the eye has faded out (eye units)
   var TEXT_DIM = 0.6;         // how far the eye behind the name dims under the letters (0 = not at all)
+  var SCROLL_DIM = 0.38;      // how bright the eye stays once the hero has scrolled away, behind the rest of the page
 
   /* ====================================================================
    * 2. SHARED WITH THE LOADER: helpers, palette, noise, eye geometry
@@ -556,7 +557,7 @@
 
   var eye = { el: null, near: false, vis: false, x: 0, y: 0, U: 1, gx: 0, gy: 0, open: 1,
               blinkAt: 0, blinkT: -1, hover: 0, hoverTo: 0, idle: 0,
-              hero: false, wake: 1, text: [], tN: 0, tr: new Float32Array(16) };   // tr: the words in front of it, as rects
+              hero: false, wake: 1, bgK: 1, text: [], tN: 0, tr: new Float32Array(16) };   // tr: the words in front of it, as rects
 
   // a fixed random number per cell, so the eye switches on character by character as it wakes
   function cellRand(i) { return (Math.imul(i + 1, 2654435761) >>> 0) / 4294967296; }
@@ -565,7 +566,7 @@
     var U = eye.U, invU = 1 / U, gx = eye.gx, gy = eye.gy, ecx = eye.x, ecy = eye.y;
     var wake = eye.wake, on = wake * 1.5;                        // waking: the lids open the loader's way, the cells arrive a few at a time
     var open = Math.min(eye.open, 0.04 + 0.96 * ease(wake));
-    var tm = 40 * dpr, tN = TEXT_DIM > 0 ? eye.tN : 0, tr = eye.tr;
+    var tm = 40 * dpr, tN = TEXT_DIM > 0 ? eye.tN : 0, tr = eye.tr, bgK = eye.bgK;
     var R = 0.37;
     var pupil = (0.39 + 0.07 * eye.hover) * (1 + 0.045 * Math.sin(tw * 1.7));  // share of the iris radius; widens when hovered
     var lift = 1 + 0.7 * Math.max(0, -gy);                       // the upper lid lifts when looking up
@@ -741,7 +742,12 @@
         }
 
         if (B < 0) B = 0; else if (B > 1) B = 1;
+        if (bgK < 1 && force < 0) {                                          // past the hero: it sinks back into the ground
+          B = bgB[i] + (B - bgB[i]) * bgK; A = baseA + (A - baseA) * bgK;
+          cR = BGC[0] + (cR - BGC[0]) * bgK; cG = BGC[1] + (cG - BGC[1]) * bgK; cB = BGC[2] + (cB - BGC[2]) * bgK;
+        }
         var af = A * (0.3 + 0.7 * B) * scan;
+        if (force >= 0) af *= bgK;
         if (tN) {                                                            // behind the words it steps back
           var px = (c + 0.5) * cellW, py = (r + 0.5) * cellH, td = tm, t4, tdx, tdy;
           for (k = 0; k < tN; k++) {
@@ -847,14 +853,23 @@
     eye.vis = false;
     // in the hero it wakes as the star cools: hidden under the loader, opening as the star goes
     eye.wake = !eye.hero ? 1 : covered ? 0 : sstep(0.3, 0.95, 1 - star.heat);
-    if (eye.el && eye.near && eye.wake > 0) {
+    if (eye.el && (eye.near || eye.hero) && eye.wake > 0) {
       r = eye.el.getBoundingClientRect();
-      eye.vis = r.width > 40 && r.bottom > 0 && r.top < H;
+      // The hero's eye stays for the whole page, as the ground's own: it starts
+      // behind the name and, as the name scrolls away, stays where it was
+      // (like position:sticky), stepping back so the sections read over it.
+      var cyNat = r.top + r.height / 2, cyPin = cyNat, scrolled = 0;
+      if (eye.hero) {
+        cyPin = Math.max(cyNat, Math.min(cyNat + (window.pageYOffset || 0), H / 2));
+        if (star.el) scrolled = clamp01(-star.el.getBoundingClientRect().top / Math.max(1, H * 0.7));
+      }
+      eye.bgK = 1 - (1 - SCROLL_DIM) * sstep(0, 1, scrolled);
+      eye.vis = r.width > 40 && (eye.hero || (r.bottom > 0 && r.top < H));
       if (eye.vis) {
         if (!IRIS) buildIris();
         eye.U = r.width / (2 * (0.75 + SKIN_X)) * sx;
         eye.x = (r.left + r.width / 2) * sx;
-        eye.y = (r.top + r.height / 2) * sy;
+        eye.y = cyPin * sy;
 
         // the words in front of it: the eye steps back where the letters are, so they stay readable
         eye.tN = 0;
