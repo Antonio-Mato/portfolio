@@ -31,32 +31,51 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2309090B'/%3E%3Cpath d='M12 7h8v6h-8zM10 13h12v8H10zM10 21h4v4h-4zM18 21h4v4h-4z' fill='%233B82F6'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&amp;display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400..700&amp;family=Manrope:wght@400..800&amp;display=swap" rel="stylesheet" />
 <link rel="preload" as="image" href="/assets/ui/laptop_screen.png" />
+<!-- everything that arrives by dissolving is simply there when scripts are off -->
+<noscript><style>.reveal{opacity:1!important}.hero-title .tl i,.hero-desc,.hero-cta,.hero-bloom,.spark{opacity:1!important;animation:none!important}.spark,.sheet-label::before{transform:none!important}.tier-badge{scale:1!important}</style></noscript>
 <style>
 /* ============================================================
    ANTONIO MATO · PORTFOLIO
 
-   Palette: near-black and blue, taken from the Vetra template
-   — ground #09090B, accent #3B82F6, a pale blue-white for the
-   last line of the headline, and a royal-blue bloom under the
-   fold. The accent is ink, not decoration: lines, marks, live
-   status and one filled chip. The primary button is white,
-   which is both Vetra's own move and the only way to get a
-   19:1 label on it.
+   THE THEME is taken from the intro (eye-loader.js). The loader
+   draws an eye out of monospace characters, lets it look
+   around, turns its iris into a four-point star, and falls
+   apart into pixels. The page is built from the five things
+   that sequence is made of, and each one has a single job:
 
-   The hero is a single centred axis — availability, name,
-   claim, action — over a low chartreuse bloom with dashed
-   survey rings expanding out of the foot of the fold. The
-   depth lives in the atmosphere so the fold does not need a
-   second block of content in it.
+   GLYPH   the matter. The ground of the page is the loader's
+           own character grid, kept running by eye-theme.js
+           with the same cells, clouds and scanlines, so the
+           intro's backdrop never ends: it turns out to be the
+           page's. Every small label is set in monospace, and
+           the name and the prices arrive as characters first.
+   IRIS    the gaze. Whatever is live or looking: the eye in
+           the hero button, the "open to work" mark, the light
+           that follows the pointer through the characters,
+           and the eye itself, back in the footer, watching.
+   STAR    the spark. What the iris turns into is the one mark
+           of emphasis: section markers, the current nav link,
+           the popular package, the free year of hosting. Its
+           afterimage stays behind the name in the hero.
+   PIXEL   the block. Corners step instead of rounding, and
+           things arrive the way the loader leaves: in 12px
+           blocks. A pressed button sheds a few squares.
+   SCAN    the screen. Rules are rows of dots, one per
+           character column, where hairlines used to be.
 
-   Typography is one family, Manrope, at every size and in both
-   languages. It is load-bearing rather than decorative: the
-   site is bilingual, so the face has to actually ship Greek
-   glyphs. An earlier pairing did not, and every headline and
-   every label silently fell back to a system font whenever
-   Greek was selected.
+   Palette: unchanged, and already the loader's: ground
+   #09090B, iris #3B82F6, a pale blue-white, a deeper blue for
+   fills. The accent is still ink rather than decoration, and
+   the primary button is still white, the only fill that gets
+   a 19:1 label.
+
+   Type: Manrope for everything read as a headline or as prose,
+   JetBrains Mono for the labels, because the theme is drawn in
+   monospace. The site is bilingual, so both had to ship Greek
+   glyphs, and both were checked: a face without them falls
+   back to a system font without a word.
    ============================================================ */
 
 :root{
@@ -95,20 +114,33 @@
   --gutter:clamp(1.25rem,5vw,3.75rem);
   --bar:4rem;
 
-  /* One family for the page, in both languages. The three roles stay as
-     separate tokens because they still mean different things and a display
-     face could come back through one line here — but they resolve to
-     Manrope today, which is why the site reads as a single voice.
-     --f-ui replaces the old --f-mono: nothing on the page ever depended on
-     character alignment, so the label role is proportional now, carrying
-     --w-ui for weight because
-     Manrope goes thin where JetBrains Mono held up at 10px uppercase. */
+  /* Two voices. Manrope is the one that speaks: headlines and prose, in
+     both languages. JetBrains Mono is the one that labels, because the
+     loader draws in monospace and the labels are where the page can say so
+     without costing anyone legibility. The fallbacks are the loader's own
+     canvas stack, so a label that has not loaded yet is still in theme. */
   --f-display:"Manrope",system-ui,sans-serif;
   --f-body:var(--f-display);
-  --f-ui:var(--f-display);
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --f-ui:var(--f-mono);
   --w-ui:500;
 
+  /* ---- the loader's measures ---- */
+  --cell:.5rem;      /* one character column of its grid: 8px */
+  --block:.75rem;    /* one block of its dissolve: 12px       */
+  --px:2px;          /* one pixel of the stepped outlines     */
+  --pupil:#102670;   /* the iris at its edge, and the pupil   */
+
   --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-eye:cubic-bezier(.65,0,.35,1);   /* easeInOutCubic, the only curve the loader uses */
+  --pop:cubic-bezier(.34,1.56,.64,1);     /* its one overshoot, when a sparkle appears      */
+
+  /* STAR: the four-point star the iris turns into, as a mask. It is the
+     loader's superellipse (|x|^p + |y|^p = 1 with p near 1/2), drawn as
+     four cubics so one short string can mark everything that needs it. */
+  --star-shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 .5C12 6.4 6.4 12 .5 12 6.4 12 12 17.6 12 23.5 12 17.6 17.6 12 23.5 12 17.6 12 12 6.4 12 .5Z'/%3E%3C/svg%3E");
+  /* SCAN: a row of dots, one per character column, where a hairline was */
+  --dots:linear-gradient(90deg,var(--rule-2) 2px,transparent 2px);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -129,41 +161,58 @@ body{
   overflow-x:hidden;
 }
 
-/* The grid is the paper's own ruling, so unlike a decorative overlay it runs
-   the full length of the sheet rather than fading out once the hero is past. */
+/* GLYPH: the ground. eye-theme.js lays one fixed canvas here and keeps the
+   loader's character field running in it. Until it does, and wherever it
+   cannot (no WebGL), the ground is this instead: one dot per character
+   cell, on the loader's 8 x 12 grid. */
 body::before{
   content:"";
   position:fixed;inset:0;
-  background-image:
-    linear-gradient(var(--rule) 1px,transparent 1px),
-    linear-gradient(90deg,var(--rule) 1px,transparent 1px);
-  background-size:52px 52px;
-  opacity:.5;
+  background-image:radial-gradient(circle,rgba(140,157,182,.2) .6px,transparent 1.1px);
+  background-size:var(--cell) var(--block);
   pointer-events:none;
   z-index:0;
 }
-/* Print grain. The difference between blue paper and a blue rectangle. */
-body::after{
-  content:"";
-  position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
-  mix-blend-mode:overlay;
-  opacity:.38;
-  pointer-events:none;
-  z-index:1;
+.glyphs{
+  position:fixed;top:0;left:0;z-index:0;
+  /* the tall viewport, so a phone's address bar sliding away never leaves a
+     strip of bare ground under it */
+  width:100%;height:100vh;height:100lvh;
+  display:block;pointer-events:none;
 }
+html{scrollbar-color:#22304d var(--ink-900)}
 
 a{color:inherit;text-decoration:none}
 img,video{max-width:100%;display:block}
 ::selection{background:var(--marker-fill);color:var(--on-marker)}
 
-/* one focus treatment for the whole sheet */
-:focus-visible{outline:2px solid var(--marker);outline-offset:3px;border-radius:1px}
+/* one focus treatment for the whole sheet; the offset clears the stepped
+   outlines, which sit outside the box */
+:focus-visible{outline:2px solid var(--marker);outline-offset:4px}
+
+/* PIXEL: stepped corners. Each of these draws its outline as four strips
+   of shadow, one per side, and nothing in the corners, which is how a
+   rounded corner looks one pixel at a time. Shadows rather than a clipped
+   border, because a clip would also cut off the focus ring. --pxc is the
+   outline's colour, --pxb the bottom strip alone (the form fields light
+   only that one), --px its weight. */
+.btn,.link-btn,.tag,.tier,.tier-cta,.tier-badge,.price-trust,.px-card,.price-cta,
+.hiring-facts li,.px-mini li,.tier li.gift .ic,.field input,.field textarea,
+.form-submit,.channels,.ch-ic,.ss-hint,.skip{
+  border:0;border-radius:0;
+  --pxc:var(--rule);
+  --strips:
+    0 calc(var(--px) * -1) 0 0 var(--pxc),
+    var(--px) 0 0 0 var(--pxc),
+    0 var(--px) 0 0 var(--pxb,var(--pxc)),
+    calc(var(--px) * -1) 0 0 0 var(--pxc);
+  box-shadow:var(--strips);
+}
 
 .skip{
   position:absolute;left:var(--gutter);top:-100px;z-index:200;
   font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.78rem;
-  padding:12px 18px;background:var(--marker-fill);color:var(--on-marker);border-radius:2px;
+  padding:12px 18px;background:var(--marker-fill);color:var(--on-marker);--pxc:var(--marker-fill);
   transition:top .2s var(--ease);
 }
 .skip:focus{top:12px}
@@ -177,24 +226,32 @@ img,video{max-width:100%;display:block}
 .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);position:relative;z-index:2}
 section{position:relative;z-index:2}
 
-/* ---- The sheet header: a drawn rule with the sheet's name at one end and a
-        real fact at the other. Deliberately not numbered — these sections are
-        not a sequence, and indexing them would state something untrue. ---- */
+/* ---- The sheet header: a row of dots with the sheet's name at one end and
+        a real fact at the other. Deliberately not numbered — these sections
+        are not a sequence, and indexing them would state something untrue.
+        The name is marked with the star, which is what marks things here. ---- */
 .sheet{padding:clamp(5.25rem,12vw,8.625rem) 0;scroll-margin-top:calc(var(--bar) + 0.5rem)}
 .sheet-head{
   display:flex;align-items:baseline;justify-content:space-between;gap:18px;
-  padding-bottom:13px;
-  border-bottom:1px solid var(--rule-2);
+  padding-bottom:15px;
+  background:var(--dots) left bottom/var(--cell) 2px repeat-x;
   font-family:var(--f-ui);font-weight:var(--w-ui);
 }
 .sheet-label{
-  font-size:.66rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;
+  font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
   color:var(--chalk);
-  display:inline-flex;align-items:center;gap:.9em;
+  display:inline-flex;align-items:center;gap:.85em;
 }
-.sheet-label::before{content:"";width:20px;height:1px;background:var(--marker);flex:none}
+.sheet-label::before{
+  content:"";width:1em;height:1em;flex:none;background:var(--marker);
+  -webkit-mask:var(--star-shape) center/contain no-repeat;
+  mask:var(--star-shape) center/contain no-repeat;
+}
+/* it appears the way a sparkle does in the loader: out of nothing, a little too far, back */
+.reveal .sheet-label::before{transform:scale(0) rotate(-45deg)}
+.reveal.in .sheet-label::before{transform:none;transition:transform .55s var(--pop) .45s}
 .sheet-note{
-  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;
   color:var(--chalk-faint);text-align:right;
 }
 .sheet-title{
@@ -216,39 +273,54 @@ section{position:relative;z-index:2}
   height:var(--bar);
   padding:0 var(--gutter);
   font-family:var(--f-ui);font-weight:var(--w-ui);
-  font-size:.74rem;
-  letter-spacing:.06em;
-  border-bottom:1px solid transparent;
-  transition:background .35s var(--ease),backdrop-filter .35s var(--ease),border-color .35s var(--ease);
+  font-size:.72rem;
+  letter-spacing:.04em;
+  transition:background .35s var(--ease),backdrop-filter .35s var(--ease);
+}
+/* the bar's lower edge, once the page has moved under it: the dotted rule */
+.topbar::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--dots) left/var(--cell) 2px repeat-x;
+  opacity:0;transition:opacity .35s var(--ease);
 }
 .topbar.scrolled{
   background:rgba(9,9,11,.82);
   backdrop-filter:blur(14px) saturate(1.3);
-  border-bottom-color:var(--rule-2);
 }
-.brand{display:flex;align-items:center;gap:11px;font-weight:500;white-space:nowrap}
-/* a four-cell monogram: the A and the M stacked into one glyph */
+.topbar.scrolled::after{opacity:1}
+.brand{display:flex;align-items:center;gap:11px;font-weight:600;letter-spacing:.1em;white-space:nowrap}
+/* a four-cell monogram: the A and the M stacked into one glyph. It was
+   drawn in blocks before the loader was; it has simply come home. */
 .brand svg{width:12px;height:14px;flex:none;shape-rendering:crispEdges}
 .brand svg path{fill:var(--marker)}
 .topbar-right{display:flex;align-items:center;gap:clamp(0.875rem,3vw,1.625rem)}
-.navlinks{display:flex;gap:clamp(0.875rem,2.4vw,1.5rem)}
+.navlinks{display:flex;gap:clamp(1.5rem,3vw,2.15rem)}
 .navlinks a{color:var(--chalk-dim);position:relative;padding:4px 0;transition:color .25s}
+/* the section you are in is marked with the star, like everything marked here */
+.navlinks a::before{
+  content:"";position:absolute;left:-1.3em;top:50%;width:.85em;height:.85em;margin-top:-.43em;
+  background:var(--marker);
+  -webkit-mask:var(--star-shape) center/contain no-repeat;
+  mask:var(--star-shape) center/contain no-repeat;
+  transform:scale(0) rotate(-45deg);transition:transform .4s var(--pop);
+}
+.navlinks a.active::before{transform:none}
+/* and hovering types a row of dots under the word, a character at a time */
 .navlinks a::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
-  background:var(--marker);transform:scaleX(0);transform-origin:right;
-  transition:transform .3s var(--ease);
+  content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;
+  background:linear-gradient(90deg,var(--marker) 2px,transparent 2px) left/.6em 2px repeat-x;
+  clip-path:inset(0 100% 0 0);transition:clip-path .28s steps(6,end);
 }
 .navlinks a:hover,.navlinks a.active{color:var(--chalk)}
-.navlinks a:hover::after,.navlinks a.active::after{transform:scaleX(1);transform-origin:left}
+.navlinks a:hover::after{clip-path:inset(0)}
 
 .lang{display:inline-flex;align-items:center;gap:10px;flex:none}
 .lang a{
   padding:0;background:transparent;border:0;cursor:pointer;line-height:0;
-  border-radius:2px;
   opacity:.4;filter:grayscale(70%);
   transition:opacity .25s var(--ease),filter .25s var(--ease),transform .2s var(--ease);
 }
-.lang a svg{width:28px;height:20px;display:block;border-radius:1px;box-shadow:0 0 0 1px rgba(232,241,248,.2)}
+.lang a svg{width:28px;height:20px;display:block;box-shadow:0 0 0 1px rgba(232,241,248,.2)}
 .lang a:hover{opacity:.85;filter:grayscale(0);transform:translateY(-1px)}
 .lang a.active{opacity:1;filter:none}
 .lang a.active svg{box-shadow:0 0 0 1.5px var(--marker)}
@@ -260,20 +332,22 @@ section{position:relative;z-index:2}
 
 /* ============================================================
    HERO
-   One centred axis, read top to bottom: whether he is available,
-   who he is, what he does, what to press. Behind it the sheet
-   opens up — a low chartreuse bloom rising off the foot of the
-   fold with dashed survey rings expanding out of it.
-
-   The foot strip is the spec plate off a CV: what he is open to, the
-   degree, and what he works in. Location is not repeated there because
-   the pill above already carries it.
+   One centred axis, read top to bottom: who he is, what he does,
+   what to press. It stands exactly where the loader's star stood.
+   The star was centred on the screen, so this block is too, and
+   what the dissolve uncovers behind the name is that same star,
+   still white, cooling into an outline: eye-theme.js draws it
+   into the character field and it scrolls away with the hero.
+   Around the edge of the fold a few of the loader's sparkles
+   have stayed on.
    ============================================================ */
 .hero{
   position:relative;
   min-height:100svh;
   display:flex;flex-direction:column;justify-content:center;
-  padding:calc(var(--bar) + 2.5rem) 0 0;
+  /* the same above and below, so the middle of the block is the middle of
+     the screen, which is where the star is */
+  padding:calc(var(--bar) + 1.25rem) 0;
 }
 /* align-items:center makes every child shrink to its own content, which is
    what centres them — so anything that needs the full column has to ask for
@@ -283,56 +357,48 @@ section{position:relative;z-index:2}
 /* ---- the atmosphere: everything here is decoration and nothing else
         on the page depends on it, so it is inert to the pointer and
         hidden from assistive tech at the markup level ---- */
-.hero-bg{
-  position:absolute;
-  /* The glow belongs to the horizon, not to the section. Clipped at the
-     hero's own edge it terminates in a hard line precisely where Work
-     begins — so the backdrop overhangs by 300px and fades to nothing
-     across that overhang, and the light dies out instead of stopping.
-     Work is a later sibling at the same z-index, so its content still
-     paints over the top of this. */
-  inset:0 0 -300px 0;
-  z-index:0;pointer-events:none;overflow:hidden;
-  -webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 300px),transparent 100%);
-  mask-image:linear-gradient(to bottom,#000 calc(100% - 300px),transparent 100%);
-}
-.hero-rings{
-  position:absolute;left:50%;bottom:300px;
-  width:min(1700px,200vw);height:min(1700px,200vw);
-  transform:translate(-50%,50%);
-  /* the rings are strongest where they leave the bloom and gone by the
-     time they reach the headline, so they never compete with the type */
-  -webkit-mask-image:linear-gradient(to top,#000 18%,rgba(0,0,0,.62) 52%,transparent 88%);
-  mask-image:linear-gradient(to top,#000 18%,rgba(0,0,0,.62) 52%,transparent 88%);
-  opacity:0;animation:hazeIn 2s var(--ease) .3s forwards;
-}
-.hero-rings g{transform-box:fill-box;transform-origin:center;animation:ringDrift 18s ease-in-out infinite}
-.hero-rings circle{
-  fill:none;stroke:var(--marker);stroke-width:1;stroke-dasharray:2 11;
-  /* keeps the hairline a hairline at every viewport, instead of scaling
-     with the 1700px box and turning into a stripe */
-  vector-effect:non-scaling-stroke;
-}
+/* The bloom is wider than a phone, so it is clipped at the sides — and only
+   at the sides: clipped top and bottom it would end in a hard line on any
+   screen shorter than it is. Browsers without overflow:clip keep the plain
+   hidden above it, which is the lesser evil there. */
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;overflow:clip visible}
+/* the star's own light, low and wide behind the name. Two layers, because
+   one stop cannot be both the core and the halo. It fades to nothing well
+   inside its own box, so there is no edge for the next section to meet. */
 .hero-bloom{
-  position:absolute;left:50%;bottom:0;
-  width:min(1320px,170vw);height:min(680px,82vw);
-  /* bottom:0 is the hero's edge and this puts the glow's centre exactly on
-     it, which is what makes it read as light coming over a horizon rather
-     than a sphere someone parked at the bottom of the page */
-  bottom:300px;transform:translate(-50%,50%);
-  /* two layers, because one stop cannot be both the hot core and the wide
-     halo: the template's centre samples at #144784 and its edge falls away
-     far wider and cooler than a single gradient reaches */
+  position:absolute;left:50%;top:50%;
+  width:min(76rem,170vw);height:min(42rem,120vw);
+  transform:translate(-50%,-50%);
   background:
-    radial-gradient(closest-side,rgba(59,130,246,.20),transparent 70%),
-    radial-gradient(closest-side,rgba(29,78,216,.30),transparent 58%);
+    radial-gradient(closest-side,rgba(59,130,246,.15),transparent 72%),
+    radial-gradient(closest-side,rgba(29,78,216,.22),transparent 56%);
   filter:blur(18px);
   opacity:0;animation:hazeIn 2.4s var(--ease) .15s forwards;
+}
+/* STAR: the sparkles that stayed. Each is the star shape with a little of
+   the iris around it, placed by hand where the fold has no text, and each
+   twinkles on its own clock, in size and in brightness, as they do in the
+   loader. The glow needs the wrapper: a filter is applied before a mask, so
+   on a single element the mask would cut the glow straight off. */
+.spark{
+  position:absolute;left:var(--x);top:var(--y);
+  width:var(--s);height:var(--s);margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  filter:drop-shadow(0 0 .4rem rgba(59,130,246,.9));
+  opacity:0;transform:scale(0) rotate(-45deg);
+  animation:
+    sparkIn .5s var(--pop) var(--d,0s) forwards,
+    twinkle var(--t,3.2s) ease-in-out calc(var(--d,0s) + .5s) infinite;
+}
+.spark::before{
+  content:"";position:absolute;inset:0;background:#fff;
+  -webkit-mask:var(--star-shape) center/contain no-repeat;
+  mask:var(--star-shape) center/contain no-repeat;
+  /* blue as it appears, white once it has settled: the loader's order */
+  animation:sparkHeat 1.1s linear var(--d,0s) both;
 }
 
 /* ---- the claim ---- */
 .hero-title{
-  margin-top:clamp(1.75rem,4vw,2.75rem);
   font-family:var(--f-display);font-weight:800;
   /* Sized from measurement, not taste. In Manrope at this weight the longest
      line, "Antonio Mato.", costs a steady 6.45px of width per px of font
@@ -344,34 +410,43 @@ section{position:relative;z-index:2}
      lands Greek at ~85% and English at ~77%.
 
      The vh term is the safety net for short panels: a 1600x720 screen buys
-     a headline off width alone that will not fit its own fold. It is 19vh
-     now rather than 10.5, because the pill, the kicker and the three-cell
-     spec plate that used to share this space are all gone. On phones the
+     a headline off width alone that will not fit its own fold. On phones the
      floor wins before vh binds, so a moving URL bar cannot reflow it. */
   font-size:clamp(2.5rem,min(9.6vw,19vh),8.6rem);
   line-height:1.02;letter-spacing:-.035em;
   color:var(--chalk);
 }
-.hero-title .tl{
-  display:block;overflow:hidden;
-  padding:.06em 0 .15em;margin:-.06em 0 -.15em;
-}
+.hero-title .tl{display:block}
 .hero-title .tl i{
   display:block;font-style:normal;
-  transform:translateY(115%);
-  animation:lineRise 1s var(--ease) forwards;
+  opacity:0;animation:hazeIn .7s var(--ease-eye) forwards;
 }
-.hero-title .tl:nth-of-type(1) i{animation-delay:.24s}
-.hero-title .tl:nth-of-type(2) i{animation-delay:.36s}
-/* The template cools its headline off into blue as it falls away from the
-   eye. That is one gradient over there and three steps here, because the
-   real gradient has to be background-clip:text — and a clip cannot reach
-   text inside a descendant stacking context, which is precisely what
-   animation-fill-mode:forwards leaves behind on each line (an identity
-   transform still counts). The clipped version renders a headline of
-   entirely invisible glyphs. Three stops across three lines is the same
-   ramp, and it survives the entrance animation. */
+.hero-title .tl:nth-of-type(1) i{animation-delay:.2s}
+.hero-title .tl:nth-of-type(2) i{animation-delay:.34s}
+/* The headline cools off into blue as it falls away from the eye. That is
+   two solid colours on two lines rather than one gradient, because a real
+   gradient has to be background-clip:text — and a clip cannot reach text
+   inside a descendant stacking context, which is what an animation with
+   fill-mode:forwards leaves behind on each line. The clipped version
+   renders a headline of entirely invisible glyphs. */
 .hero-title .tl:nth-of-type(2){color:var(--chalk-tint)}
+
+/* GLYPH: the name arrives as characters. eye-theme.js splits each line into
+   one span per letter and adds .dec. A letter is absent (.w), then a ramp
+   character flickers in its place in the loader's blue (.s, drawn from
+   data-g), then it is itself. The stand-in is laid over the real letter,
+   which keeps its place in the line the whole time, so nothing shifts while
+   the name settles. Without the script the two lines above simply fade in. */
+.hero-title.dec .tl i{opacity:1;animation:none}
+.hero-title.dec .ch{position:relative}
+.hero-title.dec .ch.w{opacity:0}
+.hero-title.dec .ch.s{color:transparent}
+.hero-title.dec .ch.s::after{
+  content:attr(data-g);
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-family:var(--f-mono);font-weight:600;font-size:.6em;letter-spacing:0;line-height:1;
+  color:var(--marker);
+}
 
 .hero-desc{
   margin-top:clamp(1.4rem,3vw,2.1rem);
@@ -388,8 +463,7 @@ section{position:relative;z-index:2}
    headline this large it read as an afterthought */
 .hero-cta .btn{
   padding:clamp(1rem,1.5vw,1.35rem) clamp(1.6rem,2.4vw,2.35rem);
-  font-size:clamp(.82rem,1vw,.95rem);
-  border-radius:4px;
+  font-size:clamp(.8rem,.95vw,.92rem);
 }
 .hero-cta{
   margin-top:clamp(1.9rem,3.4vw,2.75rem);
@@ -398,24 +472,72 @@ section{position:relative;z-index:2}
 }
 
 .btn{
-  font-family:var(--f-ui);font-weight:var(--w-ui);
-  font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;
-  padding:15px 26px;border:1px solid var(--rule-2);border-radius:2px;
+  --pxc:var(--rule-2);
+  font-family:var(--f-ui);font-weight:600;
+  font-size:.76rem;letter-spacing:.07em;text-transform:uppercase;
+  padding:15px 26px;
   display:inline-flex;align-items:center;gap:10px;
-  transition:background .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease);
+  transition:background .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease);
 }
 .btn .arrow{transition:transform .3s var(--ease)}
 .btn:hover .arrow{transform:translateX(4px)}
-/* white, like Vetra's own primary — and the only fill that gets a 19:1
-   label, where white on blue-500 would have been 3.7:1 */
-.btn-primary{background:var(--chalk);border-color:var(--chalk);color:var(--ink-950);box-shadow:0 10px 34px -14px rgba(251,252,254,.45)}
-.btn-primary:hover{background:#fff;border-color:#fff;box-shadow:0 12px 40px -12px rgba(251,252,254,.6)}
+/* white, and the only fill that gets a 19:1 label, where white on blue-500
+   would have been 3.7:1 */
+.btn-primary{
+  position:relative;
+  --pxc:var(--chalk);background:var(--chalk);color:var(--ink-950);
+  box-shadow:var(--strips),0 12px 34px -14px rgba(251,252,254,.45);
+}
+.btn-primary:hover{--pxc:#fff;background:#fff;box-shadow:var(--strips),0 14px 40px -12px rgba(251,252,254,.6)}
+/* STAR: the primary button is the one control a sparkle answers. Two of
+   them, at opposite corners, arriving with the loader's overshoot. */
+.btn-primary::before,.btn-primary::after{
+  content:"";position:absolute;pointer-events:none;
+  width:1rem;height:1rem;background:#fff;
+  -webkit-mask:var(--star-shape) center/contain no-repeat;
+  mask:var(--star-shape) center/contain no-repeat;
+  transform:scale(0) rotate(-45deg);transition:transform .4s var(--pop);
+}
+.btn-primary::before{left:-1rem;top:-.95rem}
+.btn-primary::after{right:-.8rem;bottom:-.8rem;width:.62rem;height:.62rem;transition-delay:.08s}
+.btn-primary:hover::before,.btn-primary:hover::after,
+.btn-primary:focus-visible::before,.btn-primary:focus-visible::after{transform:none}
+
+/* IRIS: the eye in "See the work". It blinks on the loader's timing, and
+   under the pointer its iris does what the loader's does: it becomes the
+   star. The glint is a square, as the loader's catchlight is a window. */
+.eye-ic{width:1.75em;height:1.05em;flex:none;overflow:visible}
+.eye-ic .lid{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.eye-ic .iris{fill:var(--marker-fill)}
+.eye-ic .pupil{fill:var(--ink-950)}
+.eye-ic .glint{fill:#fff}
+.eye-ic .eye-open{
+  transform-box:fill-box;transform-origin:center;
+  transition:transform .3s var(--ease-eye),opacity .3s var(--ease-eye);
+  animation:blink 6.2s linear 2.4s infinite;
+}
+.eye-ic .eye-star{
+  fill:var(--marker-fill);
+  transform-box:fill-box;transform-origin:center;
+  transform:scale(0) rotate(-45deg);transition:transform .45s var(--pop);
+}
+.btn:hover .eye-ic .eye-open,.btn:focus-visible .eye-ic .eye-open{transform:scale(.15);opacity:0;animation:none}
+.btn:hover .eye-ic .eye-star,.btn:focus-visible .eye-ic .eye-star{transform:none}
+
 @keyframes hazeIn{to{opacity:1}}
-@keyframes lineRise{to{transform:none}}
-@keyframes ringDrift{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes revealIn{from{opacity:0}to{opacity:1}}
+@keyframes sparkIn{to{opacity:1;transform:none}}
+@keyframes sparkHeat{from{background:var(--marker)}to{background:#fff}}
+/* the loader's twinkle is two sines, one on size and one on brightness */
+@keyframes twinkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+/* closed and open again inside 0.24s, as the loader blinks */
+@keyframes blink{0%,96.1%,100%{transform:scaleY(1)}98%{transform:scaleY(.08)}}
+/* a pupil breathing: the iris ring thickens inward, so the pupil narrows */
+@keyframes pupil{0%,100%{border-width:.2em}50%{border-width:.3em}}
 /* eye-loader: the hero intro waits until the loader starts revealing the page */
-html.eye-loading:not(.eye-loaded) .hero *{animation-play-state:paused!important}
+html.eye-loading:not(.eye-loaded) .hero *,
+html.eye-loading:not(.eye-loaded) .hero *::before{animation-play-state:paused!important}
 
 /* ============================================================
    WORK
@@ -437,30 +559,35 @@ html.eye-loading:not(.eye-loaded) .hero *{animation-play-state:paused!important}
   font-size:clamp(1.65rem,3.4vw,2.45rem);letter-spacing:-.025em;line-height:1.05;
 }
 .card .tagline{
-  color:var(--marker);font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.76rem;
-  margin-top:11px;letter-spacing:.04em;
+  color:var(--marker);font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.74rem;
+  margin-top:12px;letter-spacing:.01em;line-height:1.5;
 }
 .card p.desc{
   color:var(--chalk-dim);margin-top:20px;font-size:1rem;line-height:1.7;
   max-width:min(48ch,100%);
 }
-.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:24px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
 .tag{
-  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.68rem;letter-spacing:.05em;
-  padding:6px 11px;border-radius:2px;
-  color:var(--chalk-dim);background:rgba(148,170,205,.10);
+  --px:1px;--pxc:rgba(148,170,205,.2);
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.66rem;letter-spacing:.03em;
+  padding:6px 10px;
+  color:var(--chalk-dim);background:rgba(148,170,205,.08);
 }
-.card-links{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
+.card-links{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap}
 .link-btn{
-  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;
-  padding:11px 17px;border:1px solid var(--rule-2);border-radius:2px;
+  --pxc:var(--rule-2);
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;
+  padding:12px 17px;
   display:inline-flex;align-items:center;gap:9px;
   color:var(--chalk-dim);
-  transition:color .3s var(--ease),border-color .3s var(--ease),background .3s var(--ease);
+  transition:color .3s var(--ease),box-shadow .3s var(--ease),background .3s var(--ease);
 }
 .link-btn svg{width:15px;height:15px}
-.link-btn:hover{color:var(--chalk);border-color:var(--marker);background:rgba(59,130,246,.14)}
+.link-btn:hover{color:var(--chalk);--pxc:var(--marker);background:rgba(59,130,246,.14)}
 button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);font-weight:var(--w-ui)}
+/* the line icons lose their round ends: square caps and mitred joins, a
+   pixel's worth of crispness, so they sit with the stepped outlines */
+.link-btn svg,.ss-hint svg,.tier li .ic svg,.ch-ic svg{stroke-linecap:square;stroke-linejoin:miter}
 
 /* ---- laptop mockup: one transparent PNG laid over the live screen ----
    assets/ui/laptop_screen.png is 1448x1086 with a rectangular hole cut out of
@@ -497,20 +624,27 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
 .slideshow{position:absolute;inset:0;overflow:hidden}
 .slideshow img{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .9s ease}
 .slideshow img.active{opacity:1}
+/* PIXEL: with eye-theme.js running, one frame does not fade into the next.
+   The outgoing frame is copied onto a canvas on top (.px-swap), the incoming
+   one takes its place underneath at once (.px turns the fade off), and the
+   canvas goes the way the loader goes: in 12px blocks. */
+.slideshow.px img{transition:none}
+canvas.px-swap{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
 .slideshow::after{
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:linear-gradient(180deg,rgba(6,6,9,.12),transparent 32%,transparent 62%,rgba(6,6,9,.55));
 }
 .ss-hint{
+  --px:1px;--pxc:rgba(255,255,255,.3);
   position:absolute;bottom:14px;right:14px;z-index:3;
-  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.64rem;letter-spacing:.06em;color:#fff;
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.62rem;letter-spacing:.04em;color:#fff;
   display:inline-flex;align-items:center;gap:8px;
-  padding:9px 13px;border:1px solid rgba(255,255,255,.3);border-radius:2px;
+  padding:9px 13px;
   background:rgba(6,6,9,.5);backdrop-filter:blur(6px);
-  transition:border-color .3s var(--ease),background .3s var(--ease);
+  transition:box-shadow .3s var(--ease),background .3s var(--ease);
 }
 .ss-hint svg{width:13px;height:13px}
-.slideshow:hover .ss-hint{border-color:var(--marker-fill);background:var(--marker-fill);color:var(--on-marker)}
+.slideshow:hover .ss-hint{--pxc:var(--marker-fill);background:var(--marker-fill);color:var(--on-marker)}
 
 
 /* ============================================================
@@ -523,9 +657,10 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
    ============================================================ */
 .hiring{
   padding:clamp(4rem,7vw,6rem) 0;
-  border-top:1px solid var(--rule);
-  border-bottom:1px solid var(--rule);
-  background:rgba(20,24,33,.28);
+  background:
+    var(--dots) left top/var(--cell) 2px repeat-x,
+    var(--dots) left bottom/var(--cell) 2px repeat-x,
+    rgba(20,24,33,.28);
 }
 .hiring-inner{
   display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);
@@ -534,20 +669,21 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
 .hiring h2{
   font-family:var(--f-display);font-weight:700;
   font-size:clamp(1.7rem,3.6vw,2.6rem);line-height:1.15;letter-spacing:-.025em;
-  color:var(--chalk);max-width:20ch;
+  color:var(--chalk);max-width:20ch;margin-top:1.1rem;
 }
 .hiring h2 .hl{color:var(--marker)}
 .hiring .lede{margin-top:1.15rem;color:var(--chalk-dim);font-size:1.03rem;line-height:1.7;max-width:56ch}
 .hiring-facts{
   list-style:none;margin-top:clamp(1.35rem,2.4vw,1.75rem);
-  display:flex;flex-wrap:wrap;gap:.5rem;
+  display:flex;flex-wrap:wrap;gap:.6rem;
 }
 .hiring-facts li{
-  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.72rem;letter-spacing:.03em;
-  color:var(--chalk-dim);border:1px solid var(--rule-2);border-radius:100px;padding:7px 14px;
+  --px:1px;--pxc:var(--rule-2);
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.68rem;letter-spacing:.02em;
+  color:var(--chalk-dim);padding:7px 13px;
 }
-.hiring-go{display:flex;flex-direction:column;gap:.75rem;align-items:flex-start}
-.hiring-go .quiet{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.7rem;color:var(--chalk-faint)}
+.hiring-go{display:flex;flex-direction:column;gap:.9rem;align-items:flex-start}
+.hiring-go .quiet{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.68rem;color:var(--chalk-faint)}
 
 @media(max-width:860px){
   .hiring-inner{grid-template-columns:1fr;gap:1.75rem;align-items:start}
@@ -576,34 +712,47 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
 .tier{
   position:relative;display:flex;flex-direction:column;
   padding:clamp(1.6rem,2.6vw,2.15rem);
-  border:2px solid var(--rule);border-radius:10px;
-  background:rgba(20,24,33,.34);
-  transition:border-color .35s var(--ease),transform .35s var(--ease);
+  --pxc:var(--rule);
+  /* all but opaque: the character field underneath flickers, and a price
+     list is not something anyone should have to read through static */
+  background:rgba(13,14,19,.93);
+  transition:box-shadow .35s var(--ease),transform .35s var(--ease);
 }
-.tier:hover{border-color:var(--rule-2);transform:translateY(-2px)}
-/* raised, not glowing: a hairline in the accent, a real shadow, and the
+.tier:hover{--pxc:var(--rule-2);transform:translateY(-2px)}
+/* raised, not glowing: an outline in the accent, a real shadow, and the
    card standing slightly proud of its neighbours on both edges */
 .tier.lead{
   margin-block:clamp(-1.5rem,-2vw,-1rem);
-  border-color:rgba(59,130,246,.5);
-  background:rgba(24,31,46,.6);
-  box-shadow:0 24px 60px -30px rgba(0,0,0,.9),0 0 0 2px rgba(59,130,246,.12);
+  --pxc:rgba(59,130,246,.6);
+  background:rgba(18,22,32,.95);
+  box-shadow:var(--strips),0 26px 60px -30px rgba(0,0,0,.9);
 }
-.tier.lead:hover{border-color:rgba(59,130,246,.75)}
+.tier.lead:hover{--pxc:rgba(59,130,246,.9)}
 .tier-badge{
   position:absolute;top:0;left:50%;transform:translate(-50%,-50%);
+  display:inline-flex;align-items:center;gap:.65em;
   font-family:var(--f-ui);font-weight:600;
-  font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;
-  background:var(--marker-fill);color:var(--on-marker);
-  padding:6px 14px;border-radius:100px;
+  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
+  background:var(--marker-fill);color:var(--on-marker);--pxc:var(--marker-fill);
+  padding:6px 13px;
 }
+/* STAR: the popular package carries the star, and its badge arrives the way
+   a sparkle does, after the card has finished dissolving in */
+.tier-badge::before{
+  content:"";width:1em;height:1em;flex:none;background:#fff;
+  -webkit-mask:var(--star-shape) center/contain no-repeat;
+  mask:var(--star-shape) center/contain no-repeat;
+  animation:twinkle 2.8s ease-in-out infinite;
+}
+.reveal .tier-badge{scale:0}
+.reveal.in .tier-badge{scale:1;transition:scale .5s var(--pop) .65s}
 /* a real heading, not a styled span: without it the three packages are
    invisible to anyone navigating this section by headings */
 .tier-name{
   font-family:var(--f-ui);font-weight:600;
   /* the name is what people scan for first; at .62rem it was under 10px and
      losing to the price beside it */
-  font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--chalk-faint);
+  font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--chalk-faint);
 }
 .tier.lead .tier-name{color:var(--marker)}
 .tier .blurb{margin-top:.7rem;color:var(--chalk-dim);font-size:.92rem;line-height:1.6;min-height:3.2em}
@@ -612,13 +761,16 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
 .tier-price b{
   font-family:var(--f-display);font-weight:800;
   font-size:clamp(2.4rem,4.4vw,3.15rem);line-height:1;letter-spacing:-.04em;color:var(--chalk);
+  /* GLYPH: the digits run before they settle (eye-theme.js); equal widths
+     keep the number from shuffling sideways while they do */
+  font-variant-numeric:tabular-nums;
 }
 /* "how long?" is the second question every time, and it had no answer
    anywhere on the page */
 .tier-when{
-  margin-top:.6rem;display:flex;align-items:center;gap:.5em;
+  margin-top:.6rem;display:flex;align-items:center;gap:.55em;
   font-family:var(--f-ui);font-weight:var(--w-ui);
-  font-size:.72rem;letter-spacing:.02em;color:var(--chalk-dim);
+  font-size:.7rem;letter-spacing:.01em;color:var(--chalk-dim);
 }
 .tier-when::before{
   content:"";flex:none;width:.95em;height:.95em;background:var(--chalk-faint);
@@ -627,25 +779,26 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
 }
 .tier-once{
   margin-top:.5rem;font-family:var(--f-ui);font-weight:var(--w-ui);
-  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-faint);
+  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-faint);
 }
 
 .tier-cta{
+  --pxc:var(--rule-2);
   margin-top:clamp(1.35rem,2.4vw,1.75rem);
   display:flex;align-items:center;justify-content:center;gap:.6rem;
-  padding:1rem 1.25rem;border-radius:7px;
-  border:1px solid var(--rule-2);background:transparent;color:var(--chalk);
+  padding:1rem 1.25rem;
+  background:transparent;color:var(--chalk);
   font-family:var(--f-ui);font-weight:600;
-  font-size:.78rem;letter-spacing:.06em;
-  transition:background .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease);
+  font-size:.76rem;letter-spacing:.05em;
+  transition:background .3s var(--ease),box-shadow .3s var(--ease),color .3s var(--ease);
 }
-.tier-cta:hover{background:rgba(59,130,246,.12);border-color:var(--marker)}
-.tier.lead .tier-cta{background:var(--marker-fill);border-color:var(--marker-fill);color:var(--on-marker)}
-.tier.lead .tier-cta:hover{background:var(--marker-deep);border-color:var(--marker-deep)}
+.tier-cta:hover{background:rgba(59,130,246,.12);--pxc:var(--marker)}
+.tier.lead .tier-cta{background:var(--marker-fill);--pxc:var(--marker-fill);color:var(--on-marker)}
+.tier.lead .tier-cta:hover{background:var(--marker-deep);--pxc:var(--marker-deep)}
 
 .tier-sell{
   margin-top:clamp(1.35rem,2.4vw,1.7rem);padding-top:clamp(1.15rem,2vw,1.45rem);
-  border-top:1px solid var(--rule);
+  background:var(--dots) left top/var(--cell) 2px repeat-x;
   color:var(--chalk);font-size:.92rem;line-height:1.55;font-weight:500;
 }
 .tier ul{list-style:none;margin-top:1.1rem;display:flex;flex-direction:column;gap:.8rem}
@@ -660,15 +813,24 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
 .tier li .ic svg{width:100%;height:100%;display:block}
 .tier li b{color:var(--chalk);font-weight:500}
 /* the hosting line is the offer people remember, so it is the one row that
-   goes full chalk and gets a boxed mark around its icon */
+   goes full chalk, gets a boxed mark around its icon, and keeps a sparkle */
 .tier li.gift{color:var(--chalk);font-weight:500;margin-top:.2rem}
 .tier li.gift .ic{
-  border:1px solid rgba(59,130,246,.4);border-radius:5px;
+  position:relative;
+  --px:1px;--pxc:rgba(59,130,246,.5);
   background:rgba(59,130,246,.1);padding:.2rem;
 }
+.tier li.gift .ic::after{
+  content:"";position:absolute;right:-.5rem;top:-.5rem;width:.72rem;height:.72rem;background:#fff;
+  -webkit-mask:var(--star-shape) center/contain no-repeat;
+  mask:var(--star-shape) center/contain no-repeat;
+  animation:twinkle 2.6s ease-in-out infinite;
+}
+.tier:nth-child(2) li.gift .ic::after{animation-delay:-.9s}
+.tier:nth-child(3) li.gift .ic::after{animation-delay:-1.7s}
 /* "Everything in X, plus:" is a hinge, not a feature — no icon, and set as
    the small heading it actually is */
-.tier li.carry{color:var(--chalk-faint);font-size:.68rem;letter-spacing:.14em;
+.tier li.carry{color:var(--chalk-faint);font-size:.66rem;letter-spacing:.1em;
   text-transform:uppercase;font-family:var(--f-ui);font-weight:600;margin-bottom:.1rem}
 .tier li.carry b{color:var(--chalk-faint);font-weight:600}
 
@@ -677,7 +839,7 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
   position:relative;
   margin-top:clamp(2.25rem,4vw,3rem);
   padding:clamp(1.15rem,2.2vw,1.5rem) clamp(1.25rem,2.4vw,1.75rem);
-  border:2px solid var(--rule);border-radius:8px;background:rgba(20,24,33,.28);
+  --pxc:var(--rule);background:rgba(13,14,19,.9);
   display:flex;flex-direction:column;gap:.55rem;
 }
 .price-trust p{color:var(--chalk-dim);font-size:.94rem;line-height:1.65}
@@ -693,31 +855,39 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
 .px-card{
   position:relative;
   padding:clamp(1.35rem,2.4vw,1.85rem);
-  border:2px solid var(--rule);border-radius:8px;background:rgba(20,24,33,.28);
+  --pxc:var(--rule);background:rgba(13,14,19,.9);
 }
 .px-card + .px-card{margin-top:clamp(1rem,1.8vw,1.5rem)}
 .px-card h3{
   font-family:var(--f-ui);font-weight:600;
-  font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--chalk-faint);
+  font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-faint);
 }
 .px-card > p{margin-top:.85rem;color:var(--chalk-dim);font-size:.94rem;line-height:1.65}
 .px-card > p b{color:var(--chalk);font-weight:500}
 .px-card .own{margin-top:.85rem;color:var(--chalk);font-size:.94rem;line-height:1.65}
-.px-mini{list-style:none;margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.45rem}
+.px-mini{list-style:none;margin-top:.95rem;display:flex;flex-wrap:wrap;gap:.55rem}
 .px-mini li{
-  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.68rem;letter-spacing:.03em;
-  color:var(--chalk-dim);border:1px solid var(--rule);border-radius:100px;padding:5px 12px;
+  --px:1px;--pxc:var(--rule-2);
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.66rem;letter-spacing:.02em;
+  color:var(--chalk-dim);padding:5px 11px;
 }
 .addons{list-style:none;margin-top:1.1rem;display:flex;flex-direction:column}
 .addons li{
-  display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
-  padding:.7rem 0;border-top:1px solid var(--rule);
+  display:flex;align-items:baseline;gap:.75rem;
+  padding:.62rem 0;
   font-size:.91rem;color:var(--chalk-dim);
 }
-.addons li:first-child{border-top:0;padding-top:0}
+.addons li:first-child{padding-top:0}
+/* SCAN: leader dots run from the thing to its price, a dot per character
+   column. The pseudo-element is ordered between the two real children. */
+.addons li::before{
+  content:"";order:1;flex:1;min-width:1.5rem;height:2px;
+  background:var(--dots) left/var(--cell) 2px repeat-x;opacity:.75;
+}
 .addons li b{
-  flex:none;font-family:var(--f-ui);font-weight:600;font-size:.78rem;
-  letter-spacing:.02em;color:var(--chalk);
+  order:2;
+  flex:none;font-family:var(--f-ui);font-weight:600;font-size:.76rem;
+  letter-spacing:.01em;color:var(--chalk);
 }
 .addons li b.quote{color:var(--chalk-faint);font-weight:var(--w-ui)}
 
@@ -726,8 +896,8 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
   position:relative;
   margin-top:clamp(1rem,1.8vw,1.5rem);
   padding:clamp(1.75rem,3.2vw,2.5rem);
-  border:2px solid var(--rule-2);border-radius:10px;
-  background:rgba(24,31,46,.5);
+  --pxc:var(--rule-2);
+  background:rgba(18,22,32,.9);
   display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;
 }
 .price-cta h3{
@@ -735,32 +905,38 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
   font-size:clamp(1.2rem,2.2vw,1.55rem);line-height:1.25;letter-spacing:-.02em;color:var(--chalk);
 }
 .price-cta p{margin-top:.6rem;color:var(--chalk-dim);font-size:.97rem;line-height:1.6;max-width:46ch}
-.price-cta .pc-go{display:flex;flex-direction:column;align-items:flex-start;gap:.6rem;flex:none}
-.price-cta .nocommit{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.68rem;letter-spacing:.04em;color:var(--chalk-faint)}
+.price-cta .pc-go{display:flex;flex-direction:column;align-items:flex-start;gap:.8rem;flex:none}
+.price-cta .nocommit{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.66rem;letter-spacing:.03em;color:var(--chalk-faint)}
 
-/* ---- the detail blocks light up where the pointer is ----
-   Two layers, both driven by --gx/--gy from a pointermove listener.
+/* ---- IRIS: the detail blocks light up where the pointer is ----
+   The same catchlight that follows the pointer through the character field,
+   caught on an edge. Two layers, both driven by --gx/--gy from a pointermove
+   listener.
 
-   ::before is the border. inset:0 with a 2px padding puts the masked ring
-   exactly over the element's own 2px border rather than just outside it,
-   so the border turns blue instead of gaining a second blue line beside
-   it — which at this weight would have read as a doubled edge.
+   ::before is the outline. The stepped outline lives just outside the box,
+   so this ring is laid over exactly that band (inset by minus one pixel-step,
+   padded by one) with its corners cut the same way: the outline itself turns
+   blue instead of gaining a second blue line beside it.
 
    ::after is the wash, and it has to sit under the text: an absolutely
    positioned pseudo-element paints above in-flow content, so the children
    are lifted back over it rather than reading through a blue veil. */
 .price-trust::before,.px-card::before,.price-cta::before{
-  content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;
-  background:radial-gradient(210px circle at var(--gx,50%) var(--gy,50%),
+  content:"";position:absolute;inset:calc(var(--px) * -1);padding:var(--px);
+  background:radial-gradient(210px circle at calc(var(--gx,50%) + var(--px)) calc(var(--gy,50%) + var(--px)),
              rgba(59,130,246,.85),rgba(59,130,246,.18) 42%,transparent 72%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;
   mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   mask-composite:exclude;
+  clip-path:polygon(
+    var(--px) 0,calc(100% - var(--px)) 0,calc(100% - var(--px)) var(--px),100% var(--px),
+    100% calc(100% - var(--px)),calc(100% - var(--px)) calc(100% - var(--px)),calc(100% - var(--px)) 100%,
+    var(--px) 100%,var(--px) calc(100% - var(--px)),0 calc(100% - var(--px)),0 var(--px),var(--px) var(--px));
   opacity:0;transition:opacity .4s var(--ease);pointer-events:none;
 }
 .price-trust::after,.px-card::after,.price-cta::after{
-  content:"";position:absolute;inset:0;border-radius:inherit;
+  content:"";position:absolute;inset:0;
   background:radial-gradient(260px circle at var(--gx,50%) var(--gy,50%),
              rgba(59,130,246,.10),transparent 68%);
   opacity:0;transition:opacity .4s var(--ease);pointer-events:none;
@@ -782,11 +958,20 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
   .price-cta .pc-go{align-self:stretch}
   .price-cta .btn{width:100%;justify-content:center}
   .addons li{flex-direction:column;gap:.2rem}
+  .addons li::before{display:none}
 }
 /* ============================================================
    CONTACT
    ============================================================ */
 .contact .lede{color:var(--chalk-dim);margin-top:20px;max-width:46ch;font-size:1.03rem}
+/* IRIS: "open to work" is a live fact, so it carries the live mark: a small
+   iris whose pupil breathes. The one round thing on the page. */
+.contact .sheet-note{display:inline-flex;align-items:center;gap:.8em}
+.contact .sheet-note::before{
+  content:"";flex:none;box-sizing:border-box;width:.9em;height:.9em;border-radius:50%;
+  border:.2em solid var(--marker);background:var(--pupil);
+  animation:pupil 3.7s ease-in-out infinite;
+}
 
 /* the form on the left, the ways to reach him directly on the right */
 .contact-work{
@@ -795,79 +980,76 @@ button.link-btn{background:transparent;cursor:pointer;font-family:var(--f-ui);fo
   gap:clamp(1.75rem,4.5vw,3.625rem);
   align-items:start;
 }
-form{display:flex;flex-direction:column;gap:19px}
-.field{position:relative;display:flex;flex-direction:column;gap:9px}
+form{display:flex;flex-direction:column;gap:21px}
+.field{position:relative;display:flex;flex-direction:column;gap:10px}
 .field label{
-  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
   color:var(--chalk-faint);transition:color .3s var(--ease);
 }
 .field:focus-within label{color:var(--marker)}
 .field input,.field textarea{
-  background:rgba(6,6,9,.5);
-  border:1px solid var(--rule);
-  border-radius:2px;
+  --pxc:var(--rule);
+  background:rgba(6,6,9,.86);
   padding:14px 15px;
   color:var(--chalk);
   font-family:var(--f-body);font-size:1rem;
-  transition:border-color .3s var(--ease),box-shadow .3s var(--ease),background .3s var(--ease);
+  transition:box-shadow .3s var(--ease),background .3s var(--ease);
   resize:vertical;
 }
 .field input::placeholder,.field textarea::placeholder{color:var(--chalk-faint)}
 .field input:focus,.field textarea:focus{
   outline:none;
-  border-color:var(--rule-2);
-  background:rgba(6,6,9,.8);
-  /* the accent lands on the bottom edge only, so nothing shifts on focus */
-  box-shadow:inset 0 -2px 0 var(--marker);
+  --pxc:var(--rule-2);
+  background:rgba(6,6,9,.95);
+  /* the accent lands on the bottom strip only, so nothing shifts on focus */
+  --pxb:var(--marker);
 }
-/* that inset accent is deliberately quiet for pointer users; the shared
-   :focus-visible rule above still gives keyboard users a full ring */
 .field textarea{min-height:130px;line-height:1.6}
 
 .form-submit{
   align-self:flex-start;
-  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;
-  padding:15px 27px;background:var(--marker-fill);border:1px solid var(--marker-fill);border-radius:2px;color:var(--on-marker);
+  font-family:var(--f-ui);font-weight:600;font-size:.76rem;letter-spacing:.07em;text-transform:uppercase;
+  padding:15px 27px;background:var(--marker-fill);--pxc:var(--marker-fill);color:var(--on-marker);
   cursor:pointer;display:inline-flex;align-items:center;gap:10px;
-  transition:background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease);
-  box-shadow:0 8px 30px -10px var(--marker);
+  transition:background .3s var(--ease),box-shadow .3s var(--ease);
+  box-shadow:var(--strips),0 8px 30px -10px var(--marker);
 }
-.form-submit:hover{background:var(--marker-deep);border-color:var(--marker-deep);box-shadow:0 12px 38px -10px var(--marker)}
+.form-submit:hover{background:var(--marker-deep);--pxc:var(--marker-deep);box-shadow:var(--strips),0 12px 38px -10px var(--marker)}
 .form-submit .arrow{transition:transform .3s var(--ease)}
 .form-submit:hover .arrow{transform:translateX(4px)}
-.form-note{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.74rem;color:var(--chalk-faint);min-height:1.2em;transition:color .3s}
+.form-note{font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.72rem;color:var(--chalk-faint);min-height:1.2em;transition:color .3s}
 .form-note.ok{color:var(--marker)}
 
 /* ---- the channels that do not go through the form ---- */
 .channels{
   display:flex;flex-direction:column;
-  border:1px solid var(--rule);border-radius:3px;
-  background:linear-gradient(180deg,rgba(28,34,48,.45),rgba(20,24,33,.20));
-  overflow:hidden;
+  --pxc:var(--rule);
+  background:linear-gradient(180deg,rgba(22,27,39,.9),rgba(13,14,19,.9));
 }
 .channels a{
   display:flex;align-items:center;gap:clamp(.75rem,1.6vw,1rem);
   padding:clamp(.9rem,1.8vw,1.15rem) clamp(1rem,2vw,1.35rem);
-  border-top:1px solid var(--rule);
-  transition:background .3s var(--ease);
+  /* each row is ruled off from the one above with the dotted rule */
+  background-image:var(--dots);background-size:var(--cell) 2px;background-repeat:repeat-x;background-position:left top;
+  transition:background-color .3s var(--ease);
 }
-.channels a:first-child{border-top:0}
-.channels a:hover{background:rgba(37,99,235,.12)}
+.channels a:first-child{background-image:none}
+.channels a:hover{background-color:rgba(37,99,235,.12)}
 /* the icon says which channel this is at a glance, so the label above the
    value can stay small without the row becoming a guessing game */
 .ch-ic{
+  --px:1px;--pxc:var(--rule-2);
   width:34px;height:34px;flex:none;
   display:grid;place-items:center;
-  border:1px solid var(--rule-2);border-radius:3px;
   color:var(--marker);
-  transition:border-color .3s var(--ease),background .3s var(--ease);
+  transition:box-shadow .3s var(--ease),background .3s var(--ease);
 }
 .ch-ic svg{width:16px;height:16px}
-.channels a:hover .ch-ic{border-color:var(--marker);background:rgba(59,130,246,.12)}
+.channels a:hover .ch-ic{--pxc:var(--marker);background:rgba(59,130,246,.12)}
 .ch-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
 .channels span{
   font-family:var(--f-ui);font-weight:var(--w-ui);
-  font-size:.57rem;letter-spacing:.24em;text-transform:uppercase;color:var(--chalk-faint);
+  font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-faint);
 }
 .channels b{
   font-weight:500;font-size:.88rem;color:var(--chalk-dim);
@@ -879,25 +1061,96 @@ form{display:flex;flex-direction:column;gap:19px}
 
 /* ============================================================
    FOOTER
+   IRIS: the page ends where the intro began. eye-theme.js draws
+   the loader's eye into the character field behind .eye-box, so
+   it rises through the characters as the page scrolls to its
+   end. It follows the pointer, blinks, and when pressed plays
+   the intro again. Under it is the alphabet it is drawn in,
+   darkest character to brightest.
    ============================================================ */
 .footer{
-  border-top:1px solid var(--rule-2);
-  padding:30px var(--gutter);
-  display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
-  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.7rem;color:var(--chalk-faint);letter-spacing:.06em;
   position:relative;z-index:2;
+  padding:clamp(2rem,5vw,3.5rem) var(--gutter) 30px;
+  display:flex;flex-direction:column;align-items:center;
+  font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.68rem;color:var(--chalk-faint);letter-spacing:.05em;
+}
+.eye-btn{
+  display:flex;flex-direction:column;align-items:center;
+  max-width:100%;padding:0;border:0;background:transparent;color:inherit;cursor:default;
+  font:inherit;letter-spacing:inherit;
+}
+/* it only offers to replay the intro once eye-theme.js has wired it up to do
+   so (.is-live); until then, and with reduced motion, it is just the eye */
+.eye-btn.is-live{cursor:pointer}
+/* the eye's place. Its proportions are the skin's: 2.5 eye-widths across,
+   1.44 down (SKIN_X and SKIN_Y in eye-theme.js), so the eye fills it exactly. */
+.eye-box{display:block;width:min(36rem,92vw);aspect-ratio:2.5/1.44}
+/* without the field (no WebGL, or the script never arrived) a small drawn
+   eye stands in, so the button is never an empty rectangle */
+.eye-still{display:block;width:100%;height:100%;color:var(--chalk-dim)}
+.eye-still .lid{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linejoin:round}
+.eye-still .iris{fill:var(--marker)}
+.eye-still .pupil{fill:var(--pupil)}
+.eye-still .glint{fill:#fff}
+html:not(.field-on) .eye-box{width:6.5rem;aspect-ratio:30/18;margin:1rem 0}
+html.field-on .eye-still{display:none}
+.eye-cap{
+  display:none;align-items:center;gap:.75em;
+  margin-top:.35rem;padding:.5rem 0;
+  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-faint);
+  transition:color .3s var(--ease);
+}
+.eye-btn.is-live .eye-cap{display:inline-flex}
+.eye-cap::before{
+  content:"";width:1em;height:1em;flex:none;background:var(--marker);
+  -webkit-mask:var(--star-shape) center/contain no-repeat;
+  mask:var(--star-shape) center/contain no-repeat;
+  transition:transform .45s var(--pop);
+}
+.eye-btn:hover .eye-cap,.eye-btn:focus-visible .eye-cap{color:var(--chalk)}
+.eye-btn:hover .eye-cap::before,.eye-btn:focus-visible .eye-cap::before{transform:rotate(90deg) scale(1.25)}
+/* reduced motion: the eye is a still picture, and there is no intro to replay */
+.eye-btn.is-still{pointer-events:none}
+/* GLYPH: the ramp, quietest at its dark end */
+.ramp{
+  max-width:100%;margin-top:.9rem;
+  font-size:.6rem;letter-spacing:.22em;line-height:1.9;text-align:center;
+  color:var(--chalk-dim);overflow-wrap:anywhere;word-break:break-all;user-select:none;
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.2),#000);
+  mask-image:linear-gradient(90deg,rgba(0,0,0,.2),#000);
+}
+.footer-row{
+  align-self:stretch;
+  margin-top:clamp(1.75rem,4vw,2.5rem);padding-top:24px;
+  background:var(--dots) left top/var(--cell) 2px repeat-x;
+  display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
 }
 .footer a{transition:color .3s var(--ease)}
 .footer a:hover{color:var(--marker)}
 
 /* ============================================================
    SCROLL REVEAL
+   PIXEL: things arrive the way the loader leaves. With
+   eye-theme.js running, an element entering the screen is
+   switched on at once under a cover painted to look exactly
+   like the ground behind it (canvas.px-cover), and the cover
+   falls away in 12px blocks from a few random seeds, the
+   loader's own order. Nothing is seen to be covered; the thing
+   assembles. Without the script, or before it has loaded, the
+   same class change is a plain fade.
    ============================================================ */
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-.reveal.in{opacity:1;transform:none}
-.reveal.d1{transition-delay:.08s}
-.reveal.d2{transition-delay:.16s}
-.reveal.d3{transition-delay:.24s}
+.reveal{position:relative;opacity:0}
+.reveal.in{opacity:1}
+.reveal.in:not(.px-in){animation:revealIn .7s var(--ease-eye) backwards}
+.reveal.d1.in:not(.px-in){animation-delay:.08s}
+.reveal.d2.in:not(.px-in){animation-delay:.16s}
+.reveal.d3.in:not(.px-in){animation-delay:.24s}
+canvas.px-cover{
+  position:absolute;left:0;top:0;width:100%;height:100%;z-index:5;
+  pointer-events:none;
+}
+/* the squares a pressed button sheds are drawn here, over everything */
+canvas.px-burst{position:fixed;left:0;top:0;width:100%;height:100%;z-index:90;pointer-events:none;display:none}
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -909,15 +1162,19 @@ form{display:flex;flex-direction:column;gap:19px}
 }
 @media(max-width:640px){
   .hero{min-height:auto;padding:calc(var(--bar) + 3rem) 0 44px}
-  .btn{padding:14px 20px;font-size:.75rem}
+  .btn{padding:14px 20px;font-size:.72rem}
   .svc-lead{max-width:none}
   .card h3{font-size:1.45rem}
   .card .desc{font-size:.95rem}
   .ss-hint{bottom:8px;right:8px;padding:6px 9px;font-size:.55rem;gap:6px}
   .ss-hint svg{width:11px;height:11px}
   .laptop-frame{filter:drop-shadow(0 18px 24px rgba(2,3,7,.58))}
-  .footer{flex-direction:column;align-items:flex-start;gap:12px;font-size:.66rem}
+  .footer-row{flex-direction:column;align-items:flex-start;gap:12px}
   .form-submit{width:100%;justify-content:center}
+  /* on a phone the text runs edge to edge, so only the sparkles that sit
+     above the name or below the button stay */
+  .spark{display:none}
+  .spark.sm{display:block}
 }
 @media(max-width:560px){
   .svc-cta,.job-note{flex-direction:column;align-items:flex-start}
@@ -929,19 +1186,17 @@ form{display:flex;flex-direction:column;gap:19px}
 }
 /* touch devices: no hover-dependent affordances */
 @media(hover:none){
-  .ss-hint{border-color:var(--marker-fill);background:var(--marker-fill);color:var(--on-marker)}
+  .ss-hint{--pxc:var(--marker-fill);background:var(--marker-fill);color:var(--on-marker)}
 }
 
 /* Short laptop panels (1280x720, 1366x768, 1024x768). Shrinking the
-   headline alone cannot recover the overflow, because the pill, kicker,
-   description, buttons and spec plate are all rem-sized too and none of
-   them cares how tall the screen is. So the vertical rhythm compresses
-   here as well, which is what keeps the spec plate on the fold. Spacing
-   only -- the type size is left to the vh term above, so there is no
-   jump in the headline as the breakpoint passes. */
+   headline alone cannot recover the overflow, because the description and
+   the button are rem-sized too and neither cares how tall the screen is.
+   So the vertical rhythm compresses here as well, which is what keeps the
+   button on the fold. Spacing only -- the type size is left to the vh term
+   above, so there is no jump in the headline as the breakpoint passes. */
 @media(min-width:700px) and (max-height:830px){
-  .hero{padding-top:calc(var(--bar) + 1rem)}
-  .hero-title{margin-top:clamp(.8rem,2vw,1.4rem)}
+  .hero{padding:calc(var(--bar) + .5rem) 0}
   .hero-desc{margin-top:clamp(.7rem,1.6vw,1rem)}
 }
 
@@ -963,13 +1218,13 @@ form{display:flex;flex-direction:column;gap:19px}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .reveal{opacity:1;transform:none}
+  .reveal{opacity:1}
   /* the load sequence starts from opacity:0 / scale:0, so every participant
      has to be pinned to its finished state once the animation is dropped */
-  .hero-desc,.hero-cta,.hero-rings,.hero-bloom{opacity:1!important}
-  /* the headline lines start pushed fully below their own clip box, so
-     dropping the animation without this leaves three invisible lines */
-  .hero-title .tl i{transform:none!important}
+  .hero-title .tl i,.hero-desc,.hero-cta,.hero-bloom,.spark{opacity:1!important}
+  .spark{transform:none!important}
+  .reveal .sheet-label::before{transform:none}
+  .reveal .tier-badge{scale:1}
   html{scroll-behavior:auto}
 }
 </style>
@@ -1035,15 +1290,22 @@ form{display:flex;flex-direction:column;gap:19px}
        pointer and never reaches the accessibility tree -->
   <div class="hero-bg" aria-hidden="true">
     <div class="hero-bloom"></div>
-    <svg class="hero-rings" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" focusable="false">
-      <g>
-        <circle cx="50" cy="50" r="15" stroke-opacity=".34"/>
-        <circle cx="50" cy="50" r="24" stroke-opacity=".26"/>
-        <circle cx="50" cy="50" r="33" stroke-opacity=".19"/>
-        <circle cx="50" cy="50" r="42" stroke-opacity=".13"/>
-        <circle cx="50" cy="50" r="49.5" stroke-opacity=".08"/>
-      </g>
-    </svg>
+    <!-- the sparkles that stayed on from the loader: where each sits as a
+         share of the fold, its size, when it appears, and its own clock.
+         "sm" marks the four a phone keeps. The big star behind the name is
+         not here: eye-theme.js draws it into the character field. -->
+    <span class="spark sm" style="--x:9%;--y:19%;--s:1.5rem;--d:.9s;--t:3.4s"></span>
+    <span class="spark" style="--x:19%;--y:63%;--s:.7rem;--d:1.5s;--t:2.6s"></span>
+    <span class="spark" style="--x:12%;--y:84%;--s:1.1rem;--d:1.2s;--t:3.9s"></span>
+    <span class="spark" style="--x:29%;--y:13%;--s:.55rem;--d:1.9s;--t:2.3s"></span>
+    <span class="spark" style="--x:4.5%;--y:46%;--s:.5rem;--d:2.2s;--t:3.1s"></span>
+    <span class="spark" style="--x:36%;--y:91%;--s:.6rem;--d:1.7s;--t:2.8s"></span>
+    <span class="spark sm" style="--x:90%;--y:15%;--s:.8rem;--d:1.3s;--t:2.9s"></span>
+    <span class="spark" style="--x:91%;--y:33%;--s:1.2rem;--d:1s;--t:3.6s"></span>
+    <span class="spark" style="--x:83%;--y:71%;--s:.6rem;--d:2s;--t:2.4s"></span>
+    <span class="spark sm" style="--x:93%;--y:88%;--s:1.6rem;--d:1.4s;--t:4.1s"></span>
+    <span class="spark" style="--x:72%;--y:10%;--s:.5rem;--d:2.4s;--t:2.7s"></span>
+    <span class="spark sm" style="--x:8%;--y:93%;--s:.7rem;--d:1.8s;--t:3.2s"></span>
   </div>
 
   <div class="wrap hero-inner">
@@ -1056,7 +1318,7 @@ form{display:flex;flex-direction:column;gap:19px}
     <p class="hero-desc" data-i18n-html="hero.desc">A <em>website designer</em> and developer in Athens, with a BSc in Computer Science. I design and build websites and web applications — the look, the code behind them, and everything it takes to get them live.</p>
 
     <div class="hero-cta">
-      <a href="#work" class="btn btn-primary"><span data-i18n="hero.cta1">See the work</span> <span class="arrow">→</span></a>
+      <a href="#work" class="btn btn-primary"><svg class="eye-ic" viewBox="0 0 30 18" aria-hidden="true" focusable="false"><g class="eye-open"><path class="lid" d="M1.5 10.2C7.5 3 21.5 1.6 28.5 8.2 22.5 15.2 8 16.2 1.5 10.2Z"/><circle class="iris" cx="15" cy="9" r="4.7"/><circle class="pupil" cx="15" cy="9" r="2.1"/><rect class="glint" x="12.1" y="6.1" width="1.9" height="1.9"/></g><path class="eye-star" d="M15 .5C15 4.86 10.86 9 6.5 9 10.86 9 15 13.14 15 17.5 15 13.14 19.14 9 23.5 9 19.14 9 15 4.86 15 .5Z"/></svg><span data-i18n="hero.cta1">See the work</span> <span class="arrow">→</span></a>
     </div>
 
   </div>
@@ -1346,10 +1608,26 @@ form{display:flex;flex-direction:column;gap:19px}
 
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
-  <span data-i18n="footer.built">Written by hand · Athens, 2026</span>
-  <a href="#top" data-i18n="footer.top">BACK TO TOP ↑</a>
+  <!-- the eye again. eye-theme.js draws it into the character field behind
+       .eye-box, and pressing it plays the intro once more. The small drawing
+       inside is only what shows where that canvas cannot run. In the markup
+       it is a picture, out of the tab order; the script makes it a control
+       when there is an intro it can actually replay. -->
+  <button class="eye-btn" id="eye-btn" type="button" tabindex="-1" aria-hidden="true">
+    <span class="eye-box" id="eye-stage"><svg class="eye-still" viewBox="0 0 30 18" aria-hidden="true" focusable="false"><path class="lid" d="M1.5 10.2C7.5 3 21.5 1.6 28.5 8.2 22.5 15.2 8 16.2 1.5 10.2Z"/><circle class="iris" cx="15" cy="9" r="4.7"/><circle class="pupil" cx="15" cy="9" r="2.1"/><rect class="glint" x="12.1" y="6.1" width="1.9" height="1.9"/></svg></span>
+    <span class="eye-cap" data-i18n="footer.replay">Replay the intro</span>
+  </button>
+  <!-- the characters the eye is drawn in, darkest to brightest; filled in by eye-theme.js -->
+  <p class="ramp" id="ramp" aria-hidden="true"></p>
+  <div class="footer-row">
+    <span data-i18n="footer.built">Written by hand · Athens, 2026</span>
+    <a href="#top" data-i18n="footer.top">BACK TO TOP ↑</a>
+  </div>
 </footer>
 
+<!-- the page-side half of the loader: the character field, the dissolves,
+     the decoding name. The script below works without it, as a plain page. -->
+<script src="/eye-theme.js?v=1"></script>
 <script>
 (function(){
   "use strict";
@@ -1363,17 +1641,31 @@ form{display:flex;flex-direction:column;gap:19px}
   window.addEventListener("scroll", onScroll, {passive:true});
   onScroll();
 
-  /* ---- scroll reveal ---- */
+  /* eye-theme.js, when it loaded. Everything below works without it: the
+     page is then simply a page, with fades where the dissolves would be. */
+  var theme = window.EyeTheme || null;
+
+  /* ---- scroll reveal ----
+     With the theme, an element arrives under a cover of blocks that falls
+     away, and the d1–d3 stagger becomes how long its cover waits. Without
+     it, the class change alone is a fade. Either way nothing starts until
+     the loader has begun to uncover the page (startReveals, called last),
+     so what is already on screen arrives in view rather than behind it. */
   var reveals = document.querySelectorAll(".reveal");
-  if("IntersectionObserver" in window && !reduce){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
-      });
-    }, {threshold:.12, rootMargin:"0px 0px -8% 0px"});
-    reveals.forEach(function(el){ io.observe(el); });
-  } else {
-    reveals.forEach(function(el){ el.classList.add("in"); });
+  function startReveals(){
+    if("IntersectionObserver" in window && !reduce){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(!e.isIntersecting) return;
+          var el = e.target, c = el.classList;
+          if(theme) theme.reveal(el, c.contains("d3") ? 240 : c.contains("d2") ? 160 : c.contains("d1") ? 80 : 0);
+          c.add("in"); io.unobserve(el);
+        });
+      }, {threshold:.12, rootMargin:"0px 0px -8% 0px"});
+      reveals.forEach(function(el){ io.observe(el); });
+    } else {
+      reveals.forEach(function(el){ el.classList.add("in"); });
+    }
   }
 
   /* ---- laptop tilts toward the pointer for a subtle 3D screen feel ---- */
@@ -1545,7 +1837,8 @@ form{display:flex;flex-direction:column;gap:19px}
       "form.sent":"// Thanks {name} — that reached me. I usually reply within a day.",
       "form.fallback":"// Opening your mail app instead — the message is ready to send.",
       "form.ok":"// Opening your mail app, {name}.",
-      "footer.built":"Written by hand · Athens, 2026","footer.top":"BACK TO TOP ↑"
+      "footer.built":"Written by hand · Athens, 2026","footer.top":"BACK TO TOP ↑",
+      "footer.replay":"Replay the intro"
     },
     el: {
       "meta.title":"Κατασκευή ιστοσελίδων στην Αθήνα από 449€ · Αντόνιο Μάτο",
@@ -1654,7 +1947,8 @@ form{display:flex;flex-direction:column;gap:19px}
       "form.sent":"// Ευχαριστώ {name} — το έλαβα. Συνήθως απαντώ μέσα σε μία μέρα.",
       "form.fallback":"// Ανοίγει η εφαρμογή email — το μήνυμα είναι έτοιμο.",
       "form.ok":"// Ανοίγει η εφαρμογή email σας, {name}.",
-      "footer.built":"Γραμμένο στο χέρι · Αθήνα, 2026","footer.top":"ΕΠΙΣΤΡΟΦΗ ΠΑΝΩ ↑"
+      "footer.built":"Γραμμένο στο χέρι · Αθήνα, 2026","footer.top":"ΕΠΙΣΤΡΟΦΗ ΠΑΝΩ ↑",
+      "footer.replay":"Δείτε ξανά την εισαγωγή"
     }
   };
 
@@ -1767,8 +2061,14 @@ form{display:flex;flex-direction:column;gap:19px}
       if(!queue.length) refill();
       var next = queue.shift();
       if(next === undefined || next === cur) return;
-      imgs[cur].classList.remove("active");
-      imgs[next].classList.add("active");
+      /* the theme copies the outgoing frame onto a canvas and dissolves it
+         in blocks over the incoming one (it moves the class itself, once the
+         incoming frame is decoded); where it cannot, the classes change here
+         and the CSS crossfade is what happens */
+      if(!(theme && theme.swap(box, imgs[cur], imgs[next]))){
+        imgs[cur].classList.remove("active");
+        imgs[next].classList.add("active");
+      }
       cur = next;
     }
     function start(){ if(!timer) timer = setInterval(step, 3200); }
@@ -1888,6 +2188,15 @@ form{display:flex;flex-direction:column;gap:19px}
 
   /* ---- apply saved/default language last, so every module is registered ---- */
   applyLang(lang);
+
+  /* ---- and only then the theme: it splits the headline into characters,
+          so the text has to be in its final language first ---- */
+  if(theme){
+    try { theme.init(); theme.ready(startReveals); }
+    catch(err){ startReveals(); }
+  } else {
+    startReveals();
+  }
     })();
 </script>
 </body>
