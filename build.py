@@ -6,9 +6,9 @@ dictionary into a second real page so Google can index it: runtime
 translation is invisible to a crawler, which is why the Greek half of this
 site could not be found by anyone searching in Greek.
 
-Run this after ANY edit to index.html, then deploy:
+Run this after ANY edit to index.html:
 
-    python build.py && firebase deploy --only hosting
+    python build.py
 """
 import io, os, re, sys
 
