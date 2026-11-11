@@ -12,7 +12,8 @@
  *           through the characters as the page scrolls:
  *             - the afterimage of the star, exactly where the loader left it (the hero)
  *             - a catchlight under the pointer
- *             - the eye again, at the foot of the page, watching the pointer
+ *             - the eye, behind the name in the hero, watching the pointer:
+ *               the star cools and closes back into it
  * DISSOLVE  The loader's 12 px block dissolve at element size: reveal(el) for
  *           things scrolling into view, swap(box, from, to) for slideshow frames.
  * DECODE    Text that arrives as ramp characters before it settles (the
@@ -54,7 +55,8 @@
   var PTR_R = 135;            // radius of the catchlight under the pointer, CSS px
   var BLOCK = 12;             // the loader's dissolve block, CSS px
   var COOL = 2.8;             // seconds the star takes to cool from white into its afterimage
-  var SKIN_X = 0.5, SKIN_Y = 0.72;   // where the skin around the footer eye has faded out (eye units)
+  var SKIN_X = 0.5, SKIN_Y = 0.72;   // where the skin around the eye has faded out (eye units)
+  var TEXT_DIM = 0.6;         // how far the eye behind the name dims under the letters (0 = not at all)
 
   /* ====================================================================
    * 2. SHARED WITH THE LOADER: helpers, palette, noise, eye geometry
@@ -548,15 +550,22 @@
     }
   }
 
-  /* ---- the eye (footer) ----
+  /* ---- the eye (hero, behind the name) ----
      The loader's eye at rest: lids, sclera, iris, pupil, catchlights, lashes,
      skin. Shading copied from the loader with the zoom, morph and fade removed. */
 
   var eye = { el: null, near: false, vis: false, x: 0, y: 0, U: 1, gx: 0, gy: 0, open: 1,
-              blinkAt: 0, blinkT: -1, hover: 0, hoverTo: 0, idle: 0 };
+              blinkAt: 0, blinkT: -1, hover: 0, hoverTo: 0, idle: 0,
+              hero: false, wake: 1, text: [], tN: 0, tr: new Float32Array(16) };   // tr: the words in front of it, as rects
+
+  // a fixed random number per cell, so the eye switches on character by character as it wakes
+  function cellRand(i) { return (Math.imul(i + 1, 2654435761) >>> 0) / 4294967296; }
 
   function layerEye(tw, dt) {
-    var U = eye.U, invU = 1 / U, gx = eye.gx, gy = eye.gy, open = eye.open, ecx = eye.x, ecy = eye.y;
+    var U = eye.U, invU = 1 / U, gx = eye.gx, gy = eye.gy, ecx = eye.x, ecy = eye.y;
+    var wake = eye.wake, on = wake * 1.5;                        // waking: the lids open the loader's way, the cells arrive a few at a time
+    var open = Math.min(eye.open, 0.04 + 0.96 * ease(wake));
+    var tm = 40 * dpr, tN = TEXT_DIM > 0 ? eye.tN : 0, tr = eye.tr;
     var R = 0.37;
     var pupil = (0.39 + 0.07 * eye.hover) * (1 + 0.045 * Math.sin(tw * 1.7));  // share of the iris radius; widens when hovered
     var lift = 1 + 0.7 * Math.max(0, -gy);                       // the upper lid lifts when looking up
@@ -621,6 +630,7 @@
         var x = colX[c], ax = x < 0 ? -x : x;
         var hx = ax - 0.75, q = (hx > 0 ? hx * hx * invSX : 0) + qy;         // 1 = skin fully faded
         if (q >= 1) continue;                                                // the field stays as it is
+        if (on < 1 && cellRand(i) >= on) continue;                          // not awake here yet
 
         var B = bgB[i], A = baseA, cR = BGC[0], cG = BGC[1], cB = BGC[2];
         var force = -1;
@@ -732,6 +742,17 @@
 
         if (B < 0) B = 0; else if (B > 1) B = 1;
         var af = A * (0.3 + 0.7 * B) * scan;
+        if (tN) {                                                            // behind the words it steps back
+          var px = (c + 0.5) * cellW, py = (r + 0.5) * cellH, td = tm, t4, tdx, tdy;
+          for (k = 0; k < tN; k++) {
+            t4 = k * 4;
+            tdx = px < tr[t4] ? tr[t4] - px : px > tr[t4 + 2] ? px - tr[t4 + 2] : 0;
+            tdy = py < tr[t4 + 1] ? tr[t4 + 1] - py : py > tr[t4 + 3] ? py - tr[t4 + 3] : 0;
+            if (tdy > tdx) tdx = tdy;
+            if (tdx < td) td = tdx;
+          }
+          if (td < tm) { td = 1 - td / tm; af *= 1 - TEXT_DIM * td * td * (3 - 2 * td); }
+        }
         var ci = 0;
         if (af >= 0.012) {
           if (force >= 0) {
@@ -817,12 +838,16 @@
           star.show = clamp01((k - 0.22 * d2) / (0.3 * d2));
         }
       }
+      // with the eye behind the name, the star does not stay: as it cools it closes back into the eye
+      if (eye.hero) star.show *= 1 - sstep(0.2, 0.75, 1 - star.heat);
       star.vis = r.width > 0 && star.y + reach > 0 && star.y - reach < CH && (star.heat > 0 || star.show > 0);
     }
 
     /* ---- eye ---- */
     eye.vis = false;
-    if (eye.el && eye.near) {
+    // in the hero it wakes as the star cools: hidden under the loader, opening as the star goes
+    eye.wake = !eye.hero ? 1 : covered ? 0 : sstep(0.3, 0.95, 1 - star.heat);
+    if (eye.el && eye.near && eye.wake > 0) {
       r = eye.el.getBoundingClientRect();
       eye.vis = r.width > 40 && r.bottom > 0 && r.top < H;
       if (eye.vis) {
@@ -830,6 +855,16 @@
         eye.U = r.width / (2 * (0.75 + SKIN_X)) * sx;
         eye.x = (r.left + r.width / 2) * sx;
         eye.y = (r.top + r.height / 2) * sy;
+
+        // the words in front of it: the eye steps back where the letters are, so they stay readable
+        eye.tN = 0;
+        for (k = 0; k < eye.text.length; k++) {
+          d1 = eye.text[k].getBoundingClientRect();
+          if (!d1.width) continue;
+          eye.tr[eye.tN * 4] = d1.left * sx; eye.tr[eye.tN * 4 + 1] = d1.top * sy;
+          eye.tr[eye.tN * 4 + 2] = d1.right * sx; eye.tr[eye.tN * 4 + 3] = d1.bottom * sy;
+          eye.tN++;
+        }
 
         tx = 0; ty = 0;
         if (reduce) {
@@ -1342,6 +1377,8 @@
     star.el = document.querySelector('.hero');
     star.parts = Array.prototype.slice.call(document.querySelectorAll('.hero-title, .hero-desc, .hero-cta'));
     eye.el = document.getElementById('eye-stage');
+    eye.hero = !!(eye.el && eye.el.closest && eye.el.closest('.hero'));
+    eye.text = eye.hero ? Array.prototype.slice.call(document.querySelectorAll('.hero-title, .hero-desc, .hero-cta')) : [];
 
     var rampEl = document.getElementById('ramp');
     if (rampEl) rampEl.textContent = RAMP.slice(1);              // the alphabet the eye is drawn in, dark to bright
@@ -1349,7 +1386,7 @@
     prepTitle();
     try { startField(); } catch (e) { fieldOn = false; }
 
-    // the footer eye: only measured while it is near the screen; pressed, it plays the intro again
+    // the eye: only measured while it is near the screen; the replay button plays the intro again
     var btn = document.getElementById('eye-btn');
     if (eye.el) {
       eye.blinkAt = window.performance.now() + 1800;
@@ -1363,10 +1400,11 @@
       }
     }
     if (btn) {
-      if (reduce || !window.EyeLoader) {                         // nothing to replay: it stays the picture it is in the markup
+      if (reduce || !window.EyeLoader) {                         // nothing to replay: the button stays hidden
         btn.classList.add('is-still');
       } else {
-        btn.removeAttribute('tabindex');                         // now it is a control: reachable, named by its caption
+        btn.hidden = false;                                      // now there is an intro it can replay
+        btn.removeAttribute('tabindex');
         btn.removeAttribute('aria-hidden');
         btn.classList.add('is-live');
         btn.addEventListener('pointerenter', function () { eye.hoverTo = 1; });

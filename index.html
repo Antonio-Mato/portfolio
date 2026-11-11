@@ -336,8 +336,9 @@ section{position:relative;z-index:2}
    what to press. It stands exactly where the loader's star stood.
    The star was centred on the screen, so this block is too, and
    what the dissolve uncovers behind the name is that same star,
-   still white, cooling into an outline: eye-theme.js draws it
-   into the character field and it scrolls away with the hero.
+   still white. As it cools it closes back into the eye it came
+   from, which stays behind the name watching the pointer:
+   eye-theme.js draws both into the character field.
    Around the edge of the fold a few of the loader's sparkles
    have stayed on.
    ============================================================ */
@@ -399,6 +400,7 @@ section{position:relative;z-index:2}
 
 /* ---- the claim ---- */
 .hero-title{
+  position:relative;
   font-family:var(--f-display);font-weight:800;
   /* Sized from measurement, not taste. In Manrope at this weight the longest
      line, "Antonio Mato.", costs a steady 6.45px of width per px of font
@@ -417,6 +419,16 @@ section{position:relative;z-index:2}
   color:var(--chalk);
 }
 .hero-title .tl{display:block}
+/* IRIS: the eye behind the name. The box is only a measure: eye-theme.js
+   draws the loader's eye into the character field under it, looking at the
+   pointer. Its proportions are the skin's (2.5 eye-widths across, 1.44 down:
+   SKIN_X and SKIN_Y in eye-theme.js). At 7.4em the lower lid ends just above
+   the paragraph, so the eye frames the name without crossing the text. */
+.hero-eye{
+  position:absolute;left:50%;top:50%;z-index:-1;
+  width:min(7.4em,96vw);aspect-ratio:2.5/1.44;
+  transform:translate(-50%,-50%);pointer-events:none;
+}
 .hero-title .tl i{
   display:block;font-style:normal;
   opacity:0;animation:hazeIn .7s var(--ease-eye) forwards;
@@ -1061,11 +1073,7 @@ form{display:flex;flex-direction:column;gap:21px}
 
 /* ============================================================
    FOOTER
-   IRIS: the page ends where the intro began. eye-theme.js draws
-   the loader's eye into the character field behind .eye-box, so
-   it rises through the characters as the page scrolls to its
-   end. It follows the pointer, blinks, and when pressed plays
-   the intro again. Under it is the alphabet it is drawn in,
+   GLYPH: the page ends on the alphabet the intro is drawn in,
    darkest character to brightest.
    ============================================================ */
 .footer{
@@ -1074,43 +1082,18 @@ form{display:flex;flex-direction:column;gap:21px}
   display:flex;flex-direction:column;align-items:center;
   font-family:var(--f-ui);font-weight:var(--w-ui);font-size:.68rem;color:var(--chalk-faint);letter-spacing:.05em;
 }
-.eye-btn{
-  display:flex;flex-direction:column;align-items:center;
-  max-width:100%;padding:0;border:0;background:transparent;color:inherit;cursor:default;
-  font:inherit;letter-spacing:inherit;
-}
-/* it only offers to replay the intro once eye-theme.js has wired it up to do
-   so (.is-live); until then, and with reduced motion, it is just the eye */
-.eye-btn.is-live{cursor:pointer}
-/* the eye's place. Its proportions are the skin's: 2.5 eye-widths across,
-   1.44 down (SKIN_X and SKIN_Y in eye-theme.js), so the eye fills it exactly. */
-.eye-box{display:block;width:min(36rem,92vw);aspect-ratio:2.5/1.44}
-/* without the field (no WebGL, or the script never arrived) a small drawn
-   eye stands in, so the button is never an empty rectangle */
-.eye-still{display:block;width:100%;height:100%;color:var(--chalk-dim)}
-.eye-still .lid{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linejoin:round}
-.eye-still .iris{fill:var(--marker)}
-.eye-still .pupil{fill:var(--pupil)}
-.eye-still .glint{fill:#fff}
-html:not(.field-on) .eye-box{width:6.5rem;aspect-ratio:30/18;margin:1rem 0}
-html.field-on .eye-still{display:none}
-.eye-cap{
-  display:none;align-items:center;gap:.75em;
-  margin-top:.35rem;padding:.5rem 0;
-  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-faint);
-  transition:color .3s var(--ease);
-}
-.eye-btn.is-live .eye-cap{display:inline-flex}
-.eye-cap::before{
-  content:"";width:1em;height:1em;flex:none;background:var(--marker);
+/* the second button under the name: the eye goes back to the start. Quiet
+   beside "See the work", and present only when there is an intro to replay. */
+.btn-replay{background:rgba(9,9,11,.45);color:var(--chalk-dim);box-shadow:var(--strips);cursor:pointer}
+.btn-replay[hidden]{display:none}
+.btn-replay:hover,.btn-replay:focus-visible{--pxc:var(--marker);color:var(--chalk);background:rgba(59,130,246,.12)}
+.replay-ic{
+  width:1em;height:1em;flex:none;background:var(--marker);
   -webkit-mask:var(--star-shape) center/contain no-repeat;
   mask:var(--star-shape) center/contain no-repeat;
   transition:transform .45s var(--pop);
 }
-.eye-btn:hover .eye-cap,.eye-btn:focus-visible .eye-cap{color:var(--chalk)}
-.eye-btn:hover .eye-cap::before,.eye-btn:focus-visible .eye-cap::before{transform:rotate(90deg) scale(1.25)}
-/* reduced motion: the eye is a still picture, and there is no intro to replay */
-.eye-btn.is-still{pointer-events:none}
+.btn-replay:hover .replay-ic,.btn-replay:focus-visible .replay-ic{transform:rotate(90deg) scale(1.25)}
 /* GLYPH: the ramp, quietest at its dark end */
 .ramp{
   max-width:100%;margin-top:.9rem;
@@ -1313,12 +1296,14 @@ canvas.px-burst{position:fixed;left:0;top:0;width:100%;height:100%;z-index:90;po
     <h1 class="hero-title">
       <span class="tl"><i data-i18n="hero.t1">Hi, I'm</i></span>
       <span class="tl"><i data-i18n="hero.t2">Antonio Mato.</i></span>
+      <i class="hero-eye" id="eye-stage" aria-hidden="true"></i>
     </h1>
 
     <p class="hero-desc" data-i18n-html="hero.desc">A <em>website designer</em> and developer in Athens, with a BSc in Computer Science. I design and build websites and web applications — the look, the code behind them, and everything it takes to get them live.</p>
 
     <div class="hero-cta">
       <a href="#work" class="btn btn-primary"><svg class="eye-ic" viewBox="0 0 30 18" aria-hidden="true" focusable="false"><g class="eye-open"><path class="lid" d="M1.5 10.2C7.5 3 21.5 1.6 28.5 8.2 22.5 15.2 8 16.2 1.5 10.2Z"/><circle class="iris" cx="15" cy="9" r="4.7"/><circle class="pupil" cx="15" cy="9" r="2.1"/><rect class="glint" x="12.1" y="6.1" width="1.9" height="1.9"/></g><path class="eye-star" d="M15 .5C15 4.86 10.86 9 6.5 9 10.86 9 15 13.14 15 17.5 15 13.14 19.14 9 23.5 9 19.14 9 15 4.86 15 .5Z"/></svg><span data-i18n="hero.cta1">See the work</span> <span class="arrow">→</span></a>
+      <button type="button" class="btn btn-replay" id="eye-btn" hidden><span class="replay-ic" aria-hidden="true"></span><span data-i18n="hero.replay">Replay the intro</span></button>
     </div>
 
   </div>
@@ -1608,15 +1593,6 @@ canvas.px-burst{position:fixed;left:0;top:0;width:100%;height:100%;z-index:90;po
 
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
-  <!-- the eye again. eye-theme.js draws it into the character field behind
-       .eye-box, and pressing it plays the intro once more. The small drawing
-       inside is only what shows where that canvas cannot run. In the markup
-       it is a picture, out of the tab order; the script makes it a control
-       when there is an intro it can actually replay. -->
-  <button class="eye-btn" id="eye-btn" type="button" tabindex="-1" aria-hidden="true">
-    <span class="eye-box" id="eye-stage"><svg class="eye-still" viewBox="0 0 30 18" aria-hidden="true" focusable="false"><path class="lid" d="M1.5 10.2C7.5 3 21.5 1.6 28.5 8.2 22.5 15.2 8 16.2 1.5 10.2Z"/><circle class="iris" cx="15" cy="9" r="4.7"/><circle class="pupil" cx="15" cy="9" r="2.1"/><rect class="glint" x="12.1" y="6.1" width="1.9" height="1.9"/></svg></span>
-    <span class="eye-cap" data-i18n="footer.replay">Replay the intro</span>
-  </button>
   <!-- the characters the eye is drawn in, darkest to brightest; filled in by eye-theme.js -->
   <p class="ramp" id="ramp" aria-hidden="true"></p>
   <div class="footer-row">
@@ -1838,7 +1814,7 @@ canvas.px-burst{position:fixed;left:0;top:0;width:100%;height:100%;z-index:90;po
       "form.fallback":"// Opening your mail app instead — the message is ready to send.",
       "form.ok":"// Opening your mail app, {name}.",
       "footer.built":"Written by hand · Athens, 2026","footer.top":"BACK TO TOP ↑",
-      "footer.replay":"Replay the intro"
+      "hero.replay":"Replay the intro"
     },
     el: {
       "meta.title":"Κατασκευή ιστοσελίδων στην Αθήνα από 449€ · Αντόνιο Μάτο",
@@ -1948,7 +1924,7 @@ canvas.px-burst{position:fixed;left:0;top:0;width:100%;height:100%;z-index:90;po
       "form.fallback":"// Ανοίγει η εφαρμογή email — το μήνυμα είναι έτοιμο.",
       "form.ok":"// Ανοίγει η εφαρμογή email σας, {name}.",
       "footer.built":"Γραμμένο στο χέρι · Αθήνα, 2026","footer.top":"ΕΠΙΣΤΡΟΦΗ ΠΑΝΩ ↑",
-      "footer.replay":"Δείτε ξανά την εισαγωγή"
+      "hero.replay":"Δείτε ξανά την εισαγωγή"
     }
   };
 
